@@ -16,6 +16,7 @@ const createCriteriaWthoutConditions = () =>
     fields: List.of(
       'key',
       'name',
+      'websiteUrl',
       'imageUrl',
       'address',
       'phones',
@@ -37,6 +38,7 @@ const createCriteria = restaurant =>
     conditions: Map({
       key: restaurant ? restaurant.get('key') : uuid(),
       name: restaurant ? restaurant.get('name') : uuid(),
+      websiteUrl: restaurant ? restaurant.get('websiteUrl') : uuid(),
       imageUrl: restaurant ? restaurant.get('imageUrl') : uuid(),
       address: restaurant ? restaurant.get('address') : uuid(),
       phones: restaurant ? restaurant.get('phones') : Map({ business: chance.integer({ min: 1000000, max: 999999999 }).toString() }),

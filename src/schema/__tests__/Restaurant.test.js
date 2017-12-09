@@ -16,6 +16,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
   const restaurant = Map({
     key: uuid(),
     name: uuid(),
+    websiteUrl: uuid(),
     imageUrl: uuid(),
     address: uuid(),
     phones: List.of(
@@ -42,6 +43,7 @@ export const createRestaurant = async object => Restaurant.spawn(object || (awai
 export const expectRestaurant = (object, expectedObject) => {
   expect(object.get('key')).toBe(expectedObject.get('key'));
   expect(object.get('name')).toBe(expectedObject.get('name'));
+  expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('address')).toBe(expectedObject.get('address'));
   expect(object.get('phones')).toEqual(expectedObject.get('phones'));

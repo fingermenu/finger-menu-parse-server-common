@@ -45,6 +45,7 @@ Restaurant.spawn = function (info) {
 Restaurant.updateInfoInternal = function (object, info) {
   object.set('key', info.get('key'));
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  object.set('websiteUrl', info.get('websiteUrl'));
   object.set('imageUrl', info.get('imageUrl'));
   object.set('address', info.get('address'));
 
@@ -85,6 +86,7 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       key: object.get('key'),
       name: object.get('name'),
+      websiteUrl: object.get('websiteUrl'),
       imageUrl: object.get('imageUrl'),
       address: object.get('address'),
       phones: _immutable2.default.fromJS(object.get('phones')),

@@ -28,7 +28,7 @@ var RestaurantService = function (_ServiceBase) {
   return RestaurantService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-RestaurantService.fields = _immutable.List.of('key', 'name', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl');
+RestaurantService.fields = _immutable.List.of('key', 'name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl');
 
 RestaurantService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

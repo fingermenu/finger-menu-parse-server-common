@@ -8,6 +8,7 @@ export default class RestaurantService extends ServiceBase {
   static fields = List.of(
     'key',
     'name',
+    'websiteUrl',
     'imageUrl',
     'address',
     'phones',

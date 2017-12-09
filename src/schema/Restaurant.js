@@ -15,6 +15,7 @@ export default class Restaurant extends BaseObject {
   static updateInfoInternal = (object, info) => {
     object.set('key', info.get('key'));
     BaseObject.createStringColumn(object, info, 'name');
+    object.set('websiteUrl', info.get('websiteUrl'));
     object.set('imageUrl', info.get('imageUrl'));
     object.set('address', info.get('address'));
 
@@ -56,6 +57,7 @@ export default class Restaurant extends BaseObject {
       id: this.getId(),
       key: object.get('key'),
       name: object.get('name'),
+      websiteUrl: object.get('websiteUrl'),
       imageUrl: object.get('imageUrl'),
       address: object.get('address'),
       phones: Immutable.fromJS(object.get('phones')),
