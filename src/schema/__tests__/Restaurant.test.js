@@ -6,6 +6,7 @@ import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { Restaurant } from '../';
+import createMenus from '../../services/__tests__/MenuService.test';
 
 export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
   const chance = new Chance();
@@ -13,6 +14,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
   const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
     .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
     .toArray()));
+  const menus = await createMenus(chance.integer({ min: 1, max: 3 }));
   const restaurant = Map({
     key: uuid(),
     name: uuid(),
@@ -33,14 +35,20 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
     status: uuid(),
     googleMapUrl: uuid(),
+    menuIds: menus.map(menu => menu.get('id')),
   });
 
-  return { restaurant, ownedByUser, maintainedByUsers };
+  return {
+    restaurant,
+    ownedByUser,
+    maintainedByUsers,
+    menus,
+  };
 };
 
 export const createRestaurant = async object => Restaurant.spawn(object || (await createRestaurantInfo()).restaurant);
 
-export const expectRestaurant = (object, expectedObject) => {
+export const expectRestaurant = (object, expectedObject, { expectedMenus } = {}) => {
   expect(object.get('key')).toBe(expectedObject.get('key'));
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
@@ -54,6 +62,11 @@ export const expectRestaurant = (object, expectedObject) => {
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('googleMapUrl')).toBe(expectedObject.get('googleMapUrl'));
+  expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
+
+  if (expectedMenus) {
+    expect(object.get('menuIds')).toEqual(expectedMenus.map(_ => _.get('id')));
+  }
 };
 
 describe('constructor', () => {

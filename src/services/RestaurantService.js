@@ -2,7 +2,7 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-common';
-import { Restaurant } from '../schema';
+import { Menu, Restaurant } from '../schema';
 
 export default class RestaurantService extends ServiceBase {
   static fields = List.of(
@@ -19,6 +19,7 @@ export default class RestaurantService extends ServiceBase {
     'maintainedByUsers',
     'status',
     'googleMapUrl',
+    'menus',
   );
 
   constructor() {
@@ -33,6 +34,7 @@ export default class RestaurantService extends ServiceBase {
     ServiceBase.addIncludeQuery(criteria, query, 'parentRestaurant');
     ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
+    ServiceBase.addIncludeQuery(criteria, query, 'menus');
 
     return query;
   };
@@ -62,6 +64,7 @@ export default class RestaurantService extends ServiceBase {
     ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
     ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
     ServiceBase.addEqualityQuery(conditions, query, 'googleMapUrl', 'googleMapUrl');
+    ServiceBase.addLinkQuery(conditions, query, 'menu', 'menus', Menu);
 
     return query;
   };

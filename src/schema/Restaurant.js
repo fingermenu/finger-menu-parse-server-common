@@ -2,6 +2,7 @@
 
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from 'micro-business-parse-server-common';
+import Menu from './Menu';
 
 export default class Restaurant extends BaseObject {
   static spawn = (info) => {
@@ -34,6 +35,7 @@ export default class Restaurant extends BaseObject {
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
     object.set('status', info.get('status'));
     object.set('googleMapUrl', info.get('googleMapUrl'));
+    BaseObject.createArrayPointer(object, info, 'menu', Menu);
   };
 
   constructor(object) {
@@ -52,6 +54,8 @@ export default class Restaurant extends BaseObject {
     const parentRestaurant = parentRestaurantObject ? new Restaurant(parentRestaurantObject) : undefined;
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
+    const menuObjects = object.get('menus');
+    const menus = menuObjects ? Immutable.fromJS(menuObjects).map(menu => new Menu(menu).getInfo()) : undefined;
 
     return Map({
       id: this.getId(),
@@ -71,6 +75,8 @@ export default class Restaurant extends BaseObject {
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
       status: object.get('status'),
       googleMapUrl: object.get('googleMapUrl'),
+      menus,
+      menuIds: menus ? menus.map(menu => menu.get('id')) : List(),
     });
   };
 }
