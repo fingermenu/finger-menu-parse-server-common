@@ -12,9 +12,10 @@ const myMealService = new MyMealService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser'),
+    fields: List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers'),
     include_tags: true,
     include_ownedByUser: true,
+    include_maintainedByUsers: true,
   });
 
 const createCriteria = myMeal =>
@@ -26,6 +27,7 @@ const createCriteria = myMeal =>
       imageUrl: myMeal ? myMeal.get('imageUrl') : uuid(),
       tagIds: myMeal ? myMeal.get('tagIds') : List.of(uuid(), uuid()),
       ownedByUserId: myMeal ? myMeal.get('ownedByUserId') : uuid(),
+      maintainedByUserIds: myMeal ? myMeal.get('maintainedByUserIds') : List.of(uuid(), uuid()),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -86,16 +88,19 @@ describe('read', () => {
 
   test('should read the existing my meal', async () => {
     const {
-      myMeal: expectedMyMeal, store: expectedStore, storeTags: expectedStoreTags, tags: expectedTags,
+      myMeal: expectedMyMeal,
+      tags: expectedTags,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createMyMealInfo();
     const myMealId = await myMealService.create(expectedMyMeal);
     const myMeal = await myMealService.read(myMealId, createCriteriaWthoutConditions());
 
     expectMyMeal(myMeal, expectedMyMeal, {
       myMealId,
-      expectedStore,
-      expectedStoreTags,
       expectedTags,
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
     });
   });
 });
@@ -123,7 +128,10 @@ describe('update', () => {
 
   test('should update the existing my meal', async () => {
     const {
-      myMeal: expectedMyMeal, store: expectedStore, storeTags: expectedStoreTags, tags: expectedTags,
+      myMeal: expectedMyMeal,
+      tags: expectedTags,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createMyMealInfo();
     const myMealId = await myMealService.create((await createMyMealInfo()).myMeal);
 
@@ -133,9 +141,9 @@ describe('update', () => {
 
     expectMyMeal(myMeal, expectedMyMeal, {
       myMealId,
-      expectedStore,
-      expectedStoreTags,
       expectedTags,
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
     });
   });
 });
@@ -172,7 +180,10 @@ describe('search', () => {
 
   test('should return the my meal matches the criteria', async () => {
     const {
-      myMeal: expectedMyMeal, store: expectedStore, storeTags: expectedStoreTags, tags: expectedTags,
+      myMeal: expectedMyMeal,
+      tags: expectedTags,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createMyMealInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
       .map(async () => myMealService.create(expectedMyMeal))
@@ -184,9 +195,9 @@ describe('search', () => {
       expect(results.find(_ => _.localeCompare(myMeal.get('id')) === 0)).toBeDefined();
       expectMyMeal(myMeal, expectedMyMeal, {
         myMealId: myMeal.get('id'),
-        expectedStore,
-        expectedStoreTags,
         expectedTags,
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
       });
     });
   });
@@ -212,7 +223,11 @@ describe('searchAll', () => {
 
   test('should return the my meal matches the criteria', async () => {
     const {
-      myMeal: expectedMyMeal, store: expectedStore, storeTags: expectedStoreTags, tags: expectedTags,
+      myMeal: expectedMyMeal,
+      tags: expectedTags,
+
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createMyMealInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => myMealService.create(expectedMyMeal))
@@ -236,9 +251,9 @@ describe('searchAll', () => {
       expect(results.find(_ => _.localeCompare(myMeal.get('id')) === 0)).toBeDefined();
       expectMyMeal(myMeal, expectedMyMeal, {
         myMealId: myMeal.get('id'),
-        expectedStore,
-        expectedStoreTags,
         expectedTags,
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
       });
     });
   });

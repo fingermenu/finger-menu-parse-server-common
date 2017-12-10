@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-co
 import { MyMeal, Tag } from '../schema';
 
 export default class MyMealService extends ServiceBase {
-  static fields = List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser');
+  static fields = List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(MyMeal, MyMealService.buildSearchQuery, MyMealService.buildIncludeQuery, 'my meal');
@@ -18,6 +18,7 @@ export default class MyMealService extends ServiceBase {
 
     ServiceBase.addIncludeQuery(criteria, query, 'tags');
     ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
     return query;
   };
@@ -42,6 +43,7 @@ export default class MyMealService extends ServiceBase {
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
     ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', Tag);
     ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+    ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
     return query;
   };

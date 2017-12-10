@@ -20,6 +20,7 @@ export default class MyMeal extends BaseObject {
     object.set('imageUrl', info.get('imageUrl'));
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
+    BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   };
 
   constructor(object) {
@@ -37,6 +38,7 @@ export default class MyMeal extends BaseObject {
     const tagObjects = object.get('tags');
     const tags = tagObjects ? Immutable.fromJS(tagObjects).map(tag => new Tag(tag).getInfo()) : undefined;
     const ownedByUser = object.get('ownedByUser');
+    const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
     return Map({
       id: this.getId(),
@@ -48,6 +50,8 @@ export default class MyMeal extends BaseObject {
       tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
       ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+      maintainedByUsers,
+      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
     });
   };
 }

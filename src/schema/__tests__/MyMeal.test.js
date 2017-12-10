@@ -1,7 +1,7 @@
 // @flow
 
 import Chance from 'chance';
-import { Map } from 'immutable';
+import Immutable, { Map, Range } from 'immutable';
 import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
 import { MyMeal } from '../';
@@ -11,6 +11,9 @@ const chance = new Chance();
 
 export const createMyMealInfo = async () => {
   const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
+  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
+    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
+    .toArray()));
   const tags = await createTags(chance.integer({ min: 1, max: 1 }));
   const myMeal = Map({
     name: uuid(),
@@ -19,12 +22,14 @@ export const createMyMealInfo = async () => {
     imageUrl: uuid(),
     tagIds: tags.map(tag => tag.get('id')),
     ownedByUserId: ownedByUser.id,
+    maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
     myMeal,
     tags,
     ownedByUser,
+    maintainedByUsers,
   };
 };
 
@@ -37,6 +42,7 @@ export const expectMyMeal = (object, expectedObject, { myMealId, expectedTags } 
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
+  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
   if (myMealId) {
     expect(object.get('id')).toBe(myMealId);
