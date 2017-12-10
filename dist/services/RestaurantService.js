@@ -28,7 +28,7 @@ var RestaurantService = function (_ServiceBase) {
   return RestaurantService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-RestaurantService.fields = _immutable.List.of('key', 'name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl');
+RestaurantService.fields = _immutable.List.of('key', 'name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus');
 
 RestaurantService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -38,6 +38,7 @@ RestaurantService.buildIncludeQuery = function (query, criteria) {
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'parentRestaurant');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menus');
 
   return query;
 };
@@ -67,6 +68,8 @@ RestaurantService.buildSearchQuery = function (criteria) {
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'googleMapUrl', 'googleMapUrl');
+  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menu', 'menus', _schema.Menu);
+  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'inheritParentRestaurantMenus', 'inheritParentRestaurantMenus');
 
   return query;
 };

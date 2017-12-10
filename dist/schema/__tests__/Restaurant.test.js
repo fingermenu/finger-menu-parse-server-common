@@ -21,7 +21,11 @@ var _v2 = _interopRequireDefault(_v);
 
 require('../../../bootstrap');
 
-var _ = require('../');
+var _2 = require('../');
+
+var _MenuService = require('../../services/__tests__/MenuService.test');
+
+var _MenuService2 = _interopRequireDefault(_MenuService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,7 +36,7 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         parentRestaurantId = _ref2.parentRestaurantId;
 
-    var chance, ownedByUser, maintainedByUsers, restaurant;
+    var chance, ownedByUser, maintainedByUsers, menus, restaurant;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -52,6 +56,11 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
           case 7:
             _context.t1 = _context.sent;
             maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
+            _context.next = 11;
+            return (0, _MenuService2.default)(chance.integer({ min: 1, max: 3 }));
+
+          case 11:
+            menus = _context.sent;
             restaurant = (0, _immutable.Map)({
               key: (0, _v2.default)(),
               name: (0, _v2.default)(),
@@ -70,11 +79,20 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
                 return maintainedByUser.id;
               }),
               status: (0, _v2.default)(),
-              googleMapUrl: (0, _v2.default)()
+              googleMapUrl: (0, _v2.default)(),
+              menuIds: menus.map(function (menu) {
+                return menu.get('id');
+              }),
+              inheritParentRestaurantMenus: chance.integer({ min: 1, max: 1000 }) % 2 === 0
             });
-            return _context.abrupt('return', { restaurant: restaurant, ownedByUser: ownedByUser, maintainedByUsers: maintainedByUsers });
+            return _context.abrupt('return', {
+              restaurant: restaurant,
+              ownedByUser: ownedByUser,
+              maintainedByUsers: maintainedByUsers,
+              menus: menus
+            });
 
-          case 11:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -93,7 +111,7 @@ var createRestaurant = exports.createRestaurant = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _.Restaurant;
+            _context2.t0 = _2.Restaurant;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -125,6 +143,9 @@ var createRestaurant = exports.createRestaurant = function () {
 }();
 
 var expectRestaurant = exports.expectRestaurant = function expectRestaurant(object, expectedObject) {
+  var _ref4 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      expectedMenus = _ref4.expectedMenus;
+
   expect(object.get('key')).toBe(expectedObject.get('key'));
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
@@ -138,6 +159,14 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('googleMapUrl')).toBe(expectedObject.get('googleMapUrl'));
+  expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
+  expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
+
+  if (expectedMenus) {
+    expect(object.get('menuIds')).toEqual(expectedMenus.map(function (_) {
+      return _.get('id');
+    }));
+  }
 };
 
 describe('constructor', function () {
@@ -165,7 +194,7 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, restaurant, object, info;
+    var _ref7, restaurant, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -175,8 +204,8 @@ describe('static public methods', function () {
             return createRestaurantInfo();
 
           case 2:
-            _ref6 = _context4.sent;
-            restaurant = _ref6.restaurant;
+            _ref7 = _context4.sent;
+            restaurant = _ref7.restaurant;
             _context4.next = 6;
             return createRestaurant(restaurant);
 
@@ -210,7 +239,7 @@ describe('public methods', function () {
             object = _context5.sent;
 
 
-            expect(new _.Restaurant(object).getObject()).toBe(object);
+            expect(new _2.Restaurant(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -233,7 +262,7 @@ describe('public methods', function () {
             object = _context6.sent;
 
 
-            expect(new _.Restaurant(object).getId()).toBe(object.id);
+            expect(new _2.Restaurant(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -244,7 +273,7 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedRestaurant, info;
+    var object, _ref11, updatedRestaurant, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
@@ -259,8 +288,8 @@ describe('public methods', function () {
             return createRestaurantInfo();
 
           case 5:
-            _ref10 = _context7.sent;
-            updatedRestaurant = _ref10.restaurant;
+            _ref11 = _context7.sent;
+            updatedRestaurant = _ref11.restaurant;
 
 
             object.updateInfo(updatedRestaurant);
@@ -279,7 +308,7 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, restaurant, object, info;
+    var _ref13, restaurant, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
@@ -289,8 +318,8 @@ describe('public methods', function () {
             return createRestaurantInfo();
 
           case 2:
-            _ref12 = _context8.sent;
-            restaurant = _ref12.restaurant;
+            _ref13 = _context8.sent;
+            restaurant = _ref13.restaurant;
             _context8.next = 6;
             return createRestaurant(restaurant);
 

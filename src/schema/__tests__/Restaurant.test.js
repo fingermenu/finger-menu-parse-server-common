@@ -36,6 +36,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     status: uuid(),
     googleMapUrl: uuid(),
     menuIds: menus.map(menu => menu.get('id')),
+    inheritParentRestaurantMenus: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
   });
 
   return {
@@ -63,6 +64,7 @@ export const expectRestaurant = (object, expectedObject, { expectedMenus } = {})
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('googleMapUrl')).toBe(expectedObject.get('googleMapUrl'));
   expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
+  expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(_ => _.get('id')));

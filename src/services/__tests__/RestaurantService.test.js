@@ -28,6 +28,7 @@ const createCriteriaWthoutConditions = () =>
       'status',
       'googleMapUrl',
       'menus',
+      'inheritParentRestaurantMenus',
     ),
     include_parentRestaurant: true,
     include_ownedByUser: true,
@@ -57,6 +58,7 @@ const createCriteria = restaurant =>
       status: restaurant ? restaurant.get('status') : uuid(),
       googleMapUrl: restaurant ? restaurant.get('googleMapUrl') : uuid(),
       menuIds: restaurant ? restaurant.get('menuIds') : List.of(uuid(), uuid()),
+      inheritParentRestaurantMenus: restaurant ? restaurant.get('inheritParentRestaurantMenus') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
     }),
   }).merge(createCriteriaWthoutConditions());
 

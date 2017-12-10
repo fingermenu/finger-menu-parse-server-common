@@ -20,6 +20,7 @@ export default class RestaurantService extends ServiceBase {
     'status',
     'googleMapUrl',
     'menus',
+    'inheritParentRestaurantMenus',
   );
 
   constructor() {
@@ -65,6 +66,7 @@ export default class RestaurantService extends ServiceBase {
     ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
     ServiceBase.addEqualityQuery(conditions, query, 'googleMapUrl', 'googleMapUrl');
     ServiceBase.addLinkQuery(conditions, query, 'menu', 'menus', Menu);
+    ServiceBase.addEqualityQuery(conditions, query, 'inheritParentRestaurantMenus', 'inheritParentRestaurantMenus');
 
     return query;
   };
