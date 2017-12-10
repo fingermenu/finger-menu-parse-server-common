@@ -16,34 +16,35 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MyMealService = function (_ServiceBase) {
-  _inherits(MyMealService, _ServiceBase);
+var MenuItemService = function (_ServiceBase) {
+  _inherits(MenuItemService, _ServiceBase);
 
-  function MyMealService() {
-    _classCallCheck(this, MyMealService);
+  function MenuItemService() {
+    _classCallCheck(this, MenuItemService);
 
-    return _possibleConstructorReturn(this, (MyMealService.__proto__ || Object.getPrototypeOf(MyMealService)).call(this, _schema.MyMeal, MyMealService.buildSearchQuery, MyMealService.buildIncludeQuery, 'my meal'));
+    return _possibleConstructorReturn(this, (MenuItemService.__proto__ || Object.getPrototypeOf(MenuItemService)).call(this, _schema.MenuItem, MenuItemService.buildSearchQuery, MenuItemService.buildIncludeQuery, 'menu item'));
   }
 
-  return MyMealService;
+  return MenuItemService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-MyMealService.fields = _immutable.List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser');
+MenuItemService.fields = _immutable.List.of('name', 'description', 'menuItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
 
-MyMealService.buildIncludeQuery = function (query, criteria) {
+MenuItemService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tags');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
   return query;
 };
 
-MyMealService.buildSearchQuery = function (criteria) {
-  var queryWithoutIncludes = _microBusinessParseServerCommon.ParseWrapperService.createQuery(_schema.MyMeal, criteria);
-  var query = MyMealService.buildIncludeQuery(queryWithoutIncludes, criteria);
+MenuItemService.buildSearchQuery = function (criteria) {
+  var queryWithoutIncludes = _microBusinessParseServerCommon.ParseWrapperService.createQuery(_schema.MenuItem, criteria);
+  var query = MenuItemService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
   if (!criteria.has('conditions')) {
     return query;
@@ -51,7 +52,7 @@ MyMealService.buildSearchQuery = function (criteria) {
 
   var conditions = criteria.get('conditions');
 
-  MyMealService.fields.forEach(function (field) {
+  MenuItemService.fields.forEach(function (field) {
     _microBusinessParseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
@@ -61,8 +62,9 @@ MyMealService.buildSearchQuery = function (criteria) {
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+  _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
   return query;
 };
 
-exports.default = MyMealService;
+exports.default = MenuItemService;

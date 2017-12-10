@@ -22,44 +22,45 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MyMeal = function (_BaseObject) {
-  _inherits(MyMeal, _BaseObject);
+var MenuItem = function (_BaseObject) {
+  _inherits(MenuItem, _BaseObject);
 
-  function MyMeal(object) {
-    _classCallCheck(this, MyMeal);
+  function MenuItem(object) {
+    _classCallCheck(this, MenuItem);
 
-    var _this = _possibleConstructorReturn(this, (MyMeal.__proto__ || Object.getPrototypeOf(MyMeal)).call(this, object, 'MyMeal'));
+    var _this = _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).call(this, object, 'MenuItem'));
 
     _initialiseProps.call(_this);
 
     return _this;
   }
 
-  return MyMeal;
+  return MenuItem;
 }(_microBusinessParseServerCommon.BaseObject);
 
-MyMeal.spawn = function (info) {
-  var object = new MyMeal();
+MenuItem.spawn = function (info) {
+  var object = new MenuItem();
 
-  MyMeal.updateInfoInternal(object, info);
+  MenuItem.updateInfoInternal(object, info);
 
   return object;
 };
 
-MyMeal.updateInfoInternal = function (object, info) {
+MenuItem.updateInfoInternal = function (object, info) {
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'description');
-  object.set('mealPageUrl', info.get('mealPageUrl'));
+  object.set('menuItemPageUrl', info.get('menuItemPageUrl'));
   object.set('imageUrl', info.get('imageUrl'));
   _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
+  _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.updateInfo = function (info) {
-    MyMeal.updateInfoInternal(_this2.getObject(), info);
+    MenuItem.updateInfoInternal(_this2.getObject(), info);
 
     return _this2;
   };
@@ -71,21 +72,26 @@ var _initialiseProps = function _initialiseProps() {
       return new _Tag2.default(tag).getInfo();
     }) : undefined;
     var ownedByUser = object.get('ownedByUser');
+    var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
       name: object.get('name'),
       description: object.get('description'),
-      mealPageUrl: object.get('mealPageUrl'),
+      menuItemPageUrl: object.get('menuItemPageUrl'),
       imageUrl: object.get('imageUrl'),
       tags: tags,
       tagIds: tags ? tags.map(function (tag) {
         return tag.get('id');
       }) : (0, _immutable.List)(),
       ownedByUser: ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined
+      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+      maintainedByUsers: maintainedByUsers,
+      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
+        return maintainedByUser.id;
+      }) : (0, _immutable.List)()
     });
   };
 };
 
-exports.default = MyMeal;
+exports.default = MenuItem;

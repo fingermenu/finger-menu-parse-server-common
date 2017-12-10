@@ -1,5 +1,5 @@
 // @flow
 
-export MyMealService from './MyMealService';
+export MenuItemService from './MenuItemService';
 export RestaurantService from './RestaurantService';
 export TagService from './TagService';

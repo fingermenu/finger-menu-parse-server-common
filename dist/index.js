@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _schema = require('./schema');
 
-Object.defineProperty(exports, 'MyMeal', {
+Object.defineProperty(exports, 'MenuItem', {
   enumerable: true,
   get: function get() {
-    return _schema.MyMeal;
+    return _schema.MenuItem;
   }
 });
 Object.defineProperty(exports, 'Restaurant', {
@@ -27,10 +27,10 @@ Object.defineProperty(exports, 'Tag', {
 
 var _services = require('./services');
 
-Object.defineProperty(exports, 'MyMealService', {
+Object.defineProperty(exports, 'MenuItemService', {
   enumerable: true,
   get: function get() {
-    return _services.MyMealService;
+    return _services.MenuItemService;
   }
 });
 Object.defineProperty(exports, 'RestaurantService', {

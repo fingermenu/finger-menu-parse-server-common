@@ -1,4 +1,4 @@
 // @flow
 
-export { MyMeal, Restaurant, Tag } from './schema';
-export { MyMealService, RestaurantService, TagService } from './services';
+export { MenuItem, Restaurant, Tag } from './schema';
+export { MenuItemService, RestaurantService, TagService } from './services';

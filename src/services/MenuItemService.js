@@ -2,13 +2,13 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-common';
-import { MyMeal, Tag } from '../schema';
+import { MenuItem, Tag } from '../schema';
 
-export default class MyMealService extends ServiceBase {
-  static fields = List.of('name', 'description', 'mealPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
+export default class MenuItemService extends ServiceBase {
+  static fields = List.of('name', 'description', 'menuItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
-    super(MyMeal, MyMealService.buildSearchQuery, MyMealService.buildIncludeQuery, 'my meal');
+    super(MenuItem, MenuItemService.buildSearchQuery, MenuItemService.buildIncludeQuery, 'menu item');
   }
 
   static buildIncludeQuery = (query, criteria) => {
@@ -24,8 +24,8 @@ export default class MyMealService extends ServiceBase {
   };
 
   static buildSearchQuery = (criteria) => {
-    const queryWithoutIncludes = ParseWrapperService.createQuery(MyMeal, criteria);
-    const query = MyMealService.buildIncludeQuery(queryWithoutIncludes, criteria);
+    const queryWithoutIncludes = ParseWrapperService.createQuery(MenuItem, criteria);
+    const query = MenuItemService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
     if (!criteria.has('conditions')) {
       return query;
@@ -33,7 +33,7 @@ export default class MyMealService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    MyMealService.fields.forEach((field) => {
+    MenuItemService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');

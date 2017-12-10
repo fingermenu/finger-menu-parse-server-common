@@ -4,11 +4,11 @@ import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from 'micro-business-parse-server-common';
 import Tag from './Tag';
 
-export default class MyMeal extends BaseObject {
+export default class MenuItem extends BaseObject {
   static spawn = (info) => {
-    const object = new MyMeal();
+    const object = new MenuItem();
 
-    MyMeal.updateInfoInternal(object, info);
+    MenuItem.updateInfoInternal(object, info);
 
     return object;
   };
@@ -16,7 +16,7 @@ export default class MyMeal extends BaseObject {
   static updateInfoInternal = (object, info) => {
     BaseObject.createStringColumn(object, info, 'name');
     BaseObject.createStringColumn(object, info, 'description');
-    object.set('mealPageUrl', info.get('mealPageUrl'));
+    object.set('menuItemPageUrl', info.get('menuItemPageUrl'));
     object.set('imageUrl', info.get('imageUrl'));
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
@@ -24,11 +24,11 @@ export default class MyMeal extends BaseObject {
   };
 
   constructor(object) {
-    super(object, 'MyMeal');
+    super(object, 'MenuItem');
   }
 
   updateInfo = (info) => {
-    MyMeal.updateInfoInternal(this.getObject(), info);
+    MenuItem.updateInfoInternal(this.getObject(), info);
 
     return this;
   };
@@ -44,7 +44,7 @@ export default class MyMeal extends BaseObject {
       id: this.getId(),
       name: object.get('name'),
       description: object.get('description'),
-      mealPageUrl: object.get('mealPageUrl'),
+      menuItemPageUrl: object.get('menuItemPageUrl'),
       imageUrl: object.get('imageUrl'),
       tags,
       tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
