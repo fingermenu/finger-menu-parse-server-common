@@ -16,35 +16,36 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var RestaurantService = function (_ServiceBase) {
-  _inherits(RestaurantService, _ServiceBase);
+var MenuService = function (_ServiceBase) {
+  _inherits(MenuService, _ServiceBase);
 
-  function RestaurantService() {
-    _classCallCheck(this, RestaurantService);
+  function MenuService() {
+    _classCallCheck(this, MenuService);
 
-    return _possibleConstructorReturn(this, (RestaurantService.__proto__ || Object.getPrototypeOf(RestaurantService)).call(this, _schema.Restaurant, RestaurantService.buildSearchQuery, RestaurantService.buildIncludeQuery, 'restaurant'));
+    return _possibleConstructorReturn(this, (MenuService.__proto__ || Object.getPrototypeOf(MenuService)).call(this, _schema.Menu, MenuService.buildSearchQuery, MenuService.buildIncludeQuery, 'menu'));
   }
 
-  return RestaurantService;
+  return MenuService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-RestaurantService.fields = _immutable.List.of('key', 'name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl');
+MenuService.fields = _immutable.List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItems', 'tags', 'ownedByUser', 'maintainedByUsers');
 
-RestaurantService.buildIncludeQuery = function (query, criteria) {
+MenuService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
-  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'parentRestaurant');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItems');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tags');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
   return query;
 };
 
-RestaurantService.buildSearchQuery = function (criteria) {
-  var queryWithoutIncludes = _microBusinessParseServerCommon.ParseWrapperService.createQuery(_schema.Restaurant, criteria);
-  var query = RestaurantService.buildIncludeQuery(queryWithoutIncludes, criteria);
+MenuService.buildSearchQuery = function (criteria) {
+  var queryWithoutIncludes = _microBusinessParseServerCommon.ParseWrapperService.createQuery(_schema.Menu, criteria);
+  var query = MenuService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
   if (!criteria.has('conditions')) {
     return query;
@@ -52,23 +53,19 @@ RestaurantService.buildSearchQuery = function (criteria) {
 
   var conditions = criteria.get('conditions');
 
-  RestaurantService.fields.forEach(function (field) {
+  MenuService.fields.forEach(function (field) {
     _microBusinessParseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'key', 'key');
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
+  _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
+  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'menuPageUrl', 'menuPageUrl');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');
-  _microBusinessParseServerCommon.ServiceBase.addGeoLocationQuery(conditions, query, 'geoLocation', 'geoLocation');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
-  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'parentRestaurant', 'parentRestaurant', _schema.Restaurant);
+  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItems', _schema.MenuItem);
+  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'googleMapUrl', 'googleMapUrl');
 
   return query;
 };
 
-exports.default = RestaurantService;
+exports.default = MenuService;

@@ -57,8 +57,7 @@ MenuItemService.buildSearchQuery = function (criteria) {
   });
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'mealPageUrl', 'mealPageUrl');
-  _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'mealPageUrl', 'mealPageUrl');
+  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'menuItemPageUrl', 'menuItemPageUrl');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');

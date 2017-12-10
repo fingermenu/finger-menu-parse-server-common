@@ -6,6 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _schema = require('./schema');
 
+Object.defineProperty(exports, 'Menu', {
+  enumerable: true,
+  get: function get() {
+    return _schema.Menu;
+  }
+});
 Object.defineProperty(exports, 'MenuItem', {
   enumerable: true,
   get: function get() {
@@ -27,6 +33,12 @@ Object.defineProperty(exports, 'Tag', {
 
 var _services = require('./services');
 
+Object.defineProperty(exports, 'MenuService', {
+  enumerable: true,
+  get: function get() {
+    return _services.MenuService;
+  }
+});
 Object.defineProperty(exports, 'MenuItemService', {
   enumerable: true,
   get: function get() {

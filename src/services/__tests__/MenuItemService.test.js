@@ -228,7 +228,6 @@ describe('searchAll', () => {
     const {
       menuItem: expectedMenuItem,
       tags: expectedTags,
-
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createMenuItemInfo();

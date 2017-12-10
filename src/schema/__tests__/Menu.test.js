@@ -4,48 +4,57 @@ import Chance from 'chance';
 import Immutable, { Map, Range } from 'immutable';
 import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
-import { MenuItem } from '../';
+import { Menu } from '../';
 import createTags from '../../services/__tests__/TagService.test';
+import createMenuItems from '../../services/__tests__/MenuItemService.test';
 
 const chance = new Chance();
 
-export const createMenuItemInfo = async () => {
+export const createMenuInfo = async () => {
   const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
   const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
     .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
     .toArray()));
   const tags = await createTags(chance.integer({ min: 1, max: 3 }));
-  const menuItem = Map({
+  const menuItems = await createMenuItems(chance.integer({ min: 1, max: 3 }));
+  const menu = Map({
     name: uuid(),
     description: uuid(),
-    menuItemPageUrl: uuid(),
+    menuPageUrl: uuid(),
     imageUrl: uuid(),
     tagIds: tags.map(tag => tag.get('id')),
+    menuItemIds: menuItems.map(menuItem => menuItem.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
-    menuItem,
+    menu,
+    menuItems,
     tags,
     ownedByUser,
     maintainedByUsers,
   };
 };
 
-export const createMenuItem = async object => MenuItem.spawn(object || (await createMenuItemInfo()).menuItem);
+export const createMenu = async object => Menu.spawn(object || (await createMenuInfo()).menu);
 
-export const expectMenuItem = (object, expectedObject, { menuItemId, expectedTags } = {}) => {
+export const expectMenu = (object, expectedObject, { menuId, expectedMenuItems, expectedTags } = {}) => {
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('description')).toBe(expectedObject.get('description'));
-  expect(object.get('menuItemPageUrl')).toBe(expectedObject.get('menuItemPageUrl'));
+  expect(object.get('menuPageUrl')).toBe(expectedObject.get('menuPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
+  expect(object.get('menuItemIds')).toEqual(expectedObject.get('menuItemIds'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
-  if (menuItemId) {
-    expect(object.get('id')).toBe(menuItemId);
+  if (menuId) {
+    expect(object.get('id')).toBe(menuId);
+  }
+
+  if (expectedMenuItems) {
+    expect(object.get('menuItemIds')).toEqual(expectedMenuItems.map(_ => _.get('id')));
   }
 
   if (expectedTags) {
@@ -55,50 +64,50 @@ export const expectMenuItem = (object, expectedObject, { menuItemId, expectedTag
 
 describe('constructor', () => {
   test('should set class name', async () => {
-    expect((await createMenuItem()).className).toBe('MenuItem');
+    expect((await createMenu()).className).toBe('Menu');
   });
 });
 
 describe('static public methods', () => {
   test('spawn should set provided info', async () => {
-    const { menuItem } = await createMenuItemInfo();
-    const object = await createMenuItem(menuItem);
+    const { menu } = await createMenuInfo();
+    const object = await createMenu(menu);
     const info = object.getInfo();
 
-    expectMenuItem(info, menuItem);
+    expectMenu(info, menu);
   });
 });
 
 describe('public methods', () => {
   test('getObject should return provided object', async () => {
-    const object = await createMenuItem();
+    const object = await createMenu();
 
-    expect(new MenuItem(object).getObject()).toBe(object);
+    expect(new Menu(object).getObject()).toBe(object);
   });
 
   test('getId should return provided object Id', async () => {
-    const object = await createMenuItem();
+    const object = await createMenu();
 
-    expect(new MenuItem(object).getId()).toBe(object.id);
+    expect(new Menu(object).getId()).toBe(object.id);
   });
 
   test('updateInfo should update object info', async () => {
-    const object = await createMenuItem();
-    const { menuItem: updatedMenuItem } = await createMenuItemInfo();
+    const object = await createMenu();
+    const { menu: updatedMenu } = await createMenuInfo();
 
-    object.updateInfo(updatedMenuItem);
+    object.updateInfo(updatedMenu);
 
     const info = object.getInfo();
 
-    expectMenuItem(info, updatedMenuItem);
+    expectMenu(info, updatedMenu);
   });
 
   test('getInfo should return provided info', async () => {
-    const { menuItem } = await createMenuItemInfo();
-    const object = await createMenuItem(menuItem);
+    const { menu } = await createMenuInfo();
+    const object = await createMenu(menu);
     const info = object.getInfo();
 
     expect(info.get('id')).toBe(object.getId());
-    expectMenuItem(info, menuItem);
+    expectMenu(info, menu);
   });
 });

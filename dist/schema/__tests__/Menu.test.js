@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.expectMenuItem = exports.createMenuItem = exports.createMenuItemInfo = undefined;
+exports.expectMenu = exports.createMenu = exports.createMenuInfo = undefined;
 
 var _chance = require('chance');
 
@@ -25,15 +25,19 @@ var _TagService = require('../../services/__tests__/TagService.test');
 
 var _TagService2 = _interopRequireDefault(_TagService);
 
+var _MenuItemService = require('../../services/__tests__/MenuItemService.test');
+
+var _MenuItemService2 = _interopRequireDefault(_MenuItemService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var chance = new _chance2.default();
 
-var createMenuItemInfo = exports.createMenuItemInfo = function () {
+var createMenuInfo = exports.createMenuInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var ownedByUser, maintainedByUsers, tags, menuItem;
+    var ownedByUser, maintainedByUsers, tags, menuItems, menu;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -57,13 +61,21 @@ var createMenuItemInfo = exports.createMenuItemInfo = function () {
 
           case 10:
             tags = _context.sent;
-            menuItem = (0, _immutable.Map)({
+            _context.next = 13;
+            return (0, _MenuItemService2.default)(chance.integer({ min: 1, max: 3 }));
+
+          case 13:
+            menuItems = _context.sent;
+            menu = (0, _immutable.Map)({
               name: (0, _v2.default)(),
               description: (0, _v2.default)(),
-              menuItemPageUrl: (0, _v2.default)(),
+              menuPageUrl: (0, _v2.default)(),
               imageUrl: (0, _v2.default)(),
               tagIds: tags.map(function (tag) {
                 return tag.get('id');
+              }),
+              menuItemIds: menuItems.map(function (menuItem) {
+                return menuItem.get('id');
               }),
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
@@ -71,13 +83,14 @@ var createMenuItemInfo = exports.createMenuItemInfo = function () {
               })
             });
             return _context.abrupt('return', {
-              menuItem: menuItem,
+              menu: menu,
+              menuItems: menuItems,
               tags: tags,
               ownedByUser: ownedByUser,
               maintainedByUsers: maintainedByUsers
             });
 
-          case 13:
+          case 16:
           case 'end':
             return _context.stop();
         }
@@ -85,18 +98,18 @@ var createMenuItemInfo = exports.createMenuItemInfo = function () {
     }, _callee, undefined);
   }));
 
-  return function createMenuItemInfo() {
+  return function createMenuInfo() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createMenuItem = exports.createMenuItem = function () {
+var createMenu = exports.createMenu = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _2.MenuItem;
+            _context2.t0 = _2.Menu;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -105,10 +118,10 @@ var createMenuItem = exports.createMenuItem = function () {
             }
 
             _context2.next = 5;
-            return createMenuItemInfo();
+            return createMenuInfo();
 
           case 5:
-            _context2.t1 = _context2.sent.menuItem;
+            _context2.t1 = _context2.sent.menu;
 
           case 6:
             _context2.t2 = _context2.t1;
@@ -122,26 +135,34 @@ var createMenuItem = exports.createMenuItem = function () {
     }, _callee2, undefined);
   }));
 
-  return function createMenuItem(_x) {
+  return function createMenu(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var expectMenuItem = exports.expectMenuItem = function expectMenuItem(object, expectedObject) {
+var expectMenu = exports.expectMenu = function expectMenu(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      menuItemId = _ref3.menuItemId,
+      menuId = _ref3.menuId,
+      expectedMenuItems = _ref3.expectedMenuItems,
       expectedTags = _ref3.expectedTags;
 
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('description')).toBe(expectedObject.get('description'));
-  expect(object.get('menuItemPageUrl')).toBe(expectedObject.get('menuItemPageUrl'));
+  expect(object.get('menuPageUrl')).toBe(expectedObject.get('menuPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
+  expect(object.get('menuItemIds')).toEqual(expectedObject.get('menuItemIds'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
-  if (menuItemId) {
-    expect(object.get('id')).toBe(menuItemId);
+  if (menuId) {
+    expect(object.get('id')).toBe(menuId);
+  }
+
+  if (expectedMenuItems) {
+    expect(object.get('menuItemIds')).toEqual(expectedMenuItems.map(function (_) {
+      return _.get('id');
+    }));
   }
 
   if (expectedTags) {
@@ -159,11 +180,11 @@ describe('constructor', function () {
           case 0:
             _context3.t0 = expect;
             _context3.next = 3;
-            return createMenuItem();
+            return createMenu();
 
           case 3:
             _context3.t1 = _context3.sent.className;
-            (0, _context3.t0)(_context3.t1).toBe('MenuItem');
+            (0, _context3.t0)(_context3.t1).toBe('Menu');
 
           case 5:
           case 'end':
@@ -176,27 +197,27 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, menuItem, object, info;
+    var _ref6, menu, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return createMenuItemInfo();
+            return createMenuInfo();
 
           case 2:
             _ref6 = _context4.sent;
-            menuItem = _ref6.menuItem;
+            menu = _ref6.menu;
             _context4.next = 6;
-            return createMenuItem(menuItem);
+            return createMenu(menu);
 
           case 6:
             object = _context4.sent;
             info = object.getInfo();
 
 
-            expectMenuItem(info, menuItem);
+            expectMenu(info, menu);
 
           case 9:
           case 'end':
@@ -215,13 +236,13 @@ describe('public methods', function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return createMenuItem();
+            return createMenu();
 
           case 2:
             object = _context5.sent;
 
 
-            expect(new _2.MenuItem(object).getObject()).toBe(object);
+            expect(new _2.Menu(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -238,13 +259,13 @@ describe('public methods', function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return createMenuItem();
+            return createMenu();
 
           case 2:
             object = _context6.sent;
 
 
-            expect(new _2.MenuItem(object).getId()).toBe(object.id);
+            expect(new _2.Menu(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -255,31 +276,31 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedMenuItem, info;
+    var object, _ref10, updatedMenu, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return createMenuItem();
+            return createMenu();
 
           case 2:
             object = _context7.sent;
             _context7.next = 5;
-            return createMenuItemInfo();
+            return createMenuInfo();
 
           case 5:
             _ref10 = _context7.sent;
-            updatedMenuItem = _ref10.menuItem;
+            updatedMenu = _ref10.menu;
 
 
-            object.updateInfo(updatedMenuItem);
+            object.updateInfo(updatedMenu);
 
             info = object.getInfo();
 
 
-            expectMenuItem(info, updatedMenuItem);
+            expectMenu(info, updatedMenu);
 
           case 10:
           case 'end':
@@ -290,20 +311,20 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, menuItem, object, info;
+    var _ref12, menu, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return createMenuItemInfo();
+            return createMenuInfo();
 
           case 2:
             _ref12 = _context8.sent;
-            menuItem = _ref12.menuItem;
+            menu = _ref12.menu;
             _context8.next = 6;
-            return createMenuItem(menuItem);
+            return createMenu(menu);
 
           case 6:
             object = _context8.sent;
@@ -311,7 +332,7 @@ describe('public methods', function () {
 
 
             expect(info.get('id')).toBe(object.getId());
-            expectMenuItem(info, menuItem);
+            expectMenu(info, menu);
 
           case 10:
           case 'end':
