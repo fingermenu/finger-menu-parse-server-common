@@ -28,14 +28,14 @@ var MenuService = function (_ServiceBase) {
   return MenuService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-MenuService.fields = _immutable.List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItems', 'tags', 'ownedByUser', 'maintainedByUsers');
+MenuService.fields = _immutable.List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
 
 MenuService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
-  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItems');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItemPrices');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tags');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
@@ -60,7 +60,7 @@ MenuService.buildSearchQuery = function (criteria) {
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'menuPageUrl', 'menuPageUrl');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
-  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItems', _schema.MenuItem);
+  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItemPrice', 'menuItemPrices', _schema.MenuItemPrice);
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');

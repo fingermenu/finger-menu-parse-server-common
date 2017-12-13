@@ -6,7 +6,7 @@ import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
 import { Menu } from '../';
 import createTags from '../../services/__tests__/TagService.test';
-import createMenuItems from '../../services/__tests__/MenuItemService.test';
+import createMenuItemPrices from '../../services/__tests__/MenuItemPriceService.test';
 
 const chance = new Chance();
 
@@ -16,21 +16,21 @@ export const createMenuInfo = async () => {
     .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
     .toArray()));
   const tags = await createTags(chance.integer({ min: 1, max: 3 }));
-  const menuItems = await createMenuItems(chance.integer({ min: 1, max: 3 }));
+  const menuItemPrices = await createMenuItemPrices(chance.integer({ min: 1, max: 3 }));
   const menu = Map({
     name: uuid(),
     description: uuid(),
     menuPageUrl: uuid(),
     imageUrl: uuid(),
     tagIds: tags.map(tag => tag.get('id')),
-    menuItemIds: menuItems.map(menuItem => menuItem.get('id')),
+    menuItemPriceIds: menuItemPrices.map(menuItemPrice => menuItemPrice.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
     menu,
-    menuItems,
+    menuItemPrices,
     tags,
     ownedByUser,
     maintainedByUsers,
@@ -39,12 +39,12 @@ export const createMenuInfo = async () => {
 
 export const createMenu = async object => Menu.spawn(object || (await createMenuInfo()).menu);
 
-export const expectMenu = (object, expectedObject, { menuId, expectedMenuItems, expectedTags } = {}) => {
+export const expectMenu = (object, expectedObject, { menuId, expectedMenuItemPrices, expectedTags } = {}) => {
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('description')).toBe(expectedObject.get('description'));
   expect(object.get('menuPageUrl')).toBe(expectedObject.get('menuPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
-  expect(object.get('menuItemIds')).toEqual(expectedObject.get('menuItemIds'));
+  expect(object.get('menuItemPriceIds')).toEqual(expectedObject.get('menuItemPriceIds'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
@@ -53,8 +53,8 @@ export const expectMenu = (object, expectedObject, { menuId, expectedMenuItems, 
     expect(object.get('id')).toBe(menuId);
   }
 
-  if (expectedMenuItems) {
-    expect(object.get('menuItemIds')).toEqual(expectedMenuItems.map(_ => _.get('id')));
+  if (expectedMenuItemPrices) {
+    expect(object.get('menuItemPriceIds')).toEqual(expectedMenuItemPrices.map(_ => _.get('id')));
   }
 
   if (expectedTags) {

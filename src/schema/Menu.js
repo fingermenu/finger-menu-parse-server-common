@@ -2,7 +2,7 @@
 
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from 'micro-business-parse-server-common';
-import MenuItem from './MenuItem';
+import MenuItemPrice from './MenuItemPrice';
 import Tag from './Tag';
 
 export default class Menu extends BaseObject {
@@ -19,7 +19,7 @@ export default class Menu extends BaseObject {
     BaseObject.createStringColumn(object, info, 'description');
     object.set('menuPageUrl', info.get('menuPageUrl'));
     object.set('imageUrl', info.get('imageUrl'));
-    BaseObject.createArrayPointer(object, info, 'menuItem', MenuItem);
+    BaseObject.createArrayPointer(object, info, 'menuItemPrice', MenuItemPrice);
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
@@ -37,8 +37,10 @@ export default class Menu extends BaseObject {
 
   getInfo = () => {
     const object = this.getObject();
-    const menuItemObjects = object.get('menuItems');
-    const menuItems = menuItemObjects ? Immutable.fromJS(menuItemObjects).map(menuItem => new MenuItem(menuItem).getInfo()) : undefined;
+    const menuItemPriceObjects = object.get('menuItemPrices');
+    const menuItemPrices = menuItemPriceObjects
+      ? Immutable.fromJS(menuItemPriceObjects).map(menuItemPrice => new MenuItemPrice(menuItemPrice).getInfo())
+      : undefined;
     const tagObjects = object.get('tags');
     const tags = tagObjects ? Immutable.fromJS(tagObjects).map(tag => new Tag(tag).getInfo()) : undefined;
     const ownedByUser = object.get('ownedByUser');
@@ -50,8 +52,8 @@ export default class Menu extends BaseObject {
       description: object.get('description'),
       menuPageUrl: object.get('menuPageUrl'),
       imageUrl: object.get('imageUrl'),
-      menuItems,
-      menuItemIds: menuItems ? menuItems.map(menuItem => menuItem.get('id')) : List(),
+      menuItemPrices,
+      menuItemPriceIds: menuItemPrices ? menuItemPrices.map(menuItemPrice => menuItemPrice.get('id')) : List(),
       tags,
       tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
       ownedByUser,

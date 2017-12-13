@@ -12,8 +12,8 @@ const menuService = new MenuService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItems', 'tags', 'ownedByUser', 'maintainedByUsers'),
-    include_menuItems: true,
+    fields: List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers'),
+    include_menuItemPrices: true,
     include_tags: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
@@ -26,7 +26,7 @@ const createCriteria = menu =>
       description: menu ? menu.get('description') : uuid(),
       menuPageUrl: menu ? menu.get('menuPageUrl') : uuid(),
       imageUrl: menu ? menu.get('imageUrl') : uuid(),
-      menuItemIds: menu ? menu.get('menuItemIds') : List.of(uuid(), uuid()),
+      menuItemPriceIds: menu ? menu.get('menuItemPriceIds') : List.of(uuid(), uuid()),
       tagIds: menu ? menu.get('tagIds') : List.of(uuid(), uuid()),
       ownedByUserId: menu ? menu.get('ownedByUserId') : uuid(),
       maintainedByUserIds: menu ? menu.get('maintainedByUserIds') : List.of(uuid(), uuid()),
@@ -91,7 +91,7 @@ describe('read', () => {
   test('should read the existing menu', async () => {
     const {
       menu: expectedMenu,
-      menuItems: expectedMenuItems,
+      menuItemPrices: expectedMenuItemPrices,
       tags: expectedTags,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
@@ -101,7 +101,7 @@ describe('read', () => {
 
     expectMenu(menu, expectedMenu, {
       menuId,
-      expectedMenuItems,
+      expectedMenuItemPrices,
       expectedTags,
       expectedOwnedByUser,
       expectedMaintainedByUsers,
@@ -133,7 +133,7 @@ describe('update', () => {
   test('should update the existing menu', async () => {
     const {
       menu: expectedMenu,
-      menuItems: expectedMenuItems,
+      menuItemPrices: expectedMenuItemPrices,
       tags: expectedTags,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
@@ -146,7 +146,7 @@ describe('update', () => {
 
     expectMenu(menu, expectedMenu, {
       menuId,
-      expectedMenuItems,
+      expectedMenuItemPrices,
       expectedTags,
       expectedOwnedByUser,
       expectedMaintainedByUsers,
@@ -187,7 +187,7 @@ describe('search', () => {
   test('should return the menu matches the criteria', async () => {
     const {
       menu: expectedMenu,
-      menuItems: expectedMenuItems,
+      menuItemPrices: expectedMenuItemPrices,
       tags: expectedTags,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
@@ -202,7 +202,7 @@ describe('search', () => {
       expect(results.find(_ => _.localeCompare(menu.get('id')) === 0)).toBeDefined();
       expectMenu(menu, expectedMenu, {
         menuId: menu.get('id'),
-        expectedMenuItems,
+        expectedMenuItemPrices,
         expectedTags,
         expectedOwnedByUser,
         expectedMaintainedByUsers,
@@ -232,7 +232,7 @@ describe('searchAll', () => {
   test('should return the menu matches the criteria', async () => {
     const {
       menu: expectedMenu,
-      menuItems: expectedMenuItems,
+      menuItemPrices: expectedMenuItemPrices,
       tags: expectedTags,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
@@ -259,7 +259,7 @@ describe('searchAll', () => {
       expect(results.find(_ => _.localeCompare(menu.get('id')) === 0)).toBeDefined();
       expectMenu(menu, expectedMenu, {
         menuId: menu.get('id'),
-        expectedMenuItems,
+        expectedMenuItemPrices,
         expectedTags,
         expectedOwnedByUser,
         expectedMaintainedByUsers,

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.expectMenu = exports.createMenu = exports.createMenuInfo = undefined;
+exports.expectMenuItemPrice = exports.createMenuItemPrice = exports.createMenuItemPriceInfo = undefined;
 
 var _chance = require('chance');
 
@@ -11,23 +11,17 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
-
 var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
 
 var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
 
-var _2 = require('../');
+var _ = require('../');
 
-var _TagService = require('../../services/__tests__/TagService.test');
+var _MenuItemService = require('../../services/__tests__/MenuItemService.test');
 
-var _TagService2 = _interopRequireDefault(_TagService);
-
-var _MenuItemPriceService = require('../../services/__tests__/MenuItemPriceService.test');
-
-var _MenuItemPriceService2 = _interopRequireDefault(_MenuItemPriceService);
+var _MenuItemService2 = _interopRequireDefault(_MenuItemService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,62 +29,45 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var chance = new _chance2.default();
 
-var createMenuInfo = exports.createMenuInfo = function () {
+var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var ownedByUser, maintainedByUsers, tags, menuItemPrices, menu;
+    var menuItem, addedByUser, removedByUser, menuItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return (0, _MenuItemService2.default)(chance.integer({ min: 1, max: 1 }));
 
           case 2:
-            ownedByUser = _context.sent;
-            _context.t0 = _immutable2.default;
-            _context.next = 6;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
-            }).toArray());
+            menuItem = _context.sent.first();
+            _context.next = 5;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
-          case 6:
-            _context.t1 = _context.sent;
-            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
-            _context.next = 10;
-            return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
+          case 5:
+            addedByUser = _context.sent;
+            _context.next = 8;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
-          case 10:
-            tags = _context.sent;
-            _context.next = 13;
-            return (0, _MenuItemPriceService2.default)(chance.integer({ min: 1, max: 3 }));
-
-          case 13:
-            menuItemPrices = _context.sent;
-            menu = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
-              description: (0, _v2.default)(),
-              menuPageUrl: (0, _v2.default)(),
-              imageUrl: (0, _v2.default)(),
-              tagIds: tags.map(function (tag) {
-                return tag.get('id');
-              }),
-              menuItemPriceIds: menuItemPrices.map(function (menuItemPrice) {
-                return menuItemPrice.get('id');
-              }),
-              ownedByUserId: ownedByUser.id,
-              maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
-                return maintainedByUser.id;
-              })
+          case 8:
+            removedByUser = _context.sent;
+            menuItemPrice = (0, _immutable.Map)({
+              currentPrice: chance.floating({ min: 0, max: 1000 }),
+              wasPrice: chance.floating({ min: 0, max: 1000 }),
+              validFrom: new Date(),
+              validUntil: new Date(),
+              menuItemId: menuItem.get('id'),
+              addedByUserId: addedByUser.id,
+              removedByUserId: removedByUser.id
             });
             return _context.abrupt('return', {
-              menu: menu,
-              menuItemPrices: menuItemPrices,
-              tags: tags,
-              ownedByUser: ownedByUser,
-              maintainedByUsers: maintainedByUsers
+              menuItemPrice: menuItemPrice,
+              menuItem: menuItem,
+              addedByUser: addedByUser,
+              removedByUser: removedByUser
             });
 
-          case 16:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -98,18 +75,18 @@ var createMenuInfo = exports.createMenuInfo = function () {
     }, _callee, undefined);
   }));
 
-  return function createMenuInfo() {
+  return function createMenuItemPriceInfo() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createMenu = exports.createMenu = function () {
+var createMenuItemPrice = exports.createMenuItemPrice = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _2.Menu;
+            _context2.t0 = _.MenuItemPrice;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -118,10 +95,10 @@ var createMenu = exports.createMenu = function () {
             }
 
             _context2.next = 5;
-            return createMenuInfo();
+            return createMenuItemPriceInfo();
 
           case 5:
-            _context2.t1 = _context2.sent.menu;
+            _context2.t1 = _context2.sent.menuItemPrice;
 
           case 6:
             _context2.t2 = _context2.t1;
@@ -135,40 +112,30 @@ var createMenu = exports.createMenu = function () {
     }, _callee2, undefined);
   }));
 
-  return function createMenu(_x) {
+  return function createMenuItemPrice(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var expectMenu = exports.expectMenu = function expectMenu(object, expectedObject) {
+var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemPrice(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      menuId = _ref3.menuId,
-      expectedMenuItemPrices = _ref3.expectedMenuItemPrices,
-      expectedTags = _ref3.expectedTags;
+      menuItemPriceId = _ref3.menuItemPriceId,
+      expectedMenuItem = _ref3.expectedMenuItem;
 
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
-  expect(object.get('menuPageUrl')).toBe(expectedObject.get('menuPageUrl'));
-  expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
-  expect(object.get('menuItemPriceIds')).toEqual(expectedObject.get('menuItemPriceIds'));
-  expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
-  expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
-  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
+  expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
+  expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
+  expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
+  expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
+  expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
+  expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
 
-  if (menuId) {
-    expect(object.get('id')).toBe(menuId);
+  if (menuItemPriceId) {
+    expect(object.get('id')).toBe(menuItemPriceId);
   }
 
-  if (expectedMenuItemPrices) {
-    expect(object.get('menuItemPriceIds')).toEqual(expectedMenuItemPrices.map(function (_) {
-      return _.get('id');
-    }));
-  }
-
-  if (expectedTags) {
-    expect(object.get('tagIds')).toEqual(expectedTags.map(function (_) {
-      return _.get('id');
-    }));
+  if (expectedMenuItem) {
+    expect(object.get('menuItemId')).toEqual(expectedMenuItem.get('id'));
   }
 };
 
@@ -180,11 +147,11 @@ describe('constructor', function () {
           case 0:
             _context3.t0 = expect;
             _context3.next = 3;
-            return createMenu();
+            return createMenuItemPrice();
 
           case 3:
             _context3.t1 = _context3.sent.className;
-            (0, _context3.t0)(_context3.t1).toBe('Menu');
+            (0, _context3.t0)(_context3.t1).toBe('MenuItemPrice');
 
           case 5:
           case 'end':
@@ -197,27 +164,27 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, menu, object, info;
+    var _ref6, menuItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return createMenuInfo();
+            return createMenuItemPriceInfo();
 
           case 2:
             _ref6 = _context4.sent;
-            menu = _ref6.menu;
+            menuItemPrice = _ref6.menuItemPrice;
             _context4.next = 6;
-            return createMenu(menu);
+            return createMenuItemPrice(menuItemPrice);
 
           case 6:
             object = _context4.sent;
             info = object.getInfo();
 
 
-            expectMenu(info, menu);
+            expectMenuItemPrice(info, menuItemPrice);
 
           case 9:
           case 'end':
@@ -236,13 +203,13 @@ describe('public methods', function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return createMenu();
+            return createMenuItemPrice();
 
           case 2:
             object = _context5.sent;
 
 
-            expect(new _2.Menu(object).getObject()).toBe(object);
+            expect(new _.MenuItemPrice(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -259,13 +226,13 @@ describe('public methods', function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return createMenu();
+            return createMenuItemPrice();
 
           case 2:
             object = _context6.sent;
 
 
-            expect(new _2.Menu(object).getId()).toBe(object.id);
+            expect(new _.MenuItemPrice(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -276,31 +243,31 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedMenu, info;
+    var object, _ref10, updatedMenuItemPrice, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return createMenu();
+            return createMenuItemPrice();
 
           case 2:
             object = _context7.sent;
             _context7.next = 5;
-            return createMenuInfo();
+            return createMenuItemPriceInfo();
 
           case 5:
             _ref10 = _context7.sent;
-            updatedMenu = _ref10.menu;
+            updatedMenuItemPrice = _ref10.menuItemPrice;
 
 
-            object.updateInfo(updatedMenu);
+            object.updateInfo(updatedMenuItemPrice);
 
             info = object.getInfo();
 
 
-            expectMenu(info, updatedMenu);
+            expectMenuItemPrice(info, updatedMenuItemPrice);
 
           case 10:
           case 'end':
@@ -311,20 +278,20 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, menu, object, info;
+    var _ref12, menuItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return createMenuInfo();
+            return createMenuItemPriceInfo();
 
           case 2:
             _ref12 = _context8.sent;
-            menu = _ref12.menu;
+            menuItemPrice = _ref12.menuItemPrice;
             _context8.next = 6;
-            return createMenu(menu);
+            return createMenuItemPrice(menuItemPrice);
 
           case 6:
             object = _context8.sent;
@@ -332,7 +299,7 @@ describe('public methods', function () {
 
 
             expect(info.get('id')).toBe(object.getId());
-            expectMenu(info, menu);
+            expectMenuItemPrice(info, menuItemPrice);
 
           case 10:
           case 'end':

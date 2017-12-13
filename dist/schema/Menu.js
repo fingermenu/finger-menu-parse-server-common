@@ -10,9 +10,9 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
 
-var _MenuItem = require('./MenuItem');
+var _MenuItemPrice = require('./MenuItemPrice');
 
-var _MenuItem2 = _interopRequireDefault(_MenuItem);
+var _MenuItemPrice2 = _interopRequireDefault(_MenuItemPrice);
 
 var _Tag = require('./Tag');
 
@@ -55,7 +55,7 @@ Menu.updateInfoInternal = function (object, info) {
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'description');
   object.set('menuPageUrl', info.get('menuPageUrl'));
   object.set('imageUrl', info.get('imageUrl'));
-  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'menuItem', _MenuItem2.default);
+  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'menuItemPrice', _MenuItemPrice2.default);
   _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
@@ -72,9 +72,9 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getInfo = function () {
     var object = _this2.getObject();
-    var menuItemObjects = object.get('menuItems');
-    var menuItems = menuItemObjects ? _immutable2.default.fromJS(menuItemObjects).map(function (menuItem) {
-      return new _MenuItem2.default(menuItem).getInfo();
+    var menuItemPriceObjects = object.get('menuItemPrices');
+    var menuItemPrices = menuItemPriceObjects ? _immutable2.default.fromJS(menuItemPriceObjects).map(function (menuItemPrice) {
+      return new _MenuItemPrice2.default(menuItemPrice).getInfo();
     }) : undefined;
     var tagObjects = object.get('tags');
     var tags = tagObjects ? _immutable2.default.fromJS(tagObjects).map(function (tag) {
@@ -89,9 +89,9 @@ var _initialiseProps = function _initialiseProps() {
       description: object.get('description'),
       menuPageUrl: object.get('menuPageUrl'),
       imageUrl: object.get('imageUrl'),
-      menuItems: menuItems,
-      menuItemIds: menuItems ? menuItems.map(function (menuItem) {
-        return menuItem.get('id');
+      menuItemPrices: menuItemPrices,
+      menuItemPriceIds: menuItemPrices ? menuItemPrices.map(function (menuItemPrice) {
+        return menuItemPrice.get('id');
       }) : (0, _immutable.List)(),
       tags: tags,
       tagIds: tags ? tags.map(function (tag) {

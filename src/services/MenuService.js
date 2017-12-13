@@ -2,10 +2,10 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-common';
-import { Menu, MenuItem, Tag } from '../schema';
+import { Menu, MenuItemPrice, Tag } from '../schema';
 
 export default class MenuService extends ServiceBase {
-  static fields = List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItems', 'tags', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(Menu, MenuService.buildSearchQuery, MenuService.buildIncludeQuery, 'menu');
@@ -16,7 +16,7 @@ export default class MenuService extends ServiceBase {
       return query;
     }
 
-    ServiceBase.addIncludeQuery(criteria, query, 'menuItems');
+    ServiceBase.addIncludeQuery(criteria, query, 'menuItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'tags');
     ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
@@ -41,7 +41,7 @@ export default class MenuService extends ServiceBase {
     ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'menuPageUrl', 'menuPageUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
-    ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItems', MenuItem);
+    ServiceBase.addLinkQuery(conditions, query, 'menuItemPrice', 'menuItemPrices', MenuItemPrice);
     ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', Tag);
     ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
