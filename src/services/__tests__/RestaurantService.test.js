@@ -14,7 +14,6 @@ const restaurantService = new RestaurantService();
 const createCriteriaWthoutConditions = () =>
   Map({
     fields: List.of(
-      'key',
       'name',
       'websiteUrl',
       'imageUrl',
@@ -39,7 +38,6 @@ const createCriteriaWthoutConditions = () =>
 const createCriteria = restaurant =>
   Map({
     conditions: Map({
-      key: restaurant ? restaurant.get('key') : uuid(),
       name: restaurant ? restaurant.get('name') : uuid(),
       websiteUrl: restaurant ? restaurant.get('websiteUrl') : uuid(),
       imageUrl: restaurant ? restaurant.get('imageUrl') : uuid(),

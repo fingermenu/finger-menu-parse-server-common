@@ -6,7 +6,6 @@ import { Menu, Restaurant } from '../schema';
 
 export default class RestaurantService extends ServiceBase {
   static fields = List.of(
-    'key',
     'name',
     'websiteUrl',
     'imageUrl',
@@ -53,7 +52,6 @@ export default class RestaurantService extends ServiceBase {
     RestaurantService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addEqualityQuery(conditions, query, 'key', 'key');
     ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');

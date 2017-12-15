@@ -33,7 +33,7 @@ var restaurantService = new _2.RestaurantService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('key', 'name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus'),
+    fields: _immutable.List.of('name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus'),
     include_parentRestaurant: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
@@ -44,7 +44,6 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
 var createCriteria = function createCriteria(restaurant) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      key: restaurant ? restaurant.get('key') : (0, _v2.default)(),
       name: restaurant ? restaurant.get('name') : (0, _v2.default)(),
       websiteUrl: restaurant ? restaurant.get('websiteUrl') : (0, _v2.default)(),
       imageUrl: restaurant ? restaurant.get('imageUrl') : (0, _v2.default)(),

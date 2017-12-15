@@ -62,7 +62,6 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
           case 11:
             menus = _context.sent;
             restaurant = (0, _immutable.Map)({
-              key: (0, _v2.default)(),
               name: (0, _v2.default)(),
               websiteUrl: (0, _v2.default)(),
               imageUrl: (0, _v2.default)(),
@@ -146,7 +145,6 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   var _ref4 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       expectedMenus = _ref4.expectedMenus;
 
-  expect(object.get('key')).toBe(expectedObject.get('key'));
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
