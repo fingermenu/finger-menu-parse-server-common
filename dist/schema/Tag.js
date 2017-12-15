@@ -6,7 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _immutable = require('immutable');
 
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44,6 +48,8 @@ Tag.updateInfoInternal = function (object, info) {
   object.set('level', info.get('level'));
   object.set('forDisplay', info.get('forDisplay'));
   _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'parentTag', Tag);
+  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
+  _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -59,6 +65,8 @@ var _initialiseProps = function _initialiseProps() {
     var object = _this2.getObject();
     var parentTagObject = object.get('parentTag');
     var parentTag = parentTagObject ? new Tag(parentTagObject) : undefined;
+    var ownedByUser = object.get('ownedByUser');
+    var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
@@ -67,7 +75,13 @@ var _initialiseProps = function _initialiseProps() {
       level: object.get('level'),
       forDisplay: object.get('forDisplay'),
       parentTag: parentTag ? parentTag.getInfo() : undefined,
-      parentTagId: parentTag ? parentTag.getId() : undefined
+      parentTagId: parentTag ? parentTag.getId() : undefined,
+      ownedByUser: ownedByUser,
+      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+      maintainedByUsers: maintainedByUsers,
+      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
+        return maintainedByUser.id;
+      }) : (0, _immutable.List)()
     });
   };
 };

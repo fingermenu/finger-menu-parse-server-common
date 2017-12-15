@@ -12,8 +12,10 @@ const tagService = new TagService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('name', 'description', 'level', 'forDisplay', 'parentTag'),
+    fields: List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers'),
     include_parentTag: true,
+    include_ownedByUser: true,
+    include_maintainedByUsers: true,
   });
 
 const createCriteria = tag =>
@@ -24,6 +26,8 @@ const createCriteria = tag =>
       level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),
       forDisplay: tag ? tag.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
       parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined,
+      ownedByUserId: tag ? tag.get('ownedByUserId') : uuid(),
+      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : List.of(uuid(), uuid()),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -89,11 +93,14 @@ describe('read', () => {
   test('should read the existing tag', async () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
-    const { tag: expectedTag } = await createTagInfo({ parentTagId });
+    const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
     const tagId = await tagService.create(expectedTag);
     const tag = await tagService.read(tagId, createCriteriaWthoutConditions());
 
-    expectTag(tag, expectedTag);
+    expectTag(tag, expectedTag, {
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
+    });
   });
 });
 
@@ -121,14 +128,14 @@ describe('update', () => {
   test('should update the existing tag', async () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
-    const { tag: expectedTag } = await createTagInfo({ parentTagId });
+    const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
     const tagId = await tagService.create((await createTagInfo()).tag);
 
     await tagService.update(expectedTag.set('id', tagId));
 
     const tag = await tagService.read(tagId, createCriteriaWthoutConditions());
 
-    expectTag(tag, expectedTag);
+    expectTag(tag, expectedTag, { expectedOwnedByUser, expectedMaintainedByUsers });
   });
 });
 
@@ -165,7 +172,7 @@ describe('search', () => {
   test('should return the tag matches the criteria', async () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
-    const { tag: expectedTag } = await createTagInfo({ parentTagId });
+    const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => tagService.create(expectedTag))
       .toArray()));
@@ -174,7 +181,7 @@ describe('search', () => {
     expect(tags.count).toBe(results.count);
     tags.forEach((tag) => {
       expect(results.find(_ => _.localeCompare(tag.get('id')) === 0)).toBeDefined();
-      expectTag(tag, expectedTag);
+      expectTag(tag, expectedTag, { expectedOwnedByUser, expectedMaintainedByUsers });
     });
   });
 });
@@ -200,7 +207,7 @@ describe('searchAll', () => {
   test('should return the tag matches the criteria', async () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
-    const { tag: expectedTag } = await createTagInfo({ parentTagId });
+    const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => tagService.create(expectedTag))
       .toArray()));
@@ -221,7 +228,7 @@ describe('searchAll', () => {
     expect(tags.count).toBe(results.count);
     tags.forEach((tag) => {
       expect(results.find(_ => _.localeCompare(tag.get('id')) === 0)).toBeDefined();
-      expectTag(tag, expectedTag);
+      expectTag(tag, expectedTag, { expectedOwnedByUser, expectedMaintainedByUsers });
     });
   });
 });

@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-co
 import { Tag } from '../schema';
 
 export default class TagService extends ServiceBase {
-  static fields = List.of('name', 'description', 'level', 'forDisplay', 'parentTag');
+  static fields = List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
 
   constructor() {
     super(Tag, TagService.buildSearchQuery, TagService.buildIncludeQuery, 'tag');
@@ -17,6 +17,8 @@ export default class TagService extends ServiceBase {
     }
 
     ServiceBase.addIncludeQuery(criteria, query, 'parentTag');
+    ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
     return query;
   };
@@ -39,6 +41,8 @@ export default class TagService extends ServiceBase {
     ServiceBase.addNumberQuery(conditions, query, 'level', 'level');
     ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
     ServiceBase.addLinkQuery(conditions, query, 'parentTag', 'parentTag', Tag);
+    ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+    ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
     return query;
   };

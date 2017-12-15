@@ -28,7 +28,7 @@ var TagService = function (_ServiceBase) {
   return TagService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-TagService.fields = _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag');
+TagService.fields = _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
 
 TagService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -36,6 +36,8 @@ TagService.buildIncludeQuery = function (query, criteria) {
   }
 
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'parentTag');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
   return query;
 };
@@ -58,6 +60,8 @@ TagService.buildSearchQuery = function (criteria) {
   _microBusinessParseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'level', 'level');
   _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'parentTag', 'parentTag', _schema.Tag);
+  _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+  _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
   return query;
 };

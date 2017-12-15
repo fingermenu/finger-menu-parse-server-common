@@ -1,22 +1,34 @@
 // @flow
 
 import Chance from 'chance';
-import { Map } from 'immutable';
+import Immutable, { Map, Range } from 'immutable';
+import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
+import '../../../bootstrap';
 import { Tag } from '../';
 
 const chance = new Chance();
 
 export const createTagInfo = async ({ parentTagId } = {}) => {
+  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
+  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
+    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
+    .toArray()));
   const tag = Map({
     name: uuid(),
     description: uuid(),
     level: chance.integer({ min: 1, max: 1000 }),
     forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
     parentTagId,
+    ownedByUserId: ownedByUser.id,
+    maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
-  return { tag };
+  return {
+    tag,
+    ownedByUser,
+    maintainedByUsers,
+  };
 };
 
 export const createTag = async object => Tag.spawn(object || (await createTagInfo()).tag);
@@ -27,6 +39,8 @@ export const expectTag = (object, expectedObject) => {
   expect(object.get('level')).toBe(expectedObject.get('level'));
   expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
   expect(object.get('parentTagId')).toBe(expectedObject.get('parentTagId'));
+  expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
+  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 };
 
 describe('constructor', () => {

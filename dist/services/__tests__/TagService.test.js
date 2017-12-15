@@ -31,8 +31,10 @@ var tagService = new _2.TagService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag'),
-    include_parentTag: true
+    fields: _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers'),
+    include_parentTag: true,
+    include_ownedByUser: true,
+    include_maintainedByUsers: true
   });
 };
 
@@ -43,7 +45,9 @@ var createCriteria = function createCriteria(tag) {
       description: tag ? tag.get('description') : (0, _v2.default)(),
       level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),
       forDisplay: tag ? tag.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
-      parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined
+      parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined,
+      ownedByUserId: tag ? tag.get('ownedByUserId') : (0, _v2.default)(),
+      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)())
     })
   }).merge(createCriteriaWthoutConditions());
 };
@@ -261,7 +265,7 @@ describe('read', function () {
   })));
 
   test('should read the existing tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, parentTag, parentTagId, _ref11, expectedTag, tagId, tag;
+    var _ref10, parentTag, parentTagId, _ref11, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, tagId, tag;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -284,21 +288,26 @@ describe('read', function () {
           case 9:
             _ref11 = _context6.sent;
             expectedTag = _ref11.tag;
-            _context6.next = 13;
+            expectedOwnedByUser = _ref11.ownedByUser;
+            expectedMaintainedByUsers = _ref11.maintainedByUsers;
+            _context6.next = 15;
             return tagService.create(expectedTag);
 
-          case 13:
+          case 15:
             tagId = _context6.sent;
-            _context6.next = 16;
+            _context6.next = 18;
             return tagService.read(tagId, createCriteriaWthoutConditions());
 
-          case 16:
+          case 18:
             tag = _context6.sent;
 
 
-            (0, _Tag.expectTag)(tag, expectedTag);
+            (0, _Tag.expectTag)(tag, expectedTag, {
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers
+            });
 
-          case 18:
+          case 20:
           case 'end':
             return _context6.stop();
         }
@@ -397,7 +406,7 @@ describe('update', function () {
   })));
 
   test('should update the existing tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref16, parentTag, parentTagId, _ref17, expectedTag, tagId, tag;
+    var _ref16, parentTag, parentTagId, _ref17, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, tagId, tag;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -420,31 +429,33 @@ describe('update', function () {
           case 9:
             _ref17 = _context9.sent;
             expectedTag = _ref17.tag;
+            expectedOwnedByUser = _ref17.ownedByUser;
+            expectedMaintainedByUsers = _ref17.maintainedByUsers;
             _context9.t0 = tagService;
-            _context9.next = 14;
+            _context9.next = 16;
             return (0, _Tag.createTagInfo)();
 
-          case 14:
+          case 16:
             _context9.t1 = _context9.sent.tag;
-            _context9.next = 17;
+            _context9.next = 19;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 17:
+          case 19:
             tagId = _context9.sent;
-            _context9.next = 20;
+            _context9.next = 22;
             return tagService.update(expectedTag.set('id', tagId));
 
-          case 20:
-            _context9.next = 22;
+          case 22:
+            _context9.next = 24;
             return tagService.read(tagId, createCriteriaWthoutConditions());
 
-          case 22:
+          case 24:
             tag = _context9.sent;
 
 
-            (0, _Tag.expectTag)(tag, expectedTag);
+            (0, _Tag.expectTag)(tag, expectedTag, { expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers });
 
-          case 24:
+          case 26:
           case 'end':
             return _context9.stop();
         }
@@ -552,7 +563,7 @@ describe('search', function () {
   })));
 
   test('should return the tag matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref22, parentTag, parentTagId, _ref23, expectedTag, results, tags;
+    var _ref22, parentTag, parentTagId, _ref23, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, tags;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -575,8 +586,10 @@ describe('search', function () {
           case 9:
             _ref23 = _context14.sent;
             expectedTag = _ref23.tag;
+            expectedOwnedByUser = _ref23.ownedByUser;
+            expectedMaintainedByUsers = _ref23.maintainedByUsers;
             _context14.t0 = _immutable2.default;
-            _context14.next = 14;
+            _context14.next = 16;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -592,13 +605,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 14:
+          case 16:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 18;
+            _context14.next = 20;
             return tagService.search(createCriteria(expectedTag));
 
-          case 18:
+          case 20:
             tags = _context14.sent;
 
 
@@ -607,10 +620,10 @@ describe('search', function () {
               expect(results.find(function (_) {
                 return _.localeCompare(tag.get('id')) === 0;
               })).toBeDefined();
-              (0, _Tag.expectTag)(tag, expectedTag);
+              (0, _Tag.expectTag)(tag, expectedTag, { expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers });
             });
 
-          case 21:
+          case 23:
           case 'end':
             return _context14.stop();
         }
@@ -656,7 +669,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the tag matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref27, parentTag, parentTagId, _ref28, expectedTag, results, tags, result;
+    var _ref27, parentTag, parentTagId, _ref28, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, tags, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -679,8 +692,10 @@ describe('searchAll', function () {
           case 9:
             _ref28 = _context17.sent;
             expectedTag = _ref28.tag;
+            expectedOwnedByUser = _ref28.ownedByUser;
+            expectedMaintainedByUsers = _ref28.maintainedByUsers;
             _context17.t0 = _immutable2.default;
-            _context17.next = 14;
+            _context17.next = 16;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -696,42 +711,42 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 14:
+          case 16:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             tags = (0, _immutable.List)();
             result = tagService.searchAll(createCriteria(expectedTag));
-            _context17.prev = 18;
+            _context17.prev = 20;
 
             result.event.subscribe(function (info) {
               tags = tags.push(info);
             });
 
-            _context17.next = 22;
+            _context17.next = 24;
             return result.promise;
 
-          case 22:
-            _context17.prev = 22;
+          case 24:
+            _context17.prev = 24;
 
             result.event.unsubscribeAll();
-            return _context17.finish(22);
+            return _context17.finish(24);
 
-          case 25:
+          case 27:
 
             expect(tags.count).toBe(results.count);
             tags.forEach(function (tag) {
               expect(results.find(function (_) {
                 return _.localeCompare(tag.get('id')) === 0;
               })).toBeDefined();
-              (0, _Tag.expectTag)(tag, expectedTag);
+              (0, _Tag.expectTag)(tag, expectedTag, { expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers });
             });
 
-          case 27:
+          case 29:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[18,, 22, 25]]);
+    }, _callee17, undefined, [[20,, 24, 27]]);
   })));
 });
 

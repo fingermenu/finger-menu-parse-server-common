@@ -11,9 +11,15 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
+var _immutable2 = _interopRequireDefault(_immutable);
+
+var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+
 var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
+
+require('../../../bootstrap');
 
 var _ = require('../');
 
@@ -28,21 +34,43 @@ var createTagInfo = exports.createTagInfo = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         parentTagId = _ref2.parentTagId;
 
-    var tag;
+    var ownedByUser, maintainedByUsers, tag;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            _context.next = 2;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+
+          case 2:
+            ownedByUser = _context.sent;
+            _context.t0 = _immutable2.default;
+            _context.next = 6;
+            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
+              return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            }).toArray());
+
+          case 6:
+            _context.t1 = _context.sent;
+            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
             tag = (0, _immutable.Map)({
               name: (0, _v2.default)(),
               description: (0, _v2.default)(),
               level: chance.integer({ min: 1, max: 1000 }),
               forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
-              parentTagId: parentTagId
+              parentTagId: parentTagId,
+              ownedByUserId: ownedByUser.id,
+              maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
+                return maintainedByUser.id;
+              })
             });
-            return _context.abrupt('return', { tag: tag });
+            return _context.abrupt('return', {
+              tag: tag,
+              ownedByUser: ownedByUser,
+              maintainedByUsers: maintainedByUsers
+            });
 
-          case 2:
+          case 10:
           case 'end':
             return _context.stop();
         }
@@ -98,6 +126,8 @@ var expectTag = exports.expectTag = function expectTag(object, expectedObject) {
   expect(object.get('level')).toBe(expectedObject.get('level'));
   expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
   expect(object.get('parentTagId')).toBe(expectedObject.get('parentTagId'));
+  expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
+  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 };
 
 describe('constructor', function () {
