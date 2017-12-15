@@ -39,7 +39,6 @@ Tag.spawn = function (info) {
 };
 
 Tag.updateInfoInternal = function (object, info) {
-  object.set('key', info.get('key'));
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
   _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'description');
   object.set('level', info.get('level'));
@@ -63,7 +62,6 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      key: object.get('key'),
       name: object.get('name'),
       description: object.get('description'),
       level: object.get('level'),

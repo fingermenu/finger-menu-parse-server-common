@@ -28,7 +28,7 @@ var TagService = function (_ServiceBase) {
   return TagService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-TagService.fields = _immutable.List.of('key', 'name', 'description', 'level', 'forDisplay', 'parentTag');
+TagService.fields = _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag');
 
 TagService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -53,7 +53,6 @@ TagService.buildSearchQuery = function (criteria) {
   TagService.fields.forEach(function (field) {
     _microBusinessParseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _microBusinessParseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'key', 'key');
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
   _microBusinessParseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
   _microBusinessParseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'level', 'level');

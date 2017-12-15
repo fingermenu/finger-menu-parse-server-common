@@ -3,7 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Tag = exports.Restaurant = exports.MenuItemPrice = exports.MenuItem = exports.Menu = undefined;
+exports.Tag = exports.Restaurant = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
+
+var _ChoiceItem2 = require('./ChoiceItem');
+
+var _ChoiceItem3 = _interopRequireDefault(_ChoiceItem2);
+
+var _ChoiceItemPrice2 = require('./ChoiceItemPrice');
+
+var _ChoiceItemPrice3 = _interopRequireDefault(_ChoiceItemPrice2);
 
 var _Menu2 = require('./Menu');
 
@@ -27,6 +35,8 @@ var _Tag3 = _interopRequireDefault(_Tag2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+exports.ChoiceItem = _ChoiceItem3.default;
+exports.ChoiceItemPrice = _ChoiceItemPrice3.default;
 exports.Menu = _Menu3.default;
 exports.MenuItem = _MenuItem3.default;
 exports.MenuItemPrice = _MenuItemPrice3.default;

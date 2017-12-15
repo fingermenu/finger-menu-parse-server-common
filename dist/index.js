@@ -6,6 +6,18 @@ Object.defineProperty(exports, "__esModule", {
 
 var _schema = require('./schema');
 
+Object.defineProperty(exports, 'ChoiceItem', {
+  enumerable: true,
+  get: function get() {
+    return _schema.ChoiceItem;
+  }
+});
+Object.defineProperty(exports, 'ChoiceItemPrice', {
+  enumerable: true,
+  get: function get() {
+    return _schema.ChoiceItemPrice;
+  }
+});
 Object.defineProperty(exports, 'Menu', {
   enumerable: true,
   get: function get() {
@@ -39,6 +51,18 @@ Object.defineProperty(exports, 'Tag', {
 
 var _services = require('./services');
 
+Object.defineProperty(exports, 'ChoiceItemService', {
+  enumerable: true,
+  get: function get() {
+    return _services.ChoiceItemService;
+  }
+});
+Object.defineProperty(exports, 'ChoiceItemPriceService', {
+  enumerable: true,
+  get: function get() {
+    return _services.ChoiceItemPriceService;
+  }
+});
 Object.defineProperty(exports, 'MenuService', {
   enumerable: true,
   get: function get() {

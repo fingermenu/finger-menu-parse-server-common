@@ -20,116 +20,101 @@ require('../../../bootstrap');
 
 var _2 = require('../');
 
-var _Tag = require('../../schema/__tests__/Tag.test');
+var _ChoiceItem = require('../../schema/__tests__/ChoiceItem.test');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var chance = new _chance2.default();
-var tagService = new _2.TagService();
+var choiceItemService = new _2.ChoiceItemService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag'),
-    include_parentTag: true
+    fields: _immutable.List.of('name', 'description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers'),
+    include_tags: true,
+    include_ownedByUser: true,
+    include_maintainedByUsers: true
   });
 };
 
-var createCriteria = function createCriteria(tag) {
+var createCriteria = function createCriteria(choiceItem) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: tag ? tag.get('name') : (0, _v2.default)(),
-      description: tag ? tag.get('description') : (0, _v2.default)(),
-      level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),
-      forDisplay: tag ? tag.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
-      parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined
+      name: choiceItem ? choiceItem.get('name') : (0, _v2.default)(),
+      description: choiceItem ? choiceItem.get('description') : (0, _v2.default)(),
+      choiceItemPageUrl: choiceItem ? choiceItem.get('choiceItemPageUrl') : (0, _v2.default)(),
+      imageUrl: choiceItem ? choiceItem.get('imageUrl') : (0, _v2.default)(),
+      tagIds: choiceItem ? choiceItem.get('tagIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
+      ownedByUserId: choiceItem ? choiceItem.get('ownedByUserId') : (0, _v2.default)(),
+      maintainedByUserIds: choiceItem ? choiceItem.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)())
     })
   }).merge(createCriteriaWthoutConditions());
 };
 
-var createTags = function () {
+var createChoiceItems = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(count) {
     var useSameInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var createParentTag = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-    var parentTag, tag, _ref2, tempTag;
+    var choiceItem, _ref2, tempChoiceItem;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            if (!createParentTag) {
-              _context2.next = 6;
-              break;
-            }
-
-            _context2.next = 3;
-            return createTags(1, false, false);
-
-          case 3:
-            _context2.t0 = _context2.sent;
-            _context2.next = 7;
-            break;
-
-          case 6:
-            _context2.t0 = undefined;
-
-          case 7:
-            parentTag = _context2.t0;
-            tag = void 0;
+            choiceItem = void 0;
 
             if (!useSameInfo) {
-              _context2.next = 15;
+              _context2.next = 7;
               break;
             }
 
-            _context2.next = 12;
-            return (0, _Tag.createTagInfo)();
+            _context2.next = 4;
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
-          case 12:
+          case 4:
             _ref2 = _context2.sent;
-            tempTag = _ref2.tag;
+            tempChoiceItem = _ref2.choiceItem;
 
 
-            tag = tempTag;
+            choiceItem = tempChoiceItem;
 
-          case 15:
-            _context2.t1 = _immutable2.default;
-            _context2.next = 18;
+          case 7:
+            _context2.t0 = _immutable2.default;
+            _context2.next = 10;
             return Promise.all((0, _immutable.Range)(0, count).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var finalTag, _ref4, _tempTag;
+              var finalChoiceItem, _ref4, _tempChoiceItem;
 
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      finalTag = void 0;
+                      finalChoiceItem = void 0;
 
                       if (!useSameInfo) {
                         _context.next = 5;
                         break;
                       }
 
-                      finalTag = tag;
+                      finalChoiceItem = choiceItem;
                       _context.next = 10;
                       break;
 
                     case 5:
                       _context.next = 7;
-                      return (0, _Tag.createTagInfo)();
+                      return (0, _ChoiceItem.createChoiceItemInfo)();
 
                     case 7:
                       _ref4 = _context.sent;
-                      _tempTag = _ref4.tag;
+                      _tempChoiceItem = _ref4.choiceItem;
 
 
-                      finalTag = _tempTag;
+                      finalChoiceItem = _tempChoiceItem;
 
                     case 10:
-                      _context.t0 = tagService;
+                      _context.t0 = choiceItemService;
                       _context.next = 13;
-                      return tagService.create(createParentTag ? finalTag.merge((0, _immutable.Map)({ parentTagId: parentTag.get('id') })) : finalTag);
+                      return choiceItemService.create(finalChoiceItem);
 
                     case 13:
                       _context.t1 = _context.sent;
@@ -144,11 +129,11 @@ var createTags = function () {
               }, _callee, undefined);
             }))).toArray());
 
-          case 18:
-            _context2.t2 = _context2.sent;
-            return _context2.abrupt('return', _context2.t1.fromJS.call(_context2.t1, _context2.t2));
+          case 10:
+            _context2.t1 = _context2.sent;
+            return _context2.abrupt('return', _context2.t0.fromJS.call(_context2.t0, _context2.t1));
 
-          case 20:
+          case 12:
           case 'end':
             return _context2.stop();
         }
@@ -156,35 +141,35 @@ var createTags = function () {
     }, _callee2, undefined);
   }));
 
-  return function createTags(_x) {
+  return function createChoiceItems(_x) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.default = createTags;
+exports.default = createChoiceItems;
 
 
 describe('create', function () {
-  test('should return the created tag Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var tagId;
+  test('should return the created choice item Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var choiceItemId;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.t0 = tagService;
+            _context3.t0 = choiceItemService;
             _context3.next = 3;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 3:
-            _context3.t1 = _context3.sent.tag;
+            _context3.t1 = _context3.sent.choiceItem;
             _context3.next = 6;
             return _context3.t0.create.call(_context3.t0, _context3.t1);
 
           case 6:
-            tagId = _context3.sent;
+            choiceItemId = _context3.sent;
 
 
-            expect(tagId).toBeDefined();
+            expect(choiceItemId).toBeDefined();
 
           case 8:
           case 'end':
@@ -194,32 +179,32 @@ describe('create', function () {
     }, _callee3, undefined);
   })));
 
-  test('should create the tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref7, tag, tagId, fetchedTag;
+  test('should create the choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var _ref7, choiceItem, choiceItemId, fetchedChoiceItem;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
             _ref7 = _context4.sent;
-            tag = _ref7.tag;
+            choiceItem = _ref7.choiceItem;
             _context4.next = 6;
-            return tagService.create(tag);
+            return choiceItemService.create(choiceItem);
 
           case 6:
-            tagId = _context4.sent;
+            choiceItemId = _context4.sent;
             _context4.next = 9;
-            return tagService.read(tagId, createCriteriaWthoutConditions());
+            return choiceItemService.read(choiceItemId, createCriteriaWthoutConditions());
 
           case 9:
-            fetchedTag = _context4.sent;
+            fetchedChoiceItem = _context4.sent;
 
 
-            expect(fetchedTag).toBeDefined();
+            expect(fetchedChoiceItem).toBeDefined();
 
           case 11:
           case 'end':
@@ -231,16 +216,16 @@ describe('create', function () {
 });
 
 describe('read', function () {
-  test('should reject if the provided tag Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-    var tagId;
+  test('should reject if the provided choice item Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+    var choiceItemId;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            choiceItemId = (0, _v2.default)();
             _context5.prev = 1;
             _context5.next = 4;
-            return tagService.read(tagId);
+            return choiceItemService.read(choiceItemId);
 
           case 4:
             _context5.next = 9;
@@ -250,7 +235,7 @@ describe('read', function () {
             _context5.prev = 6;
             _context5.t0 = _context5['catch'](1);
 
-            expect(_context5.t0.message).toBe('No tag found with Id: ' + tagId);
+            expect(_context5.t0.message).toBe('No choice item found with Id: ' + choiceItemId);
 
           case 9:
           case 'end':
@@ -260,45 +245,42 @@ describe('read', function () {
     }, _callee5, undefined, [[1, 6]]);
   })));
 
-  test('should read the existing tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, parentTag, parentTagId, _ref11, expectedTag, tagId, tag;
+  test('should read the existing choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+    var _ref10, expectedChoiceItem, expectedTags, expectedOwnedByUser, expectedMaintainedByUsers, choiceItemId, choiceItem;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
             _ref10 = _context6.sent;
-            parentTag = _ref10.tag;
-            _context6.next = 6;
-            return tagService.create(parentTag);
-
-          case 6:
-            parentTagId = _context6.sent;
+            expectedChoiceItem = _ref10.choiceItem;
+            expectedTags = _ref10.tags;
+            expectedOwnedByUser = _ref10.ownedByUser;
+            expectedMaintainedByUsers = _ref10.maintainedByUsers;
             _context6.next = 9;
-            return (0, _Tag.createTagInfo)({ parentTagId: parentTagId });
+            return choiceItemService.create(expectedChoiceItem);
 
           case 9:
-            _ref11 = _context6.sent;
-            expectedTag = _ref11.tag;
-            _context6.next = 13;
-            return tagService.create(expectedTag);
+            choiceItemId = _context6.sent;
+            _context6.next = 12;
+            return choiceItemService.read(choiceItemId, createCriteriaWthoutConditions());
 
-          case 13:
-            tagId = _context6.sent;
-            _context6.next = 16;
-            return tagService.read(tagId, createCriteriaWthoutConditions());
-
-          case 16:
-            tag = _context6.sent;
+          case 12:
+            choiceItem = _context6.sent;
 
 
-            (0, _Tag.expectTag)(tag, expectedTag);
+            (0, _ChoiceItem.expectChoiceItem)(choiceItem, expectedChoiceItem, {
+              choiceItemId: choiceItemId,
+              expectedTags: expectedTags,
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers
+            });
 
-          case 18:
+          case 14:
           case 'end':
             return _context6.stop();
         }
@@ -308,21 +290,21 @@ describe('read', function () {
 });
 
 describe('update', function () {
-  test('should reject if the provided tag Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var tagId, tag;
+  test('should reject if the provided choice item Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+    var choiceItemId, choiceItem;
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            choiceItemId = (0, _v2.default)();
             _context7.prev = 1;
-            _context7.t0 = tagService;
-            _context7.t1 = tagService;
+            _context7.t0 = choiceItemService;
+            _context7.t1 = choiceItemService;
             _context7.next = 6;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 6:
-            _context7.t2 = _context7.sent.tag;
+            _context7.t2 = _context7.sent.choiceItem;
             _context7.next = 9;
             return _context7.t1.create.call(_context7.t1, _context7.t2);
 
@@ -333,9 +315,9 @@ describe('update', function () {
             return _context7.t0.read.call(_context7.t0, _context7.t3, _context7.t4);
 
           case 13:
-            tag = _context7.sent;
+            choiceItem = _context7.sent;
             _context7.next = 16;
-            return tagService.update(tag.set('id', tagId));
+            return choiceItemService.update(choiceItem.set('id', choiceItemId));
 
           case 16:
             _context7.next = 21;
@@ -345,7 +327,7 @@ describe('update', function () {
             _context7.prev = 18;
             _context7.t5 = _context7['catch'](1);
 
-            expect(_context7.t5.message).toBe('No tag found with Id: ' + tagId);
+            expect(_context7.t5.message).toBe('No choice item found with Id: ' + choiceItemId);
 
           case 21:
           case 'end':
@@ -355,38 +337,38 @@ describe('update', function () {
     }, _callee7, undefined, [[1, 18]]);
   })));
 
-  test('should return the Id of the updated tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref14, expectedTag, tagId, id;
+  test('should return the Id of the updated choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+    var _ref13, expectedChoiceItem, choiceItemId, id;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
-            _ref14 = _context8.sent;
-            expectedTag = _ref14.tag;
-            _context8.t0 = tagService;
+            _ref13 = _context8.sent;
+            expectedChoiceItem = _ref13.choiceItem;
+            _context8.t0 = choiceItemService;
             _context8.next = 7;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 7:
-            _context8.t1 = _context8.sent.tag;
+            _context8.t1 = _context8.sent.choiceItem;
             _context8.next = 10;
             return _context8.t0.create.call(_context8.t0, _context8.t1);
 
           case 10:
-            tagId = _context8.sent;
+            choiceItemId = _context8.sent;
             _context8.next = 13;
-            return tagService.update(expectedTag.set('id', tagId));
+            return choiceItemService.update(expectedChoiceItem.set('id', choiceItemId));
 
           case 13:
             id = _context8.sent;
 
 
-            expect(id).toBe(tagId);
+            expect(id).toBe(choiceItemId);
 
           case 15:
           case 'end':
@@ -396,55 +378,52 @@ describe('update', function () {
     }, _callee8, undefined);
   })));
 
-  test('should update the existing tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref16, parentTag, parentTagId, _ref17, expectedTag, tagId, tag;
+  test('should update the existing choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
+    var _ref15, expectedChoiceItem, expectedTags, expectedOwnedByUser, expectedMaintainedByUsers, choiceItemId, choiceItem;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
-            _ref16 = _context9.sent;
-            parentTag = _ref16.tag;
-            _context9.next = 6;
-            return tagService.create(parentTag);
+            _ref15 = _context9.sent;
+            expectedChoiceItem = _ref15.choiceItem;
+            expectedTags = _ref15.tags;
+            expectedOwnedByUser = _ref15.ownedByUser;
+            expectedMaintainedByUsers = _ref15.maintainedByUsers;
+            _context9.t0 = choiceItemService;
+            _context9.next = 10;
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
-          case 6:
-            parentTagId = _context9.sent;
-            _context9.next = 9;
-            return (0, _Tag.createTagInfo)({ parentTagId: parentTagId });
-
-          case 9:
-            _ref17 = _context9.sent;
-            expectedTag = _ref17.tag;
-            _context9.t0 = tagService;
-            _context9.next = 14;
-            return (0, _Tag.createTagInfo)();
-
-          case 14:
-            _context9.t1 = _context9.sent.tag;
-            _context9.next = 17;
+          case 10:
+            _context9.t1 = _context9.sent.choiceItem;
+            _context9.next = 13;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 17:
-            tagId = _context9.sent;
-            _context9.next = 20;
-            return tagService.update(expectedTag.set('id', tagId));
+          case 13:
+            choiceItemId = _context9.sent;
+            _context9.next = 16;
+            return choiceItemService.update(expectedChoiceItem.set('id', choiceItemId));
+
+          case 16:
+            _context9.next = 18;
+            return choiceItemService.read(choiceItemId, createCriteriaWthoutConditions());
+
+          case 18:
+            choiceItem = _context9.sent;
+
+
+            (0, _ChoiceItem.expectChoiceItem)(choiceItem, expectedChoiceItem, {
+              choiceItemId: choiceItemId,
+              expectedTags: expectedTags,
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers
+            });
 
           case 20:
-            _context9.next = 22;
-            return tagService.read(tagId, createCriteriaWthoutConditions());
-
-          case 22:
-            tag = _context9.sent;
-
-
-            (0, _Tag.expectTag)(tag, expectedTag);
-
-          case 24:
           case 'end':
             return _context9.stop();
         }
@@ -454,16 +433,16 @@ describe('update', function () {
 });
 
 describe('delete', function () {
-  test('should reject if the provided tag Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
-    var tagId;
+  test('should reject if the provided choice item Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+    var choiceItemId;
     return regeneratorRuntime.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            choiceItemId = (0, _v2.default)();
             _context10.prev = 1;
             _context10.next = 4;
-            return tagService.delete(tagId);
+            return choiceItemService.delete(choiceItemId);
 
           case 4:
             _context10.next = 9;
@@ -473,7 +452,7 @@ describe('delete', function () {
             _context10.prev = 6;
             _context10.t0 = _context10['catch'](1);
 
-            expect(_context10.t0.message).toBe('No tag found with Id: ' + tagId);
+            expect(_context10.t0.message).toBe('No choice item found with Id: ' + choiceItemId);
 
           case 9:
           case 'end':
@@ -483,30 +462,30 @@ describe('delete', function () {
     }, _callee10, undefined, [[1, 6]]);
   })));
 
-  test('should delete the existing tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
-    var tagId;
+  test('should delete the existing choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
+    var choiceItemId;
     return regeneratorRuntime.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _context11.t0 = tagService;
+            _context11.t0 = choiceItemService;
             _context11.next = 3;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 3:
-            _context11.t1 = _context11.sent.tag;
+            _context11.t1 = _context11.sent.choiceItem;
             _context11.next = 6;
             return _context11.t0.create.call(_context11.t0, _context11.t1);
 
           case 6:
-            tagId = _context11.sent;
+            choiceItemId = _context11.sent;
             _context11.next = 9;
-            return tagService.delete(tagId);
+            return choiceItemService.delete(choiceItemId);
 
           case 9:
             _context11.prev = 9;
             _context11.next = 12;
-            return tagService.delete(tagId);
+            return choiceItemService.delete(choiceItemId);
 
           case 12:
             _context11.next = 17;
@@ -516,7 +495,7 @@ describe('delete', function () {
             _context11.prev = 14;
             _context11.t2 = _context11['catch'](9);
 
-            expect(_context11.t2.message).toBe('No tag found with Id: ' + tagId);
+            expect(_context11.t2.message).toBe('No choice item found with Id: ' + choiceItemId);
 
           case 17:
           case 'end':
@@ -528,20 +507,20 @@ describe('delete', function () {
 });
 
 describe('search', function () {
-  test('should return no tag if provided criteria matches no tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
-    var tags;
+  test('should return no choice item if provided criteria matches no choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
+    var choiceItems;
     return regeneratorRuntime.wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return tagService.search(createCriteria());
+            return choiceItemService.search(createCriteria());
 
           case 2:
-            tags = _context12.sent;
+            choiceItems = _context12.sent;
 
 
-            expect(tags.count()).toBe(0);
+            expect(choiceItems.count()).toBe(0);
 
           case 4:
           case 'end':
@@ -551,38 +530,30 @@ describe('search', function () {
     }, _callee12, undefined);
   })));
 
-  test('should return the tag matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref22, parentTag, parentTagId, _ref23, expectedTag, results, tags;
+  test('should return the choice item matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
+    var _ref20, expectedChoiceItem, expectedTags, expectedOwnedByUser, expectedMaintainedByUsers, results, choiceItems;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
-            _ref22 = _context14.sent;
-            parentTag = _ref22.tag;
-            _context14.next = 6;
-            return tagService.create(parentTag);
-
-          case 6:
-            parentTagId = _context14.sent;
-            _context14.next = 9;
-            return (0, _Tag.createTagInfo)({ parentTagId: parentTagId });
-
-          case 9:
-            _ref23 = _context14.sent;
-            expectedTag = _ref23.tag;
+            _ref20 = _context14.sent;
+            expectedChoiceItem = _ref20.choiceItem;
+            expectedTags = _ref20.tags;
+            expectedOwnedByUser = _ref20.ownedByUser;
+            expectedMaintainedByUsers = _ref20.maintainedByUsers;
             _context14.t0 = _immutable2.default;
-            _context14.next = 14;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
+            _context14.next = 10;
+            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
                   switch (_context13.prev = _context13.next) {
                     case 0:
-                      return _context13.abrupt('return', tagService.create(expectedTag));
+                      return _context13.abrupt('return', choiceItemService.create(expectedChoiceItem));
 
                     case 1:
                     case 'end':
@@ -592,25 +563,30 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 14:
+          case 10:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 18;
-            return tagService.search(createCriteria(expectedTag));
+            _context14.next = 14;
+            return choiceItemService.search(createCriteria(expectedChoiceItem));
 
-          case 18:
-            tags = _context14.sent;
+          case 14:
+            choiceItems = _context14.sent;
 
 
-            expect(tags.count).toBe(results.count);
-            tags.forEach(function (tag) {
+            expect(choiceItems.count).toBe(results.count);
+            choiceItems.forEach(function (choiceItem) {
               expect(results.find(function (_) {
-                return _.localeCompare(tag.get('id')) === 0;
+                return _.localeCompare(choiceItem.get('id')) === 0;
               })).toBeDefined();
-              (0, _Tag.expectTag)(tag, expectedTag);
+              (0, _ChoiceItem.expectChoiceItem)(choiceItem, expectedChoiceItem, {
+                choiceItemId: choiceItem.get('id'),
+                expectedTags: expectedTags,
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers
+              });
             });
 
-          case 21:
+          case 17:
           case 'end':
             return _context14.stop();
         }
@@ -620,18 +596,18 @@ describe('search', function () {
 });
 
 describe('searchAll', function () {
-  test('should return no tag if provided criteria matches no tag', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
-    var tags, result;
+  test('should return no choice item if provided criteria matches no choice item', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
+    var choiceItems, result;
     return regeneratorRuntime.wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
-            tags = (0, _immutable.List)();
-            result = tagService.searchAll(createCriteria());
+            choiceItems = (0, _immutable.List)();
+            result = choiceItemService.searchAll(createCriteria());
             _context15.prev = 2;
 
             result.event.subscribe(function (info) {
-              tags = tags.push(info);
+              choiceItems = choiceItems.push(info);
             });
 
             _context15.next = 6;
@@ -645,7 +621,7 @@ describe('searchAll', function () {
 
           case 9:
 
-            expect(tags.count()).toBe(0);
+            expect(choiceItems.count()).toBe(0);
 
           case 10:
           case 'end':
@@ -655,38 +631,30 @@ describe('searchAll', function () {
     }, _callee15, undefined, [[2,, 6, 9]]);
   })));
 
-  test('should return the tag matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref27, parentTag, parentTagId, _ref28, expectedTag, results, tags, result;
+  test('should return the choice item matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
+    var _ref24, expectedChoiceItem, expectedTags, expectedOwnedByUser, expectedMaintainedByUsers, results, choiceItems, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
             _context17.next = 2;
-            return (0, _Tag.createTagInfo)();
+            return (0, _ChoiceItem.createChoiceItemInfo)();
 
           case 2:
-            _ref27 = _context17.sent;
-            parentTag = _ref27.tag;
-            _context17.next = 6;
-            return tagService.create(parentTag);
-
-          case 6:
-            parentTagId = _context17.sent;
-            _context17.next = 9;
-            return (0, _Tag.createTagInfo)({ parentTagId: parentTagId });
-
-          case 9:
-            _ref28 = _context17.sent;
-            expectedTag = _ref28.tag;
+            _ref24 = _context17.sent;
+            expectedChoiceItem = _ref24.choiceItem;
+            expectedTags = _ref24.tags;
+            expectedOwnedByUser = _ref24.ownedByUser;
+            expectedMaintainedByUsers = _ref24.maintainedByUsers;
             _context17.t0 = _immutable2.default;
-            _context17.next = 14;
+            _context17.next = 10;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
                   switch (_context16.prev = _context16.next) {
                     case 0:
-                      return _context16.abrupt('return', tagService.create(expectedTag));
+                      return _context16.abrupt('return', choiceItemService.create(expectedChoiceItem));
 
                     case 1:
                     case 'end':
@@ -696,54 +664,59 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 14:
+          case 10:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
-            tags = (0, _immutable.List)();
-            result = tagService.searchAll(createCriteria(expectedTag));
-            _context17.prev = 18;
+            choiceItems = (0, _immutable.List)();
+            result = choiceItemService.searchAll(createCriteria(expectedChoiceItem));
+            _context17.prev = 14;
 
             result.event.subscribe(function (info) {
-              tags = tags.push(info);
+              choiceItems = choiceItems.push(info);
             });
 
-            _context17.next = 22;
+            _context17.next = 18;
             return result.promise;
 
-          case 22:
-            _context17.prev = 22;
+          case 18:
+            _context17.prev = 18;
 
             result.event.unsubscribeAll();
-            return _context17.finish(22);
+            return _context17.finish(18);
 
-          case 25:
+          case 21:
 
-            expect(tags.count).toBe(results.count);
-            tags.forEach(function (tag) {
+            expect(choiceItems.count).toBe(results.count);
+            choiceItems.forEach(function (choiceItem) {
               expect(results.find(function (_) {
-                return _.localeCompare(tag.get('id')) === 0;
+                return _.localeCompare(choiceItem.get('id')) === 0;
               })).toBeDefined();
-              (0, _Tag.expectTag)(tag, expectedTag);
+              (0, _ChoiceItem.expectChoiceItem)(choiceItem, expectedChoiceItem, {
+                choiceItemId: choiceItem.get('id'),
+                expectedTags: expectedTags,
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers
+              });
             });
 
-          case 27:
+          case 23:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[18,, 22, 25]]);
+    }, _callee17, undefined, [[14,, 18, 21]]);
   })));
 });
 
 describe('exists', function () {
-  test('should return false if no tag match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
+  test('should return false if no choice item match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
     return regeneratorRuntime.wrap(function _callee18$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
           case 0:
             _context18.t0 = expect;
             _context18.next = 3;
-            return tagService.exists(createCriteria());
+            return choiceItemService.exists(createCriteria());
 
           case 3:
             _context18.t1 = _context18.sent;
@@ -757,20 +730,20 @@ describe('exists', function () {
     }, _callee18, undefined);
   })));
 
-  test('should return true if any tag match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
-    var tags;
+  test('should return true if any choice item match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
+    var choiceItems;
     return regeneratorRuntime.wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
             _context19.next = 2;
-            return createTags(chance.integer({ min: 1, max: 10 }), true);
+            return createChoiceItems(chance.integer({ min: 1, max: 10 }), true);
 
           case 2:
-            tags = _context19.sent;
+            choiceItems = _context19.sent;
             _context19.t0 = expect;
             _context19.next = 6;
-            return tagService.exists(createCriteria(tags.first()));
+            return choiceItemService.exists(createCriteria(choiceItems.first()));
 
           case 6:
             _context19.t1 = _context19.sent;
@@ -786,14 +759,14 @@ describe('exists', function () {
 });
 
 describe('count', function () {
-  test('should return 0 if no tag match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
+  test('should return 0 if no choice item match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
     return regeneratorRuntime.wrap(function _callee20$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
           case 0:
             _context20.t0 = expect;
             _context20.next = 3;
-            return tagService.count(createCriteria());
+            return choiceItemService.count(createCriteria());
 
           case 3:
             _context20.t1 = _context20.sent;
@@ -807,24 +780,24 @@ describe('count', function () {
     }, _callee20, undefined);
   })));
 
-  test('should return the count of tag match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
-    var tags;
+  test('should return the count of choice item match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
+    var choiceItems;
     return regeneratorRuntime.wrap(function _callee21$(_context21) {
       while (1) {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return createTags(chance.integer({ min: 1, max: 10 }), true);
+            return createChoiceItems(chance.integer({ min: 1, max: 10 }), true);
 
           case 2:
-            tags = _context21.sent;
+            choiceItems = _context21.sent;
             _context21.t0 = expect;
             _context21.next = 6;
-            return tagService.count(createCriteria(tags.first()));
+            return choiceItemService.count(createCriteria(choiceItems.first()));
 
           case 6:
             _context21.t1 = _context21.sent;
-            _context21.t2 = tags.count();
+            _context21.t2 = choiceItems.count();
             (0, _context21.t0)(_context21.t1).toBe(_context21.t2);
 
           case 9:

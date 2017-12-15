@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.expectTag = exports.createTag = exports.createTagInfo = undefined;
+exports.expectChoiceItemPrice = exports.createChoiceItemPrice = exports.createChoiceItemPriceInfo = undefined;
 
 var _chance = require('chance');
 
@@ -11,11 +11,17 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
+var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+
 var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
 
 var _ = require('../');
+
+var _ChoiceItemService = require('../../services/__tests__/ChoiceItemService.test');
+
+var _ChoiceItemService2 = _interopRequireDefault(_ChoiceItemService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,26 +29,45 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var chance = new _chance2.default();
 
-var createTagInfo = exports.createTagInfo = function () {
+var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        parentTagId = _ref2.parentTagId;
-
-    var tag;
+    var choiceItem, addedByUser, removedByUser, choiceItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            tag = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
-              description: (0, _v2.default)(),
-              level: chance.integer({ min: 1, max: 1000 }),
-              forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
-              parentTagId: parentTagId
-            });
-            return _context.abrupt('return', { tag: tag });
+            _context.next = 2;
+            return (0, _ChoiceItemService2.default)(chance.integer({ min: 1, max: 1 }));
 
           case 2:
+            choiceItem = _context.sent.first();
+            _context.next = 5;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+
+          case 5:
+            addedByUser = _context.sent;
+            _context.next = 8;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+
+          case 8:
+            removedByUser = _context.sent;
+            choiceItemPrice = (0, _immutable.Map)({
+              currentPrice: chance.floating({ min: 0, max: 1000 }),
+              wasPrice: chance.floating({ min: 0, max: 1000 }),
+              validFrom: new Date(),
+              validUntil: new Date(),
+              choiceItemId: choiceItem.get('id'),
+              addedByUserId: addedByUser.id,
+              removedByUserId: removedByUser.id
+            });
+            return _context.abrupt('return', {
+              choiceItemPrice: choiceItemPrice,
+              choiceItem: choiceItem,
+              addedByUser: addedByUser,
+              removedByUser: removedByUser
+            });
+
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -50,18 +75,18 @@ var createTagInfo = exports.createTagInfo = function () {
     }, _callee, undefined);
   }));
 
-  return function createTagInfo() {
+  return function createChoiceItemPriceInfo() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createTag = exports.createTag = function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
+var createChoiceItemPrice = exports.createChoiceItemPrice = function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _.Tag;
+            _context2.t0 = _.ChoiceItemPrice;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -70,10 +95,10 @@ var createTag = exports.createTag = function () {
             }
 
             _context2.next = 5;
-            return createTagInfo();
+            return createChoiceItemPriceInfo();
 
           case 5:
-            _context2.t1 = _context2.sent.tag;
+            _context2.t1 = _context2.sent.choiceItemPrice;
 
           case 6:
             _context2.t2 = _context2.t1;
@@ -87,17 +112,31 @@ var createTag = exports.createTag = function () {
     }, _callee2, undefined);
   }));
 
-  return function createTag(_x2) {
-    return _ref3.apply(this, arguments);
+  return function createChoiceItemPrice(_x) {
+    return _ref2.apply(this, arguments);
   };
 }();
 
-var expectTag = exports.expectTag = function expectTag(object, expectedObject) {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
-  expect(object.get('level')).toBe(expectedObject.get('level'));
-  expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
-  expect(object.get('parentTagId')).toBe(expectedObject.get('parentTagId'));
+var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoiceItemPrice(object, expectedObject) {
+  var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      choiceItemPriceId = _ref3.choiceItemPriceId,
+      expectedChoiceItem = _ref3.expectedChoiceItem;
+
+  expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
+  expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
+  expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
+  expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
+  expect(object.get('choiceItemId')).toBe(expectedObject.get('choiceItemId'));
+  expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
+  expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
+
+  if (choiceItemPriceId) {
+    expect(object.get('id')).toBe(choiceItemPriceId);
+  }
+
+  if (expectedChoiceItem) {
+    expect(object.get('choiceItemId')).toEqual(expectedChoiceItem.get('id'));
+  }
 };
 
 describe('constructor', function () {
@@ -108,11 +147,11 @@ describe('constructor', function () {
           case 0:
             _context3.t0 = expect;
             _context3.next = 3;
-            return createTag();
+            return createChoiceItemPrice();
 
           case 3:
             _context3.t1 = _context3.sent.className;
-            (0, _context3.t0)(_context3.t1).toBe('Tag');
+            (0, _context3.t0)(_context3.t1).toBe('ChoiceItemPrice');
 
           case 5:
           case 'end':
@@ -125,27 +164,27 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, tag, object, info;
+    var _ref6, choiceItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return createTagInfo();
+            return createChoiceItemPriceInfo();
 
           case 2:
             _ref6 = _context4.sent;
-            tag = _ref6.tag;
+            choiceItemPrice = _ref6.choiceItemPrice;
             _context4.next = 6;
-            return createTag(tag);
+            return createChoiceItemPrice(choiceItemPrice);
 
           case 6:
             object = _context4.sent;
             info = object.getInfo();
 
 
-            expectTag(info, tag);
+            expectChoiceItemPrice(info, choiceItemPrice);
 
           case 9:
           case 'end':
@@ -164,13 +203,13 @@ describe('public methods', function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return createTag();
+            return createChoiceItemPrice();
 
           case 2:
             object = _context5.sent;
 
 
-            expect(new _.Tag(object).getObject()).toBe(object);
+            expect(new _.ChoiceItemPrice(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -187,13 +226,13 @@ describe('public methods', function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return createTag();
+            return createChoiceItemPrice();
 
           case 2:
             object = _context6.sent;
 
 
-            expect(new _.Tag(object).getId()).toBe(object.id);
+            expect(new _.ChoiceItemPrice(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -204,31 +243,31 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedTag, info;
+    var object, _ref10, updatedChoiceItemPrice, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return createTag();
+            return createChoiceItemPrice();
 
           case 2:
             object = _context7.sent;
             _context7.next = 5;
-            return createTagInfo();
+            return createChoiceItemPriceInfo();
 
           case 5:
             _ref10 = _context7.sent;
-            updatedTag = _ref10.tag;
+            updatedChoiceItemPrice = _ref10.choiceItemPrice;
 
 
-            object.updateInfo(updatedTag);
+            object.updateInfo(updatedChoiceItemPrice);
 
             info = object.getInfo();
 
 
-            expectTag(info, updatedTag);
+            expectChoiceItemPrice(info, updatedChoiceItemPrice);
 
           case 10:
           case 'end':
@@ -239,20 +278,20 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, tag, object, info;
+    var _ref12, choiceItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return createTagInfo();
+            return createChoiceItemPriceInfo();
 
           case 2:
             _ref12 = _context8.sent;
-            tag = _ref12.tag;
+            choiceItemPrice = _ref12.choiceItemPrice;
             _context8.next = 6;
-            return createTag(tag);
+            return createChoiceItemPrice(choiceItemPrice);
 
           case 6:
             object = _context8.sent;
@@ -260,7 +299,7 @@ describe('public methods', function () {
 
 
             expect(info.get('id')).toBe(object.getId());
-            expectTag(info, tag);
+            expectChoiceItemPrice(info, choiceItemPrice);
 
           case 10:
           case 'end':
