@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-co
 import { Tag } from '../schema';
 
 export default class TagService extends ServiceBase {
-  static fields = List.of('key', 'name', 'description', 'level', 'forDisplay', 'parentTag');
+  static fields = List.of('name', 'description', 'level', 'forDisplay', 'parentTag');
 
   constructor() {
     super(Tag, TagService.buildSearchQuery, TagService.buildIncludeQuery, 'tag');
@@ -34,7 +34,6 @@ export default class TagService extends ServiceBase {
     TagService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addEqualityQuery(conditions, query, 'key', 'key');
     ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
     ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
     ServiceBase.addNumberQuery(conditions, query, 'level', 'level');

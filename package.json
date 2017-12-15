@@ -9,7 +9,7 @@
     "lint": "eslint --ext .jsx --ext .js src",
     "fixlint": "eslint --fix --ext .jsx --ext .js src",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest src/services/__tests__/ChoiceItemPriceService.test.js --watch",
     "publish-package": "npm run build && npm publish",
     "flow": "flow",
     "precommit": "lint-staged"

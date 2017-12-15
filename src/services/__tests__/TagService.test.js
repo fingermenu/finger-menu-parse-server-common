@@ -12,14 +12,13 @@ const tagService = new TagService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('key', 'name', 'description', 'level', 'forDisplay', 'parentTag'),
+    fields: List.of('name', 'description', 'level', 'forDisplay', 'parentTag'),
     include_parentTag: true,
   });
 
 const createCriteria = tag =>
   Map({
     conditions: Map({
-      key: tag ? tag.get('key') : uuid(),
       name: tag ? tag.get('name') : uuid(),
       description: tag ? tag.get('description') : uuid(),
       level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),

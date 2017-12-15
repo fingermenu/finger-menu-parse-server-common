@@ -13,7 +13,6 @@ export default class Tag extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    object.set('key', info.get('key'));
     BaseObject.createStringColumn(object, info, 'name');
     BaseObject.createStringColumn(object, info, 'description');
     object.set('level', info.get('level'));
@@ -38,7 +37,6 @@ export default class Tag extends BaseObject {
 
     return Map({
       id: this.getId(),
-      key: object.get('key'),
       name: object.get('name'),
       description: object.get('description'),
       level: object.get('level'),

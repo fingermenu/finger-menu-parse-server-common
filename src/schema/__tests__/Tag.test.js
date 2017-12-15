@@ -9,7 +9,6 @@ const chance = new Chance();
 
 export const createTagInfo = async ({ parentTagId } = {}) => {
   const tag = Map({
-    key: uuid(),
     name: uuid(),
     description: uuid(),
     level: chance.integer({ min: 1, max: 1000 }),
@@ -23,7 +22,6 @@ export const createTagInfo = async ({ parentTagId } = {}) => {
 export const createTag = async object => Tag.spawn(object || (await createTagInfo()).tag);
 
 export const expectTag = (object, expectedObject) => {
-  expect(object.get('key')).toBe(expectedObject.get('key'));
   expect(object.get('name')).toBe(expectedObject.get('name'));
   expect(object.get('description')).toBe(expectedObject.get('description'));
   expect(object.get('level')).toBe(expectedObject.get('level'));
