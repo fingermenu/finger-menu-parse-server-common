@@ -56,6 +56,7 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
   _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
+  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
   _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
@@ -73,6 +74,10 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
     var menuItem = object.get('menuItem');
+    var toBeServedWithMenuItemPriceObjects = object.get('toBeServedWithMenuItemPrices');
+    var toBeServedWithMenuItemPrices = toBeServedWithMenuItemPriceObjects ? _immutable2.default.fromJS(toBeServedWithMenuItemPriceObjects).map(function (toBeServedWithMenuItemPrice) {
+      return new MenuItemPrice(toBeServedWithMenuItemPrice).getInfo();
+    }) : undefined;
     var choiceItemPriceObjects = object.get('choiceItemPrices');
     var choiceItemPrices = choiceItemPriceObjects ? _immutable2.default.fromJS(choiceItemPriceObjects).map(function (choiceItemPrice) {
       return new _ChoiceItemPrice2.default(choiceItemPrice).getInfo();
@@ -88,6 +93,10 @@ var _initialiseProps = function _initialiseProps() {
       validUntil: object.get('validUntil'),
       menuItem: menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
+      toBeServedWithMenuItemPrices: toBeServedWithMenuItemPrices,
+      toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPrices ? toBeServedWithMenuItemPrices.map(function (toBeServedWithMenuItemPrice) {
+        return toBeServedWithMenuItemPrice.get('id');
+      }) : (0, _immutable.List)(),
       choiceItemPrices: choiceItemPrices,
       choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(function (choiceItemPrice) {
         return choiceItemPrice.get('id');

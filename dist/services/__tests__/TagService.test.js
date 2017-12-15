@@ -129,7 +129,7 @@ var createTags = function () {
                     case 10:
                       _context.t0 = tagService;
                       _context.next = 13;
-                      return tagService.create(createParentTag ? finalTag.merge((0, _immutable.Map)({ parentTagId: parentTag.get('id') })) : finalTag);
+                      return tagService.create(createParentTag ? finalTag.set('parentTagId', parentTag.get('id')) : finalTag);
 
                     case 13:
                       _context.t1 = _context.sent;

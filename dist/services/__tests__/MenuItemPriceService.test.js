@@ -31,7 +31,7 @@ var menuItemPriceService = new _2.MenuItemPriceService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'choiceItemPrices', 'addedByUser', 'removedByUser'),
+    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser'),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true
@@ -46,6 +46,7 @@ var createCriteria = function createCriteria(menuItemPrice) {
       validFrom: menuItemPrice ? menuItemPrice.get('validFrom') : new Date(),
       validUntil: menuItemPrice ? menuItemPrice.get('validUntil') : new Date(),
       menuItemId: menuItemPrice ? menuItemPrice.get('menuItemId') : (0, _v2.default)(),
+      toBeServedWithMenuItemPriceIds: menuItemPrice ? menuItemPrice.get('toBeServedWithMenuItemPriceIds') : (0, _immutable.List)(),
       choiceItemPriceIds: menuItemPrice ? menuItemPrice.get('choiceItemPriceIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
       addedByUserId: menuItemPrice ? menuItemPrice.get('addedByUserId') : (0, _v2.default)(),
       removedByUserId: menuItemPrice ? menuItemPrice.get('removedByUserId') : (0, _v2.default)()
@@ -56,33 +57,52 @@ var createCriteria = function createCriteria(menuItemPrice) {
 var createMenuItemPrices = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(count) {
     var useSameInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var createToBeServerWithMenuItemPrices = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-    var menuItemPrice, _ref2, tempMenuItemPrice;
+    var toBeServedWithMenuItemPrices, menuItemPrice, _ref2, tempMenuItemPrice;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            menuItemPrice = void 0;
-
-            if (!useSameInfo) {
-              _context2.next = 7;
+            if (!createToBeServerWithMenuItemPrices) {
+              _context2.next = 6;
               break;
             }
 
-            _context2.next = 4;
+            _context2.next = 3;
+            return createMenuItemPrices(2, false, false);
+
+          case 3:
+            _context2.t0 = _context2.sent;
+            _context2.next = 7;
+            break;
+
+          case 6:
+            _context2.t0 = (0, _immutable.List)();
+
+          case 7:
+            toBeServedWithMenuItemPrices = _context2.t0;
+            menuItemPrice = void 0;
+
+            if (!useSameInfo) {
+              _context2.next = 15;
+              break;
+            }
+
+            _context2.next = 12;
             return (0, _MenuItemPrice.createMenuItemPriceInfo)();
 
-          case 4:
+          case 12:
             _ref2 = _context2.sent;
             tempMenuItemPrice = _ref2.menuItemPrice;
 
 
             menuItemPrice = tempMenuItemPrice;
 
-          case 7:
-            _context2.t0 = _immutable2.default;
-            _context2.next = 10;
+          case 15:
+            _context2.t1 = _immutable2.default;
+            _context2.next = 18;
             return Promise.all((0, _immutable.Range)(0, count).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
               var finalMenuItemPrice, _ref4, _tempMenuItemPrice;
 
@@ -115,7 +135,9 @@ var createMenuItemPrices = function () {
                     case 10:
                       _context.t0 = menuItemPriceService;
                       _context.next = 13;
-                      return menuItemPriceService.create(finalMenuItemPrice);
+                      return menuItemPriceService.create(createToBeServerWithMenuItemPrices ? finalMenuItemPrice.set('toBeServedWithMenuItemPriceIds', toBeServedWithMenuItemPrices.map(function (_) {
+                        return _.get('id');
+                      })) : finalMenuItemPrice);
 
                     case 13:
                       _context.t1 = _context.sent;
@@ -130,11 +152,11 @@ var createMenuItemPrices = function () {
               }, _callee, undefined);
             }))).toArray());
 
-          case 10:
-            _context2.t1 = _context2.sent;
-            return _context2.abrupt('return', _context2.t0.fromJS.call(_context2.t0, _context2.t1));
+          case 18:
+            _context2.t2 = _context2.sent;
+            return _context2.abrupt('return', _context2.t1.fromJS.call(_context2.t1, _context2.t2));
 
-          case 12:
+          case 20:
           case 'end':
             return _context2.stop();
         }
@@ -253,25 +275,38 @@ describe('read', function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _context6.next = 2;
-            return (0, _MenuItemPrice.createMenuItemPriceInfo)();
+            _context6.t0 = _MenuItemPrice.createMenuItemPriceInfo;
+            _context6.next = 3;
+            return createMenuItemPrices(2, false, false);
 
-          case 2:
+          case 3:
+            _context6.t1 = function (_) {
+              return _.get('id');
+            };
+
+            _context6.t2 = _context6.sent.map(_context6.t1);
+            _context6.t3 = {
+              toBeServedWithMenuItemPriceIds: _context6.t2
+            };
+            _context6.next = 8;
+            return (0, _context6.t0)(_context6.t3);
+
+          case 8:
             _ref10 = _context6.sent;
             expectedMenuItemPrice = _ref10.menuItemPrice;
             expectedMenuItem = _ref10.menuItem;
             expectedChoiceItemPrices = _ref10.choiceItemPrices;
             expectedAddedByUser = _ref10.addedByUser;
             expectedRemovedByUser = _ref10.removedByUser;
-            _context6.next = 10;
+            _context6.next = 16;
             return menuItemPriceService.create(expectedMenuItemPrice);
 
-          case 10:
+          case 16:
             menuItemPriceId = _context6.sent;
-            _context6.next = 13;
+            _context6.next = 19;
             return menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
 
-          case 13:
+          case 19:
             menuItemPrice = _context6.sent;
 
 
@@ -283,7 +318,7 @@ describe('read', function () {
               expectedRemovedByUser: expectedRemovedByUser
             });
 
-          case 15:
+          case 21:
           case 'end':
             return _context6.stop();
         }
@@ -388,35 +423,48 @@ describe('update', function () {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
-            _context9.next = 2;
-            return (0, _MenuItemPrice.createMenuItemPriceInfo)();
+            _context9.t0 = _MenuItemPrice.createMenuItemPriceInfo;
+            _context9.next = 3;
+            return createMenuItemPrices(2, false, false);
 
-          case 2:
+          case 3:
+            _context9.t1 = function (_) {
+              return _.get('id');
+            };
+
+            _context9.t2 = _context9.sent.map(_context9.t1);
+            _context9.t3 = {
+              toBeServedWithMenuItemPriceIds: _context9.t2
+            };
+            _context9.next = 8;
+            return (0, _context9.t0)(_context9.t3);
+
+          case 8:
             _ref15 = _context9.sent;
             expectedMenuItemPrice = _ref15.menuItemPrice;
             expectedMenuItem = _ref15.menuItem;
             expectedChoiceItemPrices = _ref15.choiceItemPrices;
             expectedAddedByUser = _ref15.addedByUser;
             expectedRemovedByUser = _ref15.removedByUser;
-            _context9.t0 = menuItemPriceService;
-            _context9.next = 11;
+            _context9.t4 = menuItemPriceService;
+            _context9.next = 17;
             return (0, _MenuItemPrice.createMenuItemPriceInfo)();
 
-          case 11:
-            _context9.t1 = _context9.sent.menuItemPrice;
-            _context9.next = 14;
-            return _context9.t0.create.call(_context9.t0, _context9.t1);
+          case 17:
+            _context9.t5 = _context9.sent.menuItemPrice;
+            _context9.next = 20;
+            return _context9.t4.create.call(_context9.t4, _context9.t5);
 
-          case 14:
+          case 20:
             menuItemPriceId = _context9.sent;
-            _context9.next = 17;
+            _context9.next = 23;
             return menuItemPriceService.update(expectedMenuItemPrice.set('id', menuItemPriceId));
 
-          case 17:
-            _context9.next = 19;
+          case 23:
+            _context9.next = 25;
             return menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
 
-          case 19:
+          case 25:
             menuItemPrice = _context9.sent;
 
 
@@ -428,7 +476,7 @@ describe('update', function () {
               expectedRemovedByUser: expectedRemovedByUser
             });
 
-          case 21:
+          case 27:
           case 'end':
             return _context9.stop();
         }
@@ -542,18 +590,31 @@ describe('search', function () {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
-            _context14.next = 2;
-            return (0, _MenuItemPrice.createMenuItemPriceInfo)();
+            _context14.t0 = _MenuItemPrice.createMenuItemPriceInfo;
+            _context14.next = 3;
+            return createMenuItemPrices(2, false, false);
 
-          case 2:
+          case 3:
+            _context14.t1 = function (_) {
+              return _.get('id');
+            };
+
+            _context14.t2 = _context14.sent.map(_context14.t1);
+            _context14.t3 = {
+              toBeServedWithMenuItemPriceIds: _context14.t2
+            };
+            _context14.next = 8;
+            return (0, _context14.t0)(_context14.t3);
+
+          case 8:
             _ref20 = _context14.sent;
             expectedMenuItemPrice = _ref20.menuItemPrice;
             expectedMenuItem = _ref20.menuItem;
             expectedChoiceItemPrices = _ref20.choiceItemPrices;
             expectedAddedByUser = _ref20.addedByUser;
             expectedRemovedByUser = _ref20.removedByUser;
-            _context14.t0 = _immutable2.default;
-            _context14.next = 11;
+            _context14.t4 = _immutable2.default;
+            _context14.next = 17;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -569,13 +630,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 11:
-            _context14.t1 = _context14.sent;
-            results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 15;
+          case 17:
+            _context14.t5 = _context14.sent;
+            results = _context14.t4.fromJS.call(_context14.t4, _context14.t5);
+            _context14.next = 21;
             return menuItemPriceService.search(createCriteria(expectedMenuItemPrice));
 
-          case 15:
+          case 21:
             menuItemPrices = _context14.sent;
 
 
@@ -593,7 +654,7 @@ describe('search', function () {
               });
             });
 
-          case 18:
+          case 24:
           case 'end':
             return _context14.stop();
         }
@@ -645,18 +706,31 @@ describe('searchAll', function () {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
-            _context17.next = 2;
-            return (0, _MenuItemPrice.createMenuItemPriceInfo)();
+            _context17.t0 = _MenuItemPrice.createMenuItemPriceInfo;
+            _context17.next = 3;
+            return createMenuItemPrices(2, false, false);
 
-          case 2:
+          case 3:
+            _context17.t1 = function (_) {
+              return _.get('id');
+            };
+
+            _context17.t2 = _context17.sent.map(_context17.t1);
+            _context17.t3 = {
+              toBeServedWithMenuItemPriceIds: _context17.t2
+            };
+            _context17.next = 8;
+            return (0, _context17.t0)(_context17.t3);
+
+          case 8:
             _ref24 = _context17.sent;
             expectedMenuItemPrice = _ref24.menuItemPrice;
             expectedMenuItem = _ref24.menuItem;
             expectedChoiceItemPrices = _ref24.choiceItemPrices;
             expectedAddedByUser = _ref24.addedByUser;
             expectedRemovedByUser = _ref24.removedByUser;
-            _context17.t0 = _immutable2.default;
-            _context17.next = 11;
+            _context17.t4 = _immutable2.default;
+            _context17.next = 17;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -672,27 +746,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 11:
-            _context17.t1 = _context17.sent;
-            results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
+          case 17:
+            _context17.t5 = _context17.sent;
+            results = _context17.t4.fromJS.call(_context17.t4, _context17.t5);
             menuItemPrices = (0, _immutable.List)();
             result = menuItemPriceService.searchAll(createCriteria(expectedMenuItemPrice));
-            _context17.prev = 15;
+            _context17.prev = 21;
 
             result.event.subscribe(function (info) {
               menuItemPrices = menuItemPrices.push(info);
             });
 
-            _context17.next = 19;
+            _context17.next = 25;
             return result.promise;
 
-          case 19:
-            _context17.prev = 19;
+          case 25:
+            _context17.prev = 25;
 
             result.event.unsubscribeAll();
-            return _context17.finish(19);
+            return _context17.finish(25);
 
-          case 22:
+          case 28:
 
             expect(menuItemPrices.count).toBe(results.count);
             menuItemPrices.forEach(function (menuItemPrice) {
@@ -708,12 +782,12 @@ describe('searchAll', function () {
               });
             });
 
-          case 24:
+          case 30:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[15,, 19, 22]]);
+    }, _callee17, undefined, [[21,, 25, 28]]);
   })));
 });
 

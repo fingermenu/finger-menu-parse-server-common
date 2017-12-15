@@ -28,13 +28,14 @@ var MenuItemPriceService = function (_ServiceBase) {
   return MenuItemPriceService;
 }(_microBusinessParseServerCommon.ServiceBase);
 
-MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'choiceItemPrices', 'addedByUser', 'removedByUser');
+MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser');
 
 MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
+  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'toBeServedWithMenuItemPrices');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItem');
   _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
@@ -61,6 +62,7 @@ MenuItemPriceService.buildSearchQuery = function (criteria) {
   _microBusinessParseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
   _microBusinessParseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItem', _schema.MenuItem);
+  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'toBeServedWithMenuItemPrice', 'toBeServedWithMenuItemPrices', _schema.MenuItemPrice);
   _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', _schema.ChoiceItemPrice);
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
   _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');

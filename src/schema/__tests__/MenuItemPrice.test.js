@@ -1,7 +1,7 @@
 // @flow
 
 import Chance from 'chance';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 import { ParseWrapperService } from 'micro-business-parse-server-common';
 import uuid from 'uuid/v4';
 import { MenuItemPrice } from '../';
@@ -10,7 +10,7 @@ import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceServ
 
 const chance = new Chance();
 
-export const createMenuItemPriceInfo = async () => {
+export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds } = {}) => {
   const menuItem = (await createMenuItems(chance.integer({ min: 1, max: 1 }))).first();
   const choiceItemPrices = await createChoiceItemPrices(chance.integer({ min: 1, max: 3 }));
   const addedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
@@ -21,6 +21,7 @@ export const createMenuItemPriceInfo = async () => {
     validFrom: new Date(),
     validUntil: new Date(),
     menuItemId: menuItem.get('id'),
+    toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPriceIds || List(),
     choiceItemPriceIds: choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')),
     addedByUserId: addedByUser.id,
     removedByUserId: removedByUser.id,
@@ -43,6 +44,7 @@ export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, e
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
+  expect(object.get('toBeServedWithMenuItemPriceIds')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceIds'));
   expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));

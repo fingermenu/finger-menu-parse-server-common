@@ -35,6 +35,9 @@ var chance = new _chance2.default();
 
 var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        toBeServedWithMenuItemPriceIds = _ref2.toBeServedWithMenuItemPriceIds;
+
     var menuItem, choiceItemPrices, addedByUser, removedByUser, menuItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -66,6 +69,7 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               validFrom: new Date(),
               validUntil: new Date(),
               menuItemId: menuItem.get('id'),
+              toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPriceIds || (0, _immutable.List)(),
               choiceItemPriceIds: choiceItemPrices.map(function (choiceItemPrice) {
                 return choiceItemPrice.get('id');
               }),
@@ -94,7 +98,7 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
 }();
 
 var createMenuItemPrice = exports.createMenuItemPrice = function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -125,22 +129,23 @@ var createMenuItemPrice = exports.createMenuItemPrice = function () {
     }, _callee2, undefined);
   }));
 
-  return function createMenuItemPrice(_x) {
-    return _ref2.apply(this, arguments);
+  return function createMenuItemPrice(_x2) {
+    return _ref3.apply(this, arguments);
   };
 }();
 
 var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemPrice(object, expectedObject) {
-  var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      menuItemPriceId = _ref3.menuItemPriceId,
-      expectedMenuItem = _ref3.expectedMenuItem,
-      expectedChoiceItemPrices = _ref3.expectedChoiceItemPrices;
+  var _ref4 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      menuItemPriceId = _ref4.menuItemPriceId,
+      expectedMenuItem = _ref4.expectedMenuItem,
+      expectedChoiceItemPrices = _ref4.expectedChoiceItemPrices;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
+  expect(object.get('toBeServedWithMenuItemPriceIds')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceIds'));
   expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
@@ -185,7 +190,7 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, menuItemPrice, object, info;
+    var _ref7, menuItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -195,8 +200,8 @@ describe('static public methods', function () {
             return createMenuItemPriceInfo();
 
           case 2:
-            _ref6 = _context4.sent;
-            menuItemPrice = _ref6.menuItemPrice;
+            _ref7 = _context4.sent;
+            menuItemPrice = _ref7.menuItemPrice;
             _context4.next = 6;
             return createMenuItemPrice(menuItemPrice);
 
@@ -264,7 +269,7 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedMenuItemPrice, info;
+    var object, _ref11, updatedMenuItemPrice, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
@@ -279,8 +284,8 @@ describe('public methods', function () {
             return createMenuItemPriceInfo();
 
           case 5:
-            _ref10 = _context7.sent;
-            updatedMenuItemPrice = _ref10.menuItemPrice;
+            _ref11 = _context7.sent;
+            updatedMenuItemPrice = _ref11.menuItemPrice;
 
 
             object.updateInfo(updatedMenuItemPrice);
@@ -299,7 +304,7 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, menuItemPrice, object, info;
+    var _ref13, menuItemPrice, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
@@ -309,8 +314,8 @@ describe('public methods', function () {
             return createMenuItemPriceInfo();
 
           case 2:
-            _ref12 = _context8.sent;
-            menuItemPrice = _ref12.menuItemPrice;
+            _ref13 = _context8.sent;
+            menuItemPrice = _ref13.menuItemPrice;
             _context8.next = 6;
             return createMenuItemPrice(menuItemPrice);
 

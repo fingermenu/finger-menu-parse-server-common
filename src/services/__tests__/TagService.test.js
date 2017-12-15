@@ -50,7 +50,7 @@ const createTags = async (count, useSameInfo = false, createParentTag = true) =>
       }
 
       return tagService.read(
-        await tagService.create(createParentTag ? finalTag.merge(Map({ parentTagId: parentTag.get('id') })) : finalTag),
+        await tagService.create(createParentTag ? finalTag.set('parentTagId', parentTag.get('id')) : finalTag),
         createCriteriaWthoutConditions(),
       );
     })

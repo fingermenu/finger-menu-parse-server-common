@@ -12,7 +12,17 @@ const menuItemPriceService = new MenuItemPriceService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'choiceItemPrices', 'addedByUser', 'removedByUser'),
+    fields: List.of(
+      'currentPrice',
+      'wasPrice',
+      'validFrom',
+      'validUntil',
+      'menuItem',
+      'toBeServedWithMenuItemPrices',
+      'choiceItemPrices',
+      'addedByUser',
+      'removedByUser',
+    ),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true,
@@ -26,13 +36,15 @@ const createCriteria = menuItemPrice =>
       validFrom: menuItemPrice ? menuItemPrice.get('validFrom') : new Date(),
       validUntil: menuItemPrice ? menuItemPrice.get('validUntil') : new Date(),
       menuItemId: menuItemPrice ? menuItemPrice.get('menuItemId') : uuid(),
+      toBeServedWithMenuItemPriceIds: menuItemPrice ? menuItemPrice.get('toBeServedWithMenuItemPriceIds') : List(),
       choiceItemPriceIds: menuItemPrice ? menuItemPrice.get('choiceItemPriceIds') : List.of(uuid(), uuid()),
       addedByUserId: menuItemPrice ? menuItemPrice.get('addedByUserId') : uuid(),
       removedByUserId: menuItemPrice ? menuItemPrice.get('removedByUserId') : uuid(),
     }),
   }).merge(createCriteriaWthoutConditions());
 
-const createMenuItemPrices = async (count, useSameInfo = false) => {
+const createMenuItemPrices = async (count, useSameInfo = false, createToBeServerWithMenuItemPrices = true) => {
+  const toBeServedWithMenuItemPrices = createToBeServerWithMenuItemPrices ? await createMenuItemPrices(2, false, false) : List();
   let menuItemPrice;
 
   if (useSameInfo) {
@@ -53,7 +65,12 @@ const createMenuItemPrices = async (count, useSameInfo = false) => {
         finalMenuItemPrice = tempMenuItemPrice;
       }
 
-      return menuItemPriceService.read(await menuItemPriceService.create(finalMenuItemPrice), createCriteriaWthoutConditions());
+      return menuItemPriceService.read(
+        await menuItemPriceService.create(createToBeServerWithMenuItemPrices
+          ? finalMenuItemPrice.set('toBeServedWithMenuItemPriceIds', toBeServedWithMenuItemPrices.map(_ => _.get('id')))
+          : finalMenuItemPrice),
+        createCriteriaWthoutConditions(),
+      );
     })
     .toArray()));
 };
@@ -94,7 +111,7 @@ describe('read', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
-    } = await createMenuItemPriceInfo();
+    } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const menuItemPriceId = await menuItemPriceService.create(expectedMenuItemPrice);
     const menuItemPrice = await menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
 
@@ -139,7 +156,7 @@ describe('update', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
-    } = await createMenuItemPriceInfo();
+    } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const menuItemPriceId = await menuItemPriceService.create((await createMenuItemPriceInfo()).menuItemPrice);
 
     await menuItemPriceService.update(expectedMenuItemPrice.set('id', menuItemPriceId));
@@ -193,7 +210,7 @@ describe('search', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
-    } = await createMenuItemPriceInfo();
+    } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
       .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
       .toArray()));
@@ -238,7 +255,7 @@ describe('searchAll', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
-    } = await createMenuItemPriceInfo();
+    } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
       .toArray()));

@@ -20,6 +20,7 @@ export default class MenuItemPrice extends BaseObject {
     object.set('validFrom', info.get('validFrom'));
     object.set('validUntil', info.get('validUntil'));
     BaseObject.createPointer(object, info, 'menuItem', MenuItem);
+    BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
     BaseObject.createArrayPointer(object, info, 'choiceItemPrice', ChoiceItemPrice);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
@@ -38,6 +39,11 @@ export default class MenuItemPrice extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const menuItem = object.get('menuItem');
+    const toBeServedWithMenuItemPriceObjects = object.get('toBeServedWithMenuItemPrices');
+    const toBeServedWithMenuItemPrices = toBeServedWithMenuItemPriceObjects
+      ? Immutable.fromJS(toBeServedWithMenuItemPriceObjects).map(toBeServedWithMenuItemPrice =>
+        new MenuItemPrice(toBeServedWithMenuItemPrice).getInfo())
+      : undefined;
     const choiceItemPriceObjects = object.get('choiceItemPrices');
     const choiceItemPrices = choiceItemPriceObjects
       ? Immutable.fromJS(choiceItemPriceObjects).map(choiceItemPrice => new ChoiceItemPrice(choiceItemPrice).getInfo())
@@ -53,6 +59,10 @@ export default class MenuItemPrice extends BaseObject {
       validUntil: object.get('validUntil'),
       menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
+      toBeServedWithMenuItemPrices,
+      toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPrices
+        ? toBeServedWithMenuItemPrices.map(toBeServedWithMenuItemPrice => toBeServedWithMenuItemPrice.get('id'))
+        : List(),
       choiceItemPrices,
       choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')) : List(),
       addedByUser,

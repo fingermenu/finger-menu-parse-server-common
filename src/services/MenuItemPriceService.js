@@ -5,7 +5,17 @@ import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-co
 import { ChoiceItemPrice, MenuItemPrice, MenuItem } from '../schema';
 
 export default class MenuItemPriceService extends ServiceBase {
-  static fields = List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'choiceItemPrices', 'addedByUser', 'removedByUser');
+  static fields = List.of(
+    'currentPrice',
+    'wasPrice',
+    'validFrom',
+    'validUntil',
+    'menuItem',
+    'toBeServedWithMenuItemPrices',
+    'choiceItemPrices',
+    'addedByUser',
+    'removedByUser',
+  );
 
   constructor() {
     super(MenuItemPrice, MenuItemPriceService.buildSearchQuery, MenuItemPriceService.buildIncludeQuery, 'menu item price');
@@ -16,6 +26,7 @@ export default class MenuItemPriceService extends ServiceBase {
       return query;
     }
 
+    ServiceBase.addIncludeQuery(criteria, query, 'toBeServedWithMenuItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'menuItem');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
@@ -42,6 +53,7 @@ export default class MenuItemPriceService extends ServiceBase {
     ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
     ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
     ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItem', MenuItem);
+    ServiceBase.addLinkQuery(conditions, query, 'toBeServedWithMenuItemPrice', 'toBeServedWithMenuItemPrices', MenuItemPrice);
     ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', ChoiceItemPrice);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
