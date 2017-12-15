@@ -61,7 +61,6 @@ Restaurant.updateInfoInternal = function (object, info) {
   }
 
   object.set('geoLocation', info.get('geoLocation'));
-  object.set('forDisplay', info.get('forDisplay'));
   _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'parentRestaurant', Restaurant);
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
@@ -99,7 +98,6 @@ var _initialiseProps = function _initialiseProps() {
       address: object.get('address'),
       phones: _immutable2.default.fromJS(object.get('phones')),
       geoLocation: object.get('geoLocation'),
-      forDisplay: object.get('forDisplay'),
       parentRestaurant: parentRestaurant ? parentRestaurant.getInfo() : undefined,
       parentRestaurantId: parentRestaurant ? parentRestaurant.getId() : undefined,
       ownedByUser: ownedByUser,

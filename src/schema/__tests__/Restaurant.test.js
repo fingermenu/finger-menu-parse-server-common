@@ -28,7 +28,6 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
       latitude: chance.floating({ min: 1, max: 20 }),
       longitude: chance.floating({ min: -30, max: -1 }),
     }),
-    forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
     parentRestaurantId,
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
@@ -55,7 +54,6 @@ export const expectRestaurant = (object, expectedObject, { expectedMenus } = {})
   expect(object.get('address')).toBe(expectedObject.get('address'));
   expect(object.get('phones')).toEqual(expectedObject.get('phones'));
   expect(object.get('geoLocation')).toEqual(expectedObject.get('geoLocation'));
-  expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
   expect(object.get('parentRestaurantId')).toBe(expectedObject.get('parentRestaurantId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));

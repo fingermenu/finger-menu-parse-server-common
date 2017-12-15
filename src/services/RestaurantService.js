@@ -12,7 +12,6 @@ export default class RestaurantService extends ServiceBase {
     'address',
     'phones',
     'geoLocation',
-    'forDisplay',
     'parentRestaurant',
     'ownedByUser',
     'maintainedByUsers',
@@ -57,7 +56,6 @@ export default class RestaurantService extends ServiceBase {
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');
     ServiceBase.addGeoLocationQuery(conditions, query, 'geoLocation', 'geoLocation');
-    ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
     ServiceBase.addLinkQuery(conditions, query, 'parentRestaurant', 'parentRestaurant', Restaurant);
     ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');

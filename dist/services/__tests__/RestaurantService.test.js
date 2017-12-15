@@ -33,7 +33,7 @@ var restaurantService = new _2.RestaurantService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'forDisplay', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus'),
+    fields: _immutable.List.of('name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus'),
     include_parentRestaurant: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
@@ -53,7 +53,6 @@ var createCriteria = function createCriteria(restaurant) {
         latitude: chance.floating({ min: 1, max: 20 }),
         longitude: chance.floating({ min: -30, max: -1 })
       }),
-      forDisplay: restaurant ? restaurant.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
       parentRestaurantId: restaurant && restaurant.get('parentRestaurantId') ? restaurant.get('parentRestaurantId') : undefined,
       ownedByUserId: restaurant ? restaurant.get('ownedByUserId') : (0, _v2.default)(),
       maintainedByUserIds: restaurant ? restaurant.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),

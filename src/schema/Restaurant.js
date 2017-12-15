@@ -28,7 +28,6 @@ export default class Restaurant extends BaseObject {
     }
 
     object.set('geoLocation', info.get('geoLocation'));
-    object.set('forDisplay', info.get('forDisplay'));
     BaseObject.createPointer(object, info, 'parentRestaurant', Restaurant);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
@@ -65,7 +64,6 @@ export default class Restaurant extends BaseObject {
       address: object.get('address'),
       phones: Immutable.fromJS(object.get('phones')),
       geoLocation: object.get('geoLocation'),
-      forDisplay: object.get('forDisplay'),
       parentRestaurant: parentRestaurant ? parentRestaurant.getInfo() : undefined,
       parentRestaurantId: parentRestaurant ? parentRestaurant.getId() : undefined,
       ownedByUser,
