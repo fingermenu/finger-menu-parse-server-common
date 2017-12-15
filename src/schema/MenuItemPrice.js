@@ -1,7 +1,8 @@
 // @flow
 
-import { Map } from 'immutable';
+import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from 'micro-business-parse-server-common';
+import ChoiceItemPrice from './ChoiceItemPrice';
 import MenuItem from './MenuItem';
 
 export default class MenuItemPrice extends BaseObject {
@@ -19,6 +20,7 @@ export default class MenuItemPrice extends BaseObject {
     object.set('validFrom', info.get('validFrom'));
     object.set('validUntil', info.get('validUntil'));
     BaseObject.createPointer(object, info, 'menuItem', MenuItem);
+    BaseObject.createArrayPointer(object, info, 'choiceItemPrice', ChoiceItemPrice);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
   };
@@ -36,6 +38,10 @@ export default class MenuItemPrice extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const menuItem = object.get('menuItem');
+    const choiceItemPriceObjects = object.get('choiceItemPrices');
+    const choiceItemPrices = choiceItemPriceObjects
+      ? Immutable.fromJS(choiceItemPriceObjects).map(choiceItemPrice => new ChoiceItemPrice(choiceItemPrice).getInfo())
+      : undefined;
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
 
@@ -47,6 +53,8 @@ export default class MenuItemPrice extends BaseObject {
       validUntil: object.get('validUntil'),
       menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
+      choiceItemPrices,
+      choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')) : List(),
       addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser,

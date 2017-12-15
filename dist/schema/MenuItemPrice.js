@@ -6,7 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _immutable = require('immutable');
 
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+
+var _ChoiceItemPrice = require('./ChoiceItemPrice');
+
+var _ChoiceItemPrice2 = _interopRequireDefault(_ChoiceItemPrice);
 
 var _MenuItem = require('./MenuItem');
 
@@ -50,6 +56,7 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
   _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
+  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
 };
@@ -66,6 +73,10 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
     var menuItem = object.get('menuItem');
+    var choiceItemPriceObjects = object.get('choiceItemPrices');
+    var choiceItemPrices = choiceItemPriceObjects ? _immutable2.default.fromJS(choiceItemPriceObjects).map(function (choiceItemPrice) {
+      return new _ChoiceItemPrice2.default(choiceItemPrice).getInfo();
+    }) : undefined;
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
 
@@ -77,6 +88,10 @@ var _initialiseProps = function _initialiseProps() {
       validUntil: object.get('validUntil'),
       menuItem: menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
+      choiceItemPrices: choiceItemPrices,
+      choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(function (choiceItemPrice) {
+        return choiceItemPrice.get('id');
+      }) : (0, _immutable.List)(),
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser: removedByUser,

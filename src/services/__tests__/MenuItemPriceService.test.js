@@ -12,7 +12,7 @@ const menuItemPriceService = new MenuItemPriceService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'addedByUser', 'removedByUser'),
+    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'choiceItemPrices', 'addedByUser', 'removedByUser'),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true,
@@ -26,6 +26,7 @@ const createCriteria = menuItemPrice =>
       validFrom: menuItemPrice ? menuItemPrice.get('validFrom') : new Date(),
       validUntil: menuItemPrice ? menuItemPrice.get('validUntil') : new Date(),
       menuItemId: menuItemPrice ? menuItemPrice.get('menuItemId') : uuid(),
+      choiceItemPriceIds: menuItemPrice ? menuItemPrice.get('choiceItemPriceIds') : List.of(uuid(), uuid()),
       addedByUserId: menuItemPrice ? menuItemPrice.get('addedByUserId') : uuid(),
       removedByUserId: menuItemPrice ? menuItemPrice.get('removedByUserId') : uuid(),
     }),
@@ -90,6 +91,7 @@ describe('read', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo();
@@ -99,6 +101,7 @@ describe('read', () => {
     expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
       menuItemPriceId,
       expectedMenuItem,
+      expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
     });
@@ -133,6 +136,7 @@ describe('update', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo();
@@ -145,6 +149,7 @@ describe('update', () => {
     expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
       menuItemPriceId,
       expectedMenuItem,
+      expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
     });
@@ -185,6 +190,7 @@ describe('search', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo();
@@ -199,6 +205,7 @@ describe('search', () => {
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),
         expectedMenuItem,
+        expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,
       });
@@ -228,6 +235,7 @@ describe('searchAll', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo();
@@ -254,6 +262,7 @@ describe('searchAll', () => {
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),
         expectedMenuItem,
+        expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,
       });

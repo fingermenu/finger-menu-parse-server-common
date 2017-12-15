@@ -17,11 +17,15 @@ var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
 
-var _ = require('../');
+var _2 = require('../');
 
 var _MenuItemService = require('../../services/__tests__/MenuItemService.test');
 
 var _MenuItemService2 = _interopRequireDefault(_MenuItemService);
+
+var _ChoiceItemPriceService = require('../../services/__tests__/ChoiceItemPriceService.test');
+
+var _ChoiceItemPriceService2 = _interopRequireDefault(_ChoiceItemPriceService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,7 +35,7 @@ var chance = new _chance2.default();
 
 var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var menuItem, addedByUser, removedByUser, menuItemPrice;
+    var menuItem, choiceItemPrices, addedByUser, removedByUser, menuItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -42,14 +46,19 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
           case 2:
             menuItem = _context.sent.first();
             _context.next = 5;
-            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return (0, _ChoiceItemPriceService2.default)(chance.integer({ min: 1, max: 3 }));
 
           case 5:
-            addedByUser = _context.sent;
+            choiceItemPrices = _context.sent;
             _context.next = 8;
             return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
           case 8:
+            addedByUser = _context.sent;
+            _context.next = 11;
+            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+
+          case 11:
             removedByUser = _context.sent;
             menuItemPrice = (0, _immutable.Map)({
               currentPrice: chance.floating({ min: 0, max: 1000 }),
@@ -57,17 +66,21 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               validFrom: new Date(),
               validUntil: new Date(),
               menuItemId: menuItem.get('id'),
+              choiceItemPriceIds: choiceItemPrices.map(function (choiceItemPrice) {
+                return choiceItemPrice.get('id');
+              }),
               addedByUserId: addedByUser.id,
               removedByUserId: removedByUser.id
             });
             return _context.abrupt('return', {
               menuItemPrice: menuItemPrice,
               menuItem: menuItem,
+              choiceItemPrices: choiceItemPrices,
               addedByUser: addedByUser,
               removedByUser: removedByUser
             });
 
-          case 11:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -86,7 +99,7 @@ var createMenuItemPrice = exports.createMenuItemPrice = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _.MenuItemPrice;
+            _context2.t0 = _2.MenuItemPrice;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -120,13 +133,15 @@ var createMenuItemPrice = exports.createMenuItemPrice = function () {
 var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemPrice(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       menuItemPriceId = _ref3.menuItemPriceId,
-      expectedMenuItem = _ref3.expectedMenuItem;
+      expectedMenuItem = _ref3.expectedMenuItem,
+      expectedChoiceItemPrices = _ref3.expectedChoiceItemPrices;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
+  expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
 
@@ -136,6 +151,12 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
 
   if (expectedMenuItem) {
     expect(object.get('menuItemId')).toEqual(expectedMenuItem.get('id'));
+  }
+
+  if (expectedChoiceItemPrices) {
+    expect(object.get('choiceItemPriceIds')).toEqual(expectedChoiceItemPrices.map(function (_) {
+      return _.get('id');
+    }));
   }
 };
 
@@ -209,7 +230,7 @@ describe('public methods', function () {
             object = _context5.sent;
 
 
-            expect(new _.MenuItemPrice(object).getObject()).toBe(object);
+            expect(new _2.MenuItemPrice(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -232,7 +253,7 @@ describe('public methods', function () {
             object = _context6.sent;
 
 
-            expect(new _.MenuItemPrice(object).getId()).toBe(object.id);
+            expect(new _2.MenuItemPrice(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
