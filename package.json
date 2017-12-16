@@ -1,6 +1,6 @@
 {
   "name": "finger-menu-parse-server-common",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -18,8 +18,8 @@
   "homepage": "https://bitbucket.org/fingermenu/finger-menu-parse-server-common#readme",
   "dependencies": {
     "immutable": "^4.0.0-rc.9",
-    "micro-business-common-javascript": "^1.1.1",
-    "micro-business-parse-server-common": "1.1.3"
+    "micro-business-common-javascript": "^1.1.3",
+    "micro-business-parse-server-common": "1.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
