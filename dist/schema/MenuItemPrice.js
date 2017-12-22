@@ -8,7 +8,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _ChoiceItemPrice = require('./ChoiceItemPrice');
 
@@ -40,7 +40,7 @@ var MenuItemPrice = function (_BaseObject) {
   }
 
   return MenuItemPrice;
-}(_microBusinessParseServerCommon.BaseObject);
+}(_parseServerCommon.BaseObject);
 
 MenuItemPrice.spawn = function (info) {
   var object = new MenuItemPrice();
@@ -55,11 +55,11 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   object.set('wasPrice', info.get('wasPrice'));
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
-  _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
-  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
-  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
+  _parseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {

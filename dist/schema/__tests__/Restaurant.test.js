@@ -13,7 +13,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _v = require('uuid/v4');
 
@@ -43,14 +43,14 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
           case 0:
             chance = new _chance2.default();
             _context.next = 3;
-            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
           case 3:
             ownedByUser = _context.sent;
             _context.t0 = _immutable2.default;
             _context.next = 7;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+              return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
             }).toArray());
 
           case 7:
@@ -67,7 +67,7 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               imageUrl: (0, _v2.default)(),
               address: (0, _v2.default)(),
               phones: _immutable.List.of((0, _immutable.Map)({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() }), (0, _immutable.Map)({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() })),
-              geoLocation: _microBusinessParseServerCommon.ParseWrapperService.createGeoPoint({
+              geoLocation: _parseServerCommon.ParseWrapperService.createGeoPoint({
                 latitude: chance.floating({ min: 1, max: 20 }),
                 longitude: chance.floating({ min: -30, max: -1 })
               }),

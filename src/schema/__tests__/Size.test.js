@@ -2,7 +2,7 @@
 
 import Chance from 'chance';
 import Immutable, { Map, Range } from 'immutable';
-import { ParseWrapperService } from 'micro-business-parse-server-common';
+import { ParseWrapperService } from '@microbusiness/parse-server-common';
 import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { Size } from '../';

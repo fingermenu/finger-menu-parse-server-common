@@ -8,7 +8,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _Tag = require('./Tag');
 
@@ -36,7 +36,7 @@ var ChoiceItem = function (_BaseObject) {
   }
 
   return ChoiceItem;
-}(_microBusinessParseServerCommon.BaseObject);
+}(_parseServerCommon.BaseObject);
 
 ChoiceItem.spawn = function (info) {
   var object = new ChoiceItem();
@@ -47,13 +47,13 @@ ChoiceItem.spawn = function (info) {
 };
 
 ChoiceItem.updateInfoInternal = function (object, info) {
-  _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
-  _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'description');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'description');
   object.set('choiceItemPageUrl', info.get('choiceItemPageUrl'));
   object.set('imageUrl', info.get('imageUrl'));
-  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
-  _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
+  _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {

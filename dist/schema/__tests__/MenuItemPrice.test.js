@@ -11,7 +11,7 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _v = require('uuid/v4');
 
@@ -54,12 +54,12 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
           case 5:
             choiceItemPrices = _context.sent;
             _context.next = 8;
-            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
           case 8:
             addedByUser = _context.sent;
             _context.next = 11;
-            return _microBusinessParseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
 
           case 11:
             removedByUser = _context.sent;

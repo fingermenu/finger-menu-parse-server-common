@@ -8,7 +8,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _Menu = require('./Menu');
 
@@ -36,7 +36,7 @@ var Restaurant = function (_BaseObject) {
   }
 
   return Restaurant;
-}(_microBusinessParseServerCommon.BaseObject);
+}(_parseServerCommon.BaseObject);
 
 Restaurant.spawn = function (info) {
   var object = new Restaurant();
@@ -47,7 +47,7 @@ Restaurant.spawn = function (info) {
 };
 
 Restaurant.updateInfoInternal = function (object, info) {
-  _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
   object.set('websiteUrl', info.get('websiteUrl'));
   object.set('imageUrl', info.get('imageUrl'));
   object.set('address', info.get('address'));
@@ -61,12 +61,12 @@ Restaurant.updateInfoInternal = function (object, info) {
   }
 
   object.set('geoLocation', info.get('geoLocation'));
-  _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'parentRestaurant', Restaurant);
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
-  _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+  _parseServerCommon.BaseObject.createPointer(object, info, 'parentRestaurant', Restaurant);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
+  _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   object.set('status', info.get('status'));
   object.set('googleMapUrl', info.get('googleMapUrl'));
-  _microBusinessParseServerCommon.BaseObject.createArrayPointer(object, info, 'menu', _Menu2.default);
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'menu', _Menu2.default);
   object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
 };
 

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _immutable = require('immutable');
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _schema = require('../schema');
 
@@ -26,7 +26,7 @@ var ChoiceItemPriceService = function (_ServiceBase) {
   }
 
   return ChoiceItemPriceService;
-}(_microBusinessParseServerCommon.ServiceBase);
+}(_parseServerCommon.ServiceBase);
 
 ChoiceItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'addedByUser', 'removedByUser');
 
@@ -35,15 +35,15 @@ ChoiceItemPriceService.buildIncludeQuery = function (query, criteria) {
     return query;
   }
 
-  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItem');
-  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
-  _microBusinessParseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItem');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
 
   return query;
 };
 
 ChoiceItemPriceService.buildSearchQuery = function (criteria) {
-  var queryWithoutIncludes = _microBusinessParseServerCommon.ParseWrapperService.createQuery(_schema.ChoiceItemPrice, criteria);
+  var queryWithoutIncludes = _parseServerCommon.ParseWrapperService.createQuery(_schema.ChoiceItemPrice, criteria);
   var query = ChoiceItemPriceService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
   if (!criteria.has('conditions')) {
@@ -53,15 +53,15 @@ ChoiceItemPriceService.buildSearchQuery = function (criteria) {
   var conditions = criteria.get('conditions');
 
   ChoiceItemPriceService.fields.forEach(function (field) {
-    _microBusinessParseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
+    _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _microBusinessParseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'currentPrice', 'currentPrice');
-  _microBusinessParseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'wasPrice', 'wasPrice');
-  _microBusinessParseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
-  _microBusinessParseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
-  _microBusinessParseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItem', 'choiceItem', _schema.ChoiceItem);
-  _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
-  _microBusinessParseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+  _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'currentPrice', 'currentPrice');
+  _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'wasPrice', 'wasPrice');
+  _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
+  _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItem', 'choiceItem', _schema.ChoiceItem);
+  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
+  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
 
   return query;
 };

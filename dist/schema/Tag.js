@@ -8,7 +8,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,7 +32,7 @@ var Tag = function (_BaseObject) {
   }
 
   return Tag;
-}(_microBusinessParseServerCommon.BaseObject);
+}(_parseServerCommon.BaseObject);
 
 Tag.spawn = function (info) {
   var object = new Tag();
@@ -43,13 +43,13 @@ Tag.spawn = function (info) {
 };
 
 Tag.updateInfoInternal = function (object, info) {
-  _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'name');
-  _microBusinessParseServerCommon.BaseObject.createStringColumn(object, info, 'description');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'description');
   object.set('level', info.get('level'));
   object.set('forDisplay', info.get('forDisplay'));
-  _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'parentTag', Tag);
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
-  _microBusinessParseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+  _parseServerCommon.BaseObject.createPointer(object, info, 'parentTag', Tag);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
+  _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {

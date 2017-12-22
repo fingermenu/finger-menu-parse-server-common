@@ -2,7 +2,7 @@
 
 import Chance from 'chance';
 import { Map } from 'immutable';
-import { ParseWrapperService } from 'micro-business-parse-server-common';
+import { ParseWrapperService } from '@microbusiness/parse-server-common';
 import uuid from 'uuid/v4';
 import { ChoiceItemPrice } from '../';
 import createChoiceItems from '../../services/__tests__/ChoiceItemService.test';

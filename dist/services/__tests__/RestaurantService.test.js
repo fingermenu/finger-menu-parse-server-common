@@ -12,7 +12,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _v = require('uuid/v4');
 
@@ -49,7 +49,7 @@ var createCriteria = function createCriteria(restaurant) {
       imageUrl: restaurant ? restaurant.get('imageUrl') : (0, _v2.default)(),
       address: restaurant ? restaurant.get('address') : (0, _v2.default)(),
       phones: restaurant ? restaurant.get('phones') : (0, _immutable.Map)({ business: chance.integer({ min: 1000000, max: 999999999 }).toString() }),
-      near_geoLocation: restaurant ? restaurant.get('geoLocation') : _microBusinessParseServerCommon.ParseWrapperService.createGeoPoint({
+      near_geoLocation: restaurant ? restaurant.get('geoLocation') : _parseServerCommon.ParseWrapperService.createGeoPoint({
         latitude: chance.floating({ min: 1, max: 20 }),
         longitude: chance.floating({ min: -30, max: -1 })
       }),

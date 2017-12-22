@@ -1,7 +1,7 @@
 // @flow
 
 import { List } from 'immutable';
-import { ParseWrapperService, ServiceBase } from 'micro-business-parse-server-common';
+import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
 import { ChoiceItemPrice, MenuItemPrice, MenuItem } from '../schema';
 
 export default class MenuItemPriceService extends ServiceBase {

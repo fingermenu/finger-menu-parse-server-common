@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _immutable = require('immutable');
 
-var _microBusinessParseServerCommon = require('micro-business-parse-server-common');
+var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _ChoiceItem = require('./ChoiceItem');
 
@@ -34,7 +34,7 @@ var ChoiceItemPrice = function (_BaseObject) {
   }
 
   return ChoiceItemPrice;
-}(_microBusinessParseServerCommon.BaseObject);
+}(_parseServerCommon.BaseObject);
 
 ChoiceItemPrice.spawn = function (info) {
   var object = new ChoiceItemPrice();
@@ -49,9 +49,9 @@ ChoiceItemPrice.updateInfoInternal = function (object, info) {
   object.set('wasPrice', info.get('wasPrice'));
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
-  _microBusinessParseServerCommon.BaseObject.createPointer(object, info, 'choiceItem', _ChoiceItem2.default);
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
-  _microBusinessParseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
+  _parseServerCommon.BaseObject.createPointer(object, info, 'choiceItem', _ChoiceItem2.default);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {
