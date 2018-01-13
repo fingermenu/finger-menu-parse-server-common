@@ -13,8 +13,8 @@ export default class Tag extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createStringColumn(object, info, 'name');
-    BaseObject.createStringColumn(object, info, 'description');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
     object.set('level', info.get('level'));
     object.set('forDisplay', info.get('forDisplay'));
     BaseObject.createPointer(object, info, 'parentTag', Tag);

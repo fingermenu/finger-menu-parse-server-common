@@ -17,7 +17,7 @@
   "author": "FingerMenu ltd<fingermenu.ltd@gmail.com>",
   "homepage": "https://bitbucket.org/fingermenu/finger-menu-parse-server-common#readme",
   "dependencies": {
-    "@microbusiness/parse-server-common": "^1.1.11",
+    "@microbusiness/parse-server-common": "^1.1.13",
     "immutable": "^4.0.0-rc.9"
   },
   "devDependencies": {
