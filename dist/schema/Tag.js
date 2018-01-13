@@ -43,8 +43,8 @@ Tag.spawn = function (info) {
 };
 
 Tag.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'description');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
   object.set('level', info.get('level'));
   object.set('forDisplay', info.get('forDisplay'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'parentTag', Tag);
@@ -70,8 +70,8 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      name: object.get('name'),
-      description: object.get('description'),
+      name: _this2.getMultiLanguagesString('name'),
+      description: _this2.getMultiLanguagesString('description'),
       level: object.get('level'),
       forDisplay: object.get('forDisplay'),
       parentTag: parentTag ? parentTag.getInfo() : undefined,

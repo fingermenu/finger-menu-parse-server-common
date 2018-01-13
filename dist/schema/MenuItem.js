@@ -47,8 +47,8 @@ MenuItem.spawn = function (info) {
 };
 
 MenuItem.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'description');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
   object.set('menuItemPageUrl', info.get('menuItemPageUrl'));
   object.set('imageUrl', info.get('imageUrl'));
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
@@ -76,8 +76,8 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      name: object.get('name'),
-      description: object.get('description'),
+      name: _this2.getMultiLanguagesString('name'),
+      description: _this2.getMultiLanguagesString('description'),
       menuItemPageUrl: object.get('menuItemPageUrl'),
       imageUrl: object.get('imageUrl'),
       tags: tags,

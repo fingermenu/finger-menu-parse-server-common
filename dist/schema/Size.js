@@ -43,7 +43,7 @@ Size.spawn = function (info) {
 };
 
 Size.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
@@ -64,7 +64,7 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      name: object.get('name'),
+      name: _this2.getMultiLanguagesString('name'),
       ownedByUser: ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers: maintainedByUsers,

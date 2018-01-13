@@ -14,8 +14,8 @@ export default class ChoiceItem extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createStringColumn(object, info, 'name');
-    BaseObject.createStringColumn(object, info, 'description');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
     object.set('choiceItemPageUrl', info.get('choiceItemPageUrl'));
     object.set('imageUrl', info.get('imageUrl'));
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
@@ -42,8 +42,8 @@ export default class ChoiceItem extends BaseObject {
 
     return Map({
       id: this.getId(),
-      name: object.get('name'),
-      description: object.get('description'),
+      name: this.getMultiLanguagesString('name'),
+      description: this.getMultiLanguagesString('description'),
       choiceItemPageUrl: object.get('choiceItemPageUrl'),
       imageUrl: object.get('imageUrl'),
       tags,

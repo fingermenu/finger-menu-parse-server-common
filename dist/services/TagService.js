@@ -55,8 +55,8 @@ TagService.buildSearchQuery = function (criteria) {
   TagService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
+  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
+  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'description', 'descriptionLowerCase');
   _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'level', 'level');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'parentTag', 'parentTag', _schema.Tag);

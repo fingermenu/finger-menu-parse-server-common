@@ -13,7 +13,7 @@ export default class Size extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createStringColumn(object, info, 'name');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   };
@@ -35,7 +35,7 @@ export default class Size extends BaseObject {
 
     return Map({
       id: this.getId(),
-      name: object.get('name'),
+      name: this.getMultiLanguagesString('name'),
       ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers,

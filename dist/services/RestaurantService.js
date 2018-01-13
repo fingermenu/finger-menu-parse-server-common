@@ -56,7 +56,7 @@ RestaurantService.buildSearchQuery = function (criteria) {
   RestaurantService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
+  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');

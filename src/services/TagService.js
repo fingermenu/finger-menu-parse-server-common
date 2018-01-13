@@ -36,8 +36,8 @@ export default class TagService extends ServiceBase {
     TagService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
-    ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
+    ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
+    ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'description', 'descriptionLowerCase');
     ServiceBase.addNumberQuery(conditions, query, 'level', 'level');
     ServiceBase.addEqualityQuery(conditions, query, 'forDisplay', 'forDisplay');
     ServiceBase.addLinkQuery(conditions, query, 'parentTag', 'parentTag', Tag);

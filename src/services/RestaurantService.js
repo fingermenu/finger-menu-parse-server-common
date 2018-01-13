@@ -51,7 +51,7 @@ export default class RestaurantService extends ServiceBase {
     RestaurantService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
+    ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');

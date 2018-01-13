@@ -55,8 +55,8 @@ ChoiceItemService.buildSearchQuery = function (criteria) {
   ChoiceItemService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
+  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
+  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'description', 'descriptionLowerCase');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'choiceItemPageUrl', 'choiceItemPageUrl');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);

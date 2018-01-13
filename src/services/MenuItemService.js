@@ -36,8 +36,8 @@ export default class MenuItemService extends ServiceBase {
     MenuItemService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addStringQuery(conditions, query, 'name', 'nameLowerCase');
-    ServiceBase.addStringQuery(conditions, query, 'description', 'descriptionLowerCase');
+    ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase');
+    ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'description', 'descriptionLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'menuItemPageUrl', 'menuItemPageUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
     ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', Tag);

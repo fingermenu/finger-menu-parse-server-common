@@ -15,8 +15,8 @@ export default class Menu extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createStringColumn(object, info, 'name');
-    BaseObject.createStringColumn(object, info, 'description');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
     object.set('menuPageUrl', info.get('menuPageUrl'));
     object.set('imageUrl', info.get('imageUrl'));
     BaseObject.createArrayPointer(object, info, 'menuItemPrice', MenuItemPrice);
@@ -48,8 +48,8 @@ export default class Menu extends BaseObject {
 
     return Map({
       id: this.getId(),
-      name: object.get('name'),
-      description: object.get('description'),
+      name: this.getMultiLanguagesString('name'),
+      description: this.getMultiLanguagesString('description'),
       menuPageUrl: object.get('menuPageUrl'),
       imageUrl: object.get('imageUrl'),
       menuItemPrices,

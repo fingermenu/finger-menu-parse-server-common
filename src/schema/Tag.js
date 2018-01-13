@@ -41,8 +41,8 @@ export default class Tag extends BaseObject {
 
     return Map({
       id: this.getId(),
-      name: object.get('name'),
-      description: object.get('description'),
+      name: this.getMultiLanguagesString('name'),
+      description: this.getMultiLanguagesString('description'),
       level: object.get('level'),
       forDisplay: object.get('forDisplay'),
       parentTag: parentTag ? parentTag.getInfo() : undefined,

@@ -14,7 +14,7 @@ export default class Restaurant extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createStringColumn(object, info, 'name');
+    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
     object.set('websiteUrl', info.get('websiteUrl'));
     object.set('imageUrl', info.get('imageUrl'));
     object.set('address', info.get('address'));
@@ -58,7 +58,7 @@ export default class Restaurant extends BaseObject {
 
     return Map({
       id: this.getId(),
-      name: object.get('name'),
+      name: this.getMultiLanguagesString('name'),
       websiteUrl: object.get('websiteUrl'),
       imageUrl: object.get('imageUrl'),
       address: object.get('address'),

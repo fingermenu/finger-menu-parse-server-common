@@ -47,7 +47,7 @@ Restaurant.spawn = function (info) {
 };
 
 Restaurant.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
   object.set('websiteUrl', info.get('websiteUrl'));
   object.set('imageUrl', info.get('imageUrl'));
   object.set('address', info.get('address'));
@@ -92,7 +92,7 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      name: object.get('name'),
+      name: _this2.getMultiLanguagesString('name'),
       websiteUrl: object.get('websiteUrl'),
       imageUrl: object.get('imageUrl'),
       address: object.get('address'),
