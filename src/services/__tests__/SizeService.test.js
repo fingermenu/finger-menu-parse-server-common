@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { SizeService } from '../';
 import { createSizeInfo, expectSize } from '../../schema/__tests__/Size.test';
@@ -10,21 +9,26 @@ import { createSizeInfo, expectSize } from '../../schema/__tests__/Size.test';
 const chance = new Chance();
 const sizeService = new SizeService();
 
-const createCriteriaWthoutConditions = () =>
+const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('name', 'ownedByUser', 'maintainedByUsers'),
+    fields: List.of('languages_name', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
+    language,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
   });
 
-const createCriteria = size =>
-  Map({
+const createCriteria = (size) => {
+  const languages = size ? size.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return Map({
     conditions: Map({
-      name: size ? size.get('name') : uuid(),
-      ownedByUserId: size ? size.get('ownedByUserId') : uuid(),
-      maintainedByUserIds: size ? size.get('maintainedByUserIds') : List.of(uuid(), uuid()),
+      name: language ? size.get('name').get(language) : chance.string(),
+      ownedByUserId: size ? size.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: size ? size.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
+};
 
 const createSizes = async (count, useSameInfo = false) => {
   let size;
@@ -72,7 +76,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided size Id does not exist', async () => {
-    const sizeId = uuid();
+    const sizeId = chance.string();
 
     try {
       await sizeService.read(sizeId);
@@ -96,7 +100,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided size Id does not exist', async () => {
-    const sizeId = uuid();
+    const sizeId = chance.string();
 
     try {
       const size = await sizeService.read(await sizeService.create((await createSizeInfo()).size), createCriteriaWthoutConditions());
@@ -133,7 +137,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided size Id does not exist', async () => {
-    const sizeId = uuid();
+    const sizeId = chance.string();
 
     try {
       await sizeService.delete(sizeId);
