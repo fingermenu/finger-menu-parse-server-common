@@ -3,7 +3,6 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { RestaurantService } from '../';
 import { createRestaurantInfo, expectRestaurant } from '../../schema/__tests__/Restaurant.test';
@@ -11,10 +10,17 @@ import { createRestaurantInfo, expectRestaurant } from '../../schema/__tests__/R
 const chance = new Chance();
 const restaurantService = new RestaurantService();
 
-const createCriteriaWthoutConditions = () =>
+const getLanguages = (object) => {
+  const languages = object ? object.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return { languages, language };
+};
+
+const createCriteriaWthoutConditions = (languages, language) =>
   Map({
     fields: List.of(
-      'name',
+      'languages_name',
       'websiteUrl',
       'imageUrl',
       'address',
@@ -27,36 +33,40 @@ const createCriteriaWthoutConditions = () =>
       'googleMapUrl',
       'menus',
       'inheritParentRestaurantMenus',
-    ),
+    ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
+    language,
     include_parentRestaurant: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
     include_menus: true,
   });
 
-const createCriteria = restaurant =>
-  Map({
+const createCriteria = (object) => {
+  const { language, languages } = getLanguages(object);
+
+  return Map({
     conditions: Map({
-      name: restaurant ? restaurant.get('name') : uuid(),
-      websiteUrl: restaurant ? restaurant.get('websiteUrl') : uuid(),
-      imageUrl: restaurant ? restaurant.get('imageUrl') : uuid(),
-      address: restaurant ? restaurant.get('address') : uuid(),
-      phones: restaurant ? restaurant.get('phones') : Map({ business: chance.integer({ min: 1000000, max: 999999999 }).toString() }),
-      near_geoLocation: restaurant
-        ? restaurant.get('geoLocation')
+      name: language ? object.get('name').get(language) : chance.string(),
+      websiteUrl: object ? object.get('websiteUrl') : chance.string(),
+      imageUrl: object ? object.get('imageUrl') : chance.string(),
+      address: object ? object.get('address') : chance.string(),
+      phones: object ? object.get('phones') : Map({ business: chance.string() }),
+      near_geoLocation: object
+        ? object.get('geoLocation')
         : ParseWrapperService.createGeoPoint({
           latitude: chance.floating({ min: 1, max: 20 }),
           longitude: chance.floating({ min: -30, max: -1 }),
         }),
-      parentRestaurantId: restaurant && restaurant.get('parentRestaurantId') ? restaurant.get('parentRestaurantId') : undefined,
-      ownedByUserId: restaurant ? restaurant.get('ownedByUserId') : uuid(),
-      maintainedByUserIds: restaurant ? restaurant.get('maintainedByUserIds') : List.of(uuid(), uuid()),
-      status: restaurant ? restaurant.get('status') : uuid(),
-      googleMapUrl: restaurant ? restaurant.get('googleMapUrl') : uuid(),
-      menuIds: restaurant ? restaurant.get('menuIds') : List.of(uuid(), uuid()),
-      inheritParentRestaurantMenus: restaurant ? restaurant.get('inheritParentRestaurantMenus') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
+      parentRestaurantId: object && object.get('parentRestaurantId') ? object.get('parentRestaurantId') : undefined,
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
+      status: object ? object.get('status') : chance.string(),
+      googleMapUrl: object ? object.get('googleMapUrl') : chance.string(),
+      menuIds: object ? object.get('menuIds') : List.of(chance.string(), chance.string()),
+      inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
     }),
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
+};
 
 const createRestaurants = async (count, useSameInfo = false, createParentRestaurant = true) => {
   const parentRestaurant = createParentRestaurant ? await createRestaurants(1, false, false) : undefined;
@@ -108,7 +118,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided restaurant Id does not exist', async () => {
-    const restaurantId = uuid();
+    const restaurantId = chance.string();
 
     try {
       await restaurantService.read(restaurantId);
@@ -137,7 +147,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided restaurant Id does not exist', async () => {
-    const restaurantId = uuid();
+    const restaurantId = chance.string();
 
     try {
       const restaurant = await restaurantService.read(
@@ -182,7 +192,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided restaurant Id does not exist', async () => {
-    const restaurantId = uuid();
+    const restaurantId = chance.string();
 
     try {
       await restaurantService.delete(restaurantId);
