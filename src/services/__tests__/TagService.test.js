@@ -9,6 +9,13 @@ import { createTagInfo, expectTag } from '../../schema/__tests__/Tag.test';
 const chance = new Chance();
 const tagService = new TagService();
 
+const getLanguages = (object) => {
+  const languages = object ? object.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return { languages, language };
+};
+
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
     fields: List.of('languages_name', 'languages_description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers')
@@ -20,19 +27,18 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (tag) => {
-  const languages = tag ? tag.get('name').keySeq() : List();
-  const language = languages.isEmpty() ? null : languages.first();
+const createCriteria = (object) => {
+  const { language, languages } = getLanguages(object);
 
   return Map({
     conditions: Map({
-      name: language ? tag.get('name').get(language) : chance.string(),
-      description: language ? tag.get('description').get(language) : chance.string(),
-      level: tag ? tag.get('level') : chance.integer(),
-      forDisplay: tag ? tag.get('forDisplay') : chance.bool(),
-      parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined,
-      ownedByUserId: tag ? tag.get('ownedByUserId') : chance.string(),
-      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
+      name: language ? object.get('name').get(language) : chance.string(),
+      description: language ? object.get('description').get(language) : chance.string(),
+      level: object ? object.get('level') : chance.integer(),
+      forDisplay: object ? object.get('forDisplay') : chance.bool(),
+      parentTagId: object && object.get('parentTagId') ? object.get('parentTagId') : undefined,
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

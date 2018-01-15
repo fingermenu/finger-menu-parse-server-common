@@ -9,6 +9,13 @@ import { createSizeInfo, expectSize } from '../../schema/__tests__/Size.test';
 const chance = new Chance();
 const sizeService = new SizeService();
 
+const getLanguages = (object) => {
+  const languages = object ? object.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return { languages, language };
+};
+
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
     fields: List.of('languages_name', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
@@ -17,15 +24,14 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (size) => {
-  const languages = size ? size.get('name').keySeq() : List();
-  const language = languages.isEmpty() ? null : languages.first();
+const createCriteria = (object) => {
+  const { language, languages } = getLanguages(object);
 
   return Map({
     conditions: Map({
-      name: language ? size.get('name').get(language) : chance.string(),
-      ownedByUserId: size ? size.get('ownedByUserId') : chance.string(),
-      maintainedByUserIds: size ? size.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
+      name: language ? object.get('name').get(language) : chance.string(),
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
