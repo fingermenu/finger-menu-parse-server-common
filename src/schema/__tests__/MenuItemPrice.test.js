@@ -2,8 +2,7 @@
 
 import Chance from 'chance';
 import { List, Map } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import TestHelper from '../../../TestHelper';
 import { MenuItemPrice } from '../';
 import createMenuItems from '../../services/__tests__/MenuItemService.test';
 import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceService.test';
@@ -13,11 +12,11 @@ const chance = new Chance();
 export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds } = {}) => {
   const menuItem = (await createMenuItems(chance.integer({ min: 1, max: 1 }))).first();
   const choiceItemPrices = await createChoiceItemPrices(chance.integer({ min: 1, max: 3 }));
-  const addedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const removedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
+  const addedByUser = await TestHelper.createUser();
+  const removedByUser = await TestHelper.createUser();
   const menuItemPrice = Map({
-    currentPrice: chance.floating({ min: 0, max: 1000 }),
-    wasPrice: chance.floating({ min: 0, max: 1000 }),
+    currentPrice: chance.floating(),
+    wasPrice: chance.floating(),
     validFrom: new Date(),
     validUntil: new Date(),
     menuItemId: menuItem.get('id'),

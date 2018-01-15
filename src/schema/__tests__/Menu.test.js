@@ -1,9 +1,8 @@
 // @flow
 
 import Chance from 'chance';
-import Immutable, { Map, Range } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import { Map } from 'immutable';
+import TestHelper from '../../../TestHelper';
 import { Menu } from '../';
 import createTags from '../../services/__tests__/TagService.test';
 import createMenuItemPrices from '../../services/__tests__/MenuItemPriceService.test';
@@ -11,17 +10,15 @@ import createMenuItemPrices from '../../services/__tests__/MenuItemPriceService.
 const chance = new Chance();
 
 export const createMenuInfo = async () => {
-  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
-    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
-    .toArray()));
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const tags = await createTags(chance.integer({ min: 1, max: 3 }));
   const menuItemPrices = await createMenuItemPrices(chance.integer({ min: 1, max: 3 }));
   const menu = Map({
-    name: uuid(),
-    description: uuid(),
-    menuPageUrl: uuid(),
-    imageUrl: uuid(),
+    name: TestHelper.createRandomMultiLanguagesString(),
+    description: TestHelper.createRandomMultiLanguagesString(),
+    menuPageUrl: chance.string(),
+    imageUrl: chance.string(),
     tagIds: tags.map(tag => tag.get('id')),
     menuItemPriceIds: menuItemPrices.map(menuItemPrice => menuItemPrice.get('id')),
     ownedByUserId: ownedByUser.id,
@@ -40,8 +37,8 @@ export const createMenuInfo = async () => {
 export const createMenu = async object => Menu.spawn(object || (await createMenuInfo()).menu);
 
 export const expectMenu = (object, expectedObject, { menuId, expectedMenuItemPrices, expectedTags } = {}) => {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('menuPageUrl')).toBe(expectedObject.get('menuPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('menuItemPriceIds')).toEqual(expectedObject.get('menuItemPriceIds'));

@@ -2,8 +2,7 @@
 
 import Chance from 'chance';
 import { Map } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import TestHelper from '../../../TestHelper';
 import { ChoiceItemPrice } from '../';
 import createChoiceItems from '../../services/__tests__/ChoiceItemService.test';
 
@@ -11,11 +10,11 @@ const chance = new Chance();
 
 export const createChoiceItemPriceInfo = async () => {
   const choiceItem = (await createChoiceItems(chance.integer({ min: 1, max: 1 }))).first();
-  const addedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const removedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
+  const addedByUser = await TestHelper.createUser();
+  const removedByUser = await TestHelper.createUser();
   const choiceItemPrice = Map({
-    currentPrice: chance.floating({ min: 0, max: 1000 }),
-    wasPrice: chance.floating({ min: 0, max: 1000 }),
+    currentPrice: chance.floating(),
+    wasPrice: chance.floating(),
     validFrom: new Date(),
     validUntil: new Date(),
     choiceItemId: choiceItem.get('id'),

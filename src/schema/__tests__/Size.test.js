@@ -1,21 +1,15 @@
 // @flow
 
-import Chance from 'chance';
-import Immutable, { Map, Range } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import { Map } from 'immutable';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { Size } from '../';
 
-const chance = new Chance();
-
 export const createSizeInfo = async () => {
-  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
-    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
-    .toArray()));
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const size = Map({
-    name: uuid(),
+    name: TestHelper.createRandomMultiLanguagesString(),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
@@ -30,7 +24,7 @@ export const createSizeInfo = async () => {
 export const createSize = async object => Size.spawn(object || (await createSizeInfo()).size);
 
 export const expectSize = (object, expectedObject, { sizeId } = {}) => {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 

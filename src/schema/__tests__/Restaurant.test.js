@@ -1,29 +1,25 @@
 // @flow
 
 import Chance from 'chance';
-import Immutable, { List, Map, Range } from 'immutable';
+import { List, Map } from 'immutable';
 import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { Restaurant } from '../';
 import createMenus from '../../services/__tests__/MenuService.test';
 
+const chance = new Chance();
+
 export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
-  const chance = new Chance();
-  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
-    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
-    .toArray()));
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const menus = await createMenus(chance.integer({ min: 1, max: 3 }));
   const restaurant = Map({
-    name: uuid(),
-    websiteUrl: uuid(),
-    imageUrl: uuid(),
-    address: uuid(),
-    phones: List.of(
-      Map({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() }),
-      Map({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() }),
-    ),
+    name: TestHelper.createRandomMultiLanguagesString(),
+    websiteUrl: chance.string(),
+    imageUrl: chance.string(),
+    address: chance.string(),
+    phones: List.of(Map({ label: 'business', number: chance.string() }), Map({ label: 'business', number: chance.string() })),
     geoLocation: ParseWrapperService.createGeoPoint({
       latitude: chance.floating({ min: 1, max: 20 }),
       longitude: chance.floating({ min: -30, max: -1 }),
@@ -31,10 +27,10 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     parentRestaurantId,
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
-    status: uuid(),
-    googleMapUrl: uuid(),
+    status: chance.string(),
+    googleMapUrl: chance.string(),
     menuIds: menus.map(menu => menu.get('id')),
-    inheritParentRestaurantMenus: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
+    inheritParentRestaurantMenus: chance.integer(),
   });
 
   return {
@@ -48,7 +44,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
 export const createRestaurant = async object => Restaurant.spawn(object || (await createRestaurantInfo()).restaurant);
 
 export const expectRestaurant = (object, expectedObject, { expectedMenus } = {}) => {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('address')).toBe(expectedObject.get('address'));

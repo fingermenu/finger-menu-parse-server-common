@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { TagService } from '../';
 import { createTagInfo, expectTag } from '../../schema/__tests__/Tag.test';
@@ -10,26 +9,33 @@ import { createTagInfo, expectTag } from '../../schema/__tests__/Tag.test';
 const chance = new Chance();
 const tagService = new TagService();
 
-const createCriteriaWthoutConditions = () =>
+const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers'),
+    fields: List.of('languages_name', 'languages_description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers')
+      .concat(languages ? languages.map(_ => `${_}_name`) : List())
+      .concat(languages ? languages.map(_ => `${_}_description`) : List()),
+    language,
     include_parentTag: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
   });
 
-const createCriteria = tag =>
-  Map({
+const createCriteria = (tag) => {
+  const languages = tag ? tag.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return Map({
     conditions: Map({
-      name: tag ? tag.get('name') : uuid(),
-      description: tag ? tag.get('description') : uuid(),
-      level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),
-      forDisplay: tag ? tag.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
+      name: language ? tag.get('name').get(language) : chance.string(),
+      description: language ? tag.get('description').get(language) : chance.string(),
+      level: tag ? tag.get('level') : chance.integer(),
+      forDisplay: tag ? tag.get('forDisplay') : chance.bool(),
       parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined,
-      ownedByUserId: tag ? tag.get('ownedByUserId') : uuid(),
-      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : List.of(uuid(), uuid()),
+      ownedByUserId: tag ? tag.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
+};
 
 const createTags = async (count, useSameInfo = false, createParentTag = true) => {
   const parentTag = createParentTag ? await createTags(1, false, false) : undefined;
@@ -81,7 +87,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided tag Id does not exist', async () => {
-    const tagId = uuid();
+    const tagId = chance.string();
 
     try {
       await tagService.read(tagId);
@@ -106,7 +112,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided tag Id does not exist', async () => {
-    const tagId = uuid();
+    const tagId = chance.string();
 
     try {
       const tag = await tagService.read(await tagService.create((await createTagInfo()).tag), createCriteriaWthoutConditions());
@@ -141,7 +147,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided tag Id does not exist', async () => {
-    const tagId = uuid();
+    const tagId = chance.string();
 
     try {
       await tagService.delete(tagId);

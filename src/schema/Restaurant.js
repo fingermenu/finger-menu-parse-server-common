@@ -35,6 +35,7 @@ export default class Restaurant extends BaseObject {
     object.set('googleMapUrl', info.get('googleMapUrl'));
     BaseObject.createArrayPointer(object, info, 'menu', Menu);
     object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
+    object.set('pin', info.get('pin'));
   };
 
   constructor(object) {
@@ -75,6 +76,7 @@ export default class Restaurant extends BaseObject {
       menus,
       menuIds: menus ? menus.map(menu => menu.get('id')) : List(),
       inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
+      pin: object.get('pin'),
     });
   };
 }

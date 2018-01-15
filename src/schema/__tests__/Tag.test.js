@@ -1,24 +1,21 @@
 // @flow
 
 import Chance from 'chance';
-import Immutable, { Map, Range } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import { Map } from 'immutable';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { Tag } from '../';
 
 const chance = new Chance();
 
 export const createTagInfo = async ({ parentTagId } = {}) => {
-  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
-    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
-    .toArray()));
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const tag = Map({
-    name: uuid(),
-    description: uuid(),
-    level: chance.integer({ min: 1, max: 1000 }),
-    forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
+    name: TestHelper.createRandomMultiLanguagesString(),
+    description: TestHelper.createRandomMultiLanguagesString(),
+    level: chance.integer(),
+    forDisplay: chance.bool(),
     parentTagId,
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
@@ -34,8 +31,8 @@ export const createTagInfo = async ({ parentTagId } = {}) => {
 export const createTag = async object => Tag.spawn(object || (await createTagInfo()).tag);
 
 export const expectTag = (object, expectedObject) => {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('level')).toBe(expectedObject.get('level'));
   expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
   expect(object.get('parentTagId')).toBe(expectedObject.get('parentTagId'));

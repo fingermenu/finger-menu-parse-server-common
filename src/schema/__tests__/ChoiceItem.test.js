@@ -1,25 +1,22 @@
 // @flow
 
 import Chance from 'chance';
-import Immutable, { Map, Range } from 'immutable';
-import { ParseWrapperService } from '@microbusiness/parse-server-common';
-import uuid from 'uuid/v4';
+import { Map } from 'immutable';
+import TestHelper from '../../../TestHelper';
 import { ChoiceItem } from '../';
 import createTags from '../../services/__tests__/TagService.test';
 
 const chance = new Chance();
 
 export const createChoiceItemInfo = async () => {
-  const ownedByUser = await ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp();
-  const maintainedByUsers = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 0, max: 3 }))
-    .map(() => ParseWrapperService.createNewUser({ username: `${uuid()}@email.com`, password: '123456' }).signUp())
-    .toArray()));
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const tags = await createTags(chance.integer({ min: 1, max: 3 }));
   const choiceItem = Map({
-    name: uuid(),
-    description: uuid(),
-    choiceItemPageUrl: uuid(),
-    imageUrl: uuid(),
+    name: TestHelper.createRandomMultiLanguagesString(),
+    description: TestHelper.createRandomMultiLanguagesString(),
+    choiceItemPageUrl: chance.string(),
+    imageUrl: chance.string(),
     tagIds: tags.map(tag => tag.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
@@ -36,8 +33,8 @@ export const createChoiceItemInfo = async () => {
 export const createChoiceItem = async object => ChoiceItem.spawn(object || (await createChoiceItemInfo()).choiceItem);
 
 export const expectChoiceItem = (object, expectedObject, { choiceItemId, expectedTags } = {}) => {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('choiceItemPageUrl')).toBe(expectedObject.get('choiceItemPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
