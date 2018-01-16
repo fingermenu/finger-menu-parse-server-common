@@ -487,7 +487,10 @@ describe('update', function () {
 
 
             (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
-              expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers, expectedMenus: expectedMenus, expectedLanguages: expectedLanguages
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers,
+              expectedMenus: expectedMenus,
+              expectedLanguages: expectedLanguages
             });
 
           case 28:
@@ -660,7 +663,10 @@ describe('search', function () {
                 return _.localeCompare(restaurant.get('id')) === 0;
               })).toBeDefined();
               (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
-                expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers, expectedMenus: expectedMenus, expectedLanguages: expectedLanguages
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers,
+                expectedMenus: expectedMenus,
+                expectedLanguages: expectedLanguages
               });
             });
 
@@ -784,7 +790,10 @@ describe('searchAll', function () {
                 return _.localeCompare(restaurant.get('id')) === 0;
               })).toBeDefined();
               (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
-                expectedOwnedByUser: expectedOwnedByUser, expectedMaintainedByUsers: expectedMaintainedByUsers, expectedMenus: expectedMenus, expectedLanguages: expectedLanguages
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers,
+                expectedMenus: expectedMenus,
+                expectedLanguages: expectedLanguages
               });
             });
 

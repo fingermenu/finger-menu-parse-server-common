@@ -1,6 +1,6 @@
 // @flow
 
-export { ChoiceItem, ChoiceItemPrice, Language, Menu, MenuItem, MenuItemPrice, Restaurant, Size, Tag } from './schema';
+export { ChoiceItem, ChoiceItemPrice, Language, Menu, MenuItem, MenuItemPrice, Restaurant, Size, Table, Tag } from './schema';
 export {
   ChoiceItemService,
   ChoiceItemPriceService,
@@ -10,5 +10,6 @@ export {
   MenuItemPriceService,
   RestaurantService,
   SizeService,
+  TableService,
   TagService,
 } from './services';

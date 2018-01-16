@@ -54,6 +54,12 @@ Object.defineProperty(exports, 'Size', {
     return _schema.Size;
   }
 });
+Object.defineProperty(exports, 'Table', {
+  enumerable: true,
+  get: function get() {
+    return _schema.Table;
+  }
+});
 Object.defineProperty(exports, 'Tag', {
   enumerable: true,
   get: function get() {
@@ -109,6 +115,12 @@ Object.defineProperty(exports, 'SizeService', {
   enumerable: true,
   get: function get() {
     return _services.SizeService;
+  }
+});
+Object.defineProperty(exports, 'TableService', {
+  enumerable: true,
+  get: function get() {
+    return _services.TableService;
   }
 });
 Object.defineProperty(exports, 'TagService', {
