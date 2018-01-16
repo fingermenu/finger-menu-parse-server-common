@@ -11,11 +11,9 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _parseServerCommon = require('@microbusiness/parse-server-common');
+var _TestHelper = require('../../../TestHelper');
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
@@ -42,18 +40,18 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
           case 2:
             choiceItem = _context.sent.first();
             _context.next = 5;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _TestHelper2.default.createUser();
 
           case 5:
             addedByUser = _context.sent;
             _context.next = 8;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _TestHelper2.default.createUser();
 
           case 8:
             removedByUser = _context.sent;
             choiceItemPrice = (0, _immutable.Map)({
-              currentPrice: chance.floating({ min: 0, max: 1000 }),
-              wasPrice: chance.floating({ min: 0, max: 1000 }),
+              currentPrice: chance.floating(),
+              wasPrice: chance.floating(),
               validFrom: new Date(),
               validUntil: new Date(),
               choiceItemId: choiceItem.get('id'),

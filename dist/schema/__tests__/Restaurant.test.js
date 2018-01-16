@@ -11,15 +11,13 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
-
 var _parseServerCommon = require('@microbusiness/parse-server-common');
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
+
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _2 = require('../');
 
@@ -31,42 +29,39 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+var chance = new _chance2.default();
+
 var createRestaurantInfo = exports.createRestaurantInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         parentRestaurantId = _ref2.parentRestaurantId;
 
-    var chance, ownedByUser, maintainedByUsers, menus, restaurant;
+    var ownedByUser, maintainedByUsers, menus, restaurant;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            chance = new _chance2.default();
-            _context.next = 3;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            _context.next = 2;
+            return _TestHelper2.default.createUser();
 
-          case 3:
+          case 2:
             ownedByUser = _context.sent;
-            _context.t0 = _immutable2.default;
-            _context.next = 7;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
-            }).toArray());
+            _context.next = 5;
+            return _TestHelper2.default.createUsers();
 
-          case 7:
-            _context.t1 = _context.sent;
-            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
-            _context.next = 11;
+          case 5:
+            maintainedByUsers = _context.sent;
+            _context.next = 8;
             return (0, _MenuService2.default)(chance.integer({ min: 1, max: 3 }));
 
-          case 11:
+          case 8:
             menus = _context.sent;
             restaurant = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
-              websiteUrl: (0, _v2.default)(),
-              imageUrl: (0, _v2.default)(),
-              address: (0, _v2.default)(),
-              phones: _immutable.List.of((0, _immutable.Map)({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() }), (0, _immutable.Map)({ label: 'business', number: chance.integer({ min: 1000000, max: 999999999 }).toString() })),
+              name: _TestHelper2.default.createRandomMultiLanguagesString(),
+              websiteUrl: chance.string(),
+              imageUrl: chance.string(),
+              address: chance.string(),
+              phones: _immutable.List.of((0, _immutable.Map)({ label: 'business', number: chance.string() }), (0, _immutable.Map)({ label: 'business', number: chance.string() })),
               geoLocation: _parseServerCommon.ParseWrapperService.createGeoPoint({
                 latitude: chance.floating({ min: 1, max: 20 }),
                 longitude: chance.floating({ min: -30, max: -1 })
@@ -76,12 +71,12 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
               }),
-              status: (0, _v2.default)(),
-              googleMapUrl: (0, _v2.default)(),
+              status: chance.string(),
+              googleMapUrl: chance.string(),
               menuIds: menus.map(function (menu) {
                 return menu.get('id');
               }),
-              inheritParentRestaurantMenus: chance.integer({ min: 1, max: 1000 }) % 2 === 0
+              inheritParentRestaurantMenus: chance.integer()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,
@@ -90,7 +85,7 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               menus: menus
             });
 
-          case 14:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -144,7 +139,7 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   var _ref4 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       expectedMenus = _ref4.expectedMenus;
 
-  expect(object.get('name')).toBe(expectedObject.get('name'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('address')).toBe(expectedObject.get('address'));

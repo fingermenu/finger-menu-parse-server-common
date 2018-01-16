@@ -14,10 +14,6 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var _parseServerCommon = require('@microbusiness/parse-server-common');
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
 
 var _2 = require('../');
@@ -31,9 +27,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var chance = new _chance2.default();
 var restaurantService = new _2.RestaurantService();
 
-var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
+var getLanguages = function getLanguages(object) {
+  var languages = object ? object.get('name').keySeq() : (0, _immutable.List)();
+  var language = languages.isEmpty() ? null : languages.first();
+
+  return { languages: languages, language: language };
+};
+
+var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus'),
+    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus').concat(languages ? languages.map(function (_) {
+      return _ + '_name';
+    }) : (0, _immutable.List)()),
+    language: language,
     include_parentRestaurant: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
@@ -41,27 +47,31 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   });
 };
 
-var createCriteria = function createCriteria(restaurant) {
+var createCriteria = function createCriteria(object) {
+  var _getLanguages = getLanguages(object),
+      language = _getLanguages.language,
+      languages = _getLanguages.languages;
+
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: restaurant ? restaurant.get('name') : (0, _v2.default)(),
-      websiteUrl: restaurant ? restaurant.get('websiteUrl') : (0, _v2.default)(),
-      imageUrl: restaurant ? restaurant.get('imageUrl') : (0, _v2.default)(),
-      address: restaurant ? restaurant.get('address') : (0, _v2.default)(),
-      phones: restaurant ? restaurant.get('phones') : (0, _immutable.Map)({ business: chance.integer({ min: 1000000, max: 999999999 }).toString() }),
-      near_geoLocation: restaurant ? restaurant.get('geoLocation') : _parseServerCommon.ParseWrapperService.createGeoPoint({
+      name: language ? object.get('name').get(language) : chance.string(),
+      websiteUrl: object ? object.get('websiteUrl') : chance.string(),
+      imageUrl: object ? object.get('imageUrl') : chance.string(),
+      address: object ? object.get('address') : chance.string(),
+      phones: object ? object.get('phones') : (0, _immutable.Map)({ business: chance.string() }),
+      near_geoLocation: object ? object.get('geoLocation') : _parseServerCommon.ParseWrapperService.createGeoPoint({
         latitude: chance.floating({ min: 1, max: 20 }),
         longitude: chance.floating({ min: -30, max: -1 })
       }),
-      parentRestaurantId: restaurant && restaurant.get('parentRestaurantId') ? restaurant.get('parentRestaurantId') : undefined,
-      ownedByUserId: restaurant ? restaurant.get('ownedByUserId') : (0, _v2.default)(),
-      maintainedByUserIds: restaurant ? restaurant.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
-      status: restaurant ? restaurant.get('status') : (0, _v2.default)(),
-      googleMapUrl: restaurant ? restaurant.get('googleMapUrl') : (0, _v2.default)(),
-      menuIds: restaurant ? restaurant.get('menuIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
-      inheritParentRestaurantMenus: restaurant ? restaurant.get('inheritParentRestaurantMenus') : chance.integer({ min: 1, max: 1000 }) % 2 === 0
+      parentRestaurantId: object && object.get('parentRestaurantId') ? object.get('parentRestaurantId') : undefined,
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string()),
+      status: object ? object.get('status') : chance.string(),
+      googleMapUrl: object ? object.get('googleMapUrl') : chance.string(),
+      menuIds: object ? object.get('menuIds') : _immutable.List.of(chance.string(), chance.string()),
+      inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool()
     })
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
 };
 
 var createRestaurants = function () {
@@ -253,7 +263,7 @@ describe('read', function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            restaurantId = (0, _v2.default)();
+            restaurantId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
             return restaurantService.read(restaurantId);
@@ -335,7 +345,7 @@ describe('update', function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            restaurantId = (0, _v2.default)();
+            restaurantId = chance.string();
             _context7.prev = 1;
             _context7.t0 = restaurantService;
             _context7.t1 = restaurantService;
@@ -486,7 +496,7 @@ describe('delete', function () {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            restaurantId = (0, _v2.default)();
+            restaurantId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
             return restaurantService.delete(restaurantId);

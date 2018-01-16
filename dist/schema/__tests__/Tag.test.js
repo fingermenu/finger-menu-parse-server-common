@@ -11,15 +11,11 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
-
-var _parseServerCommon = require('@microbusiness/parse-server-common');
-
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
+
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
@@ -40,24 +36,20 @@ var createTagInfo = exports.createTagInfo = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _TestHelper2.default.createUser();
 
           case 2:
             ownedByUser = _context.sent;
-            _context.t0 = _immutable2.default;
-            _context.next = 6;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
-            }).toArray());
+            _context.next = 5;
+            return _TestHelper2.default.createUsers();
 
-          case 6:
-            _context.t1 = _context.sent;
-            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
+          case 5:
+            maintainedByUsers = _context.sent;
             tag = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
-              description: (0, _v2.default)(),
-              level: chance.integer({ min: 1, max: 1000 }),
-              forDisplay: chance.integer({ min: 1, max: 1000 }) % 2 === 0,
+              name: _TestHelper2.default.createRandomMultiLanguagesString(),
+              description: _TestHelper2.default.createRandomMultiLanguagesString(),
+              level: chance.integer(),
+              forDisplay: chance.bool(),
               parentTagId: parentTagId,
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
@@ -70,7 +62,7 @@ var createTagInfo = exports.createTagInfo = function () {
               maintainedByUsers: maintainedByUsers
             });
 
-          case 10:
+          case 8:
           case 'end':
             return _context.stop();
         }
@@ -121,8 +113,8 @@ var createTag = exports.createTag = function () {
 }();
 
 var expectTag = exports.expectTag = function expectTag(object, expectedObject) {
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('level')).toBe(expectedObject.get('level'));
   expect(object.get('forDisplay')).toBe(expectedObject.get('forDisplay'));
   expect(object.get('parentTagId')).toBe(expectedObject.get('parentTagId'));

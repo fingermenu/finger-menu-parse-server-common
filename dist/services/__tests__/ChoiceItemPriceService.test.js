@@ -12,10 +12,6 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
 
 var _2 = require('../');
@@ -38,16 +34,16 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   });
 };
 
-var createCriteria = function createCriteria(choiceItemPrice) {
+var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      currentPrice: choiceItemPrice ? choiceItemPrice.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
-      wasPrice: choiceItemPrice ? choiceItemPrice.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
-      validFrom: choiceItemPrice ? choiceItemPrice.get('validFrom') : new Date(),
-      validUntil: choiceItemPrice ? choiceItemPrice.get('validUntil') : new Date(),
-      choiceItemId: choiceItemPrice ? choiceItemPrice.get('choiceItemId') : (0, _v2.default)(),
-      addedByUserId: choiceItemPrice ? choiceItemPrice.get('addedByUserId') : (0, _v2.default)(),
-      removedByUserId: choiceItemPrice ? choiceItemPrice.get('removedByUserId') : (0, _v2.default)()
+      currentPrice: object ? object.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
+      wasPrice: object ? object.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
+      validFrom: object ? object.get('validFrom') : new Date(),
+      validUntil: object ? object.get('validUntil') : new Date(),
+      choiceItemId: object ? object.get('choiceItemId') : chance.string(),
+      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
+      removedByUserId: object ? object.get('removedByUserId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
 };
@@ -222,7 +218,7 @@ describe('read', function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            choiceItemPriceId = (0, _v2.default)();
+            choiceItemPriceId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
             return choiceItemPriceService.read(choiceItemPriceId);
@@ -296,7 +292,7 @@ describe('update', function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            choiceItemPriceId = (0, _v2.default)();
+            choiceItemPriceId = chance.string();
             _context7.prev = 1;
             _context7.t0 = choiceItemPriceService;
             _context7.t1 = choiceItemPriceService;
@@ -439,7 +435,7 @@ describe('delete', function () {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            choiceItemPriceId = (0, _v2.default)();
+            choiceItemPriceId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
             return choiceItemPriceService.delete(choiceItemPriceId);

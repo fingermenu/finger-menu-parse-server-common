@@ -5,29 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.expectSize = exports.createSize = exports.createSizeInfo = undefined;
 
-var _chance = require('chance');
-
-var _chance2 = _interopRequireDefault(_chance);
-
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
-
-var _parseServerCommon = require('@microbusiness/parse-server-common');
-
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
+
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var chance = new _chance2.default();
 
 var createSizeInfo = exports.createSizeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -37,21 +27,17 @@ var createSizeInfo = exports.createSizeInfo = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _TestHelper2.default.createUser();
 
           case 2:
             ownedByUser = _context.sent;
-            _context.t0 = _immutable2.default;
-            _context.next = 6;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
-            }).toArray());
+            _context.next = 5;
+            return _TestHelper2.default.createUsers();
 
-          case 6:
-            _context.t1 = _context.sent;
-            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
+          case 5:
+            maintainedByUsers = _context.sent;
             size = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
+              name: _TestHelper2.default.createRandomMultiLanguagesString(),
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
@@ -63,7 +49,7 @@ var createSizeInfo = exports.createSizeInfo = function () {
               maintainedByUsers: maintainedByUsers
             });
 
-          case 10:
+          case 8:
           case 'end':
             return _context.stop();
         }
@@ -117,7 +103,7 @@ var expectSize = exports.expectSize = function expectSize(object, expectedObject
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       sizeId = _ref3.sizeId;
 
-  expect(object.get('name')).toBe(expectedObject.get('name'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 

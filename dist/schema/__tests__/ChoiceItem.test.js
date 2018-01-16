@@ -11,13 +11,9 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
+var _TestHelper = require('../../../TestHelper');
 
-var _parseServerCommon = require('@microbusiness/parse-server-common');
-
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _2 = require('../');
 
@@ -39,29 +35,25 @@ var createChoiceItemInfo = exports.createChoiceItemInfo = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
+            return _TestHelper2.default.createUser();
 
           case 2:
             ownedByUser = _context.sent;
-            _context.t0 = _immutable2.default;
-            _context.next = 6;
-            return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 0, max: 3 })).map(function () {
-              return _parseServerCommon.ParseWrapperService.createNewUser({ username: (0, _v2.default)() + '@email.com', password: '123456' }).signUp();
-            }).toArray());
+            _context.next = 5;
+            return _TestHelper2.default.createUsers();
 
-          case 6:
-            _context.t1 = _context.sent;
-            maintainedByUsers = _context.t0.fromJS.call(_context.t0, _context.t1);
-            _context.next = 10;
+          case 5:
+            maintainedByUsers = _context.sent;
+            _context.next = 8;
             return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
 
-          case 10:
+          case 8:
             tags = _context.sent;
             choiceItem = (0, _immutable.Map)({
-              name: (0, _v2.default)(),
-              description: (0, _v2.default)(),
-              choiceItemPageUrl: (0, _v2.default)(),
-              imageUrl: (0, _v2.default)(),
+              name: _TestHelper2.default.createRandomMultiLanguagesString(),
+              description: _TestHelper2.default.createRandomMultiLanguagesString(),
+              choiceItemPageUrl: chance.string(),
+              imageUrl: chance.string(),
               tagIds: tags.map(function (tag) {
                 return tag.get('id');
               }),
@@ -77,7 +69,7 @@ var createChoiceItemInfo = exports.createChoiceItemInfo = function () {
               maintainedByUsers: maintainedByUsers
             });
 
-          case 13:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -132,8 +124,8 @@ var expectChoiceItem = exports.expectChoiceItem = function expectChoiceItem(obje
       choiceItemId = _ref3.choiceItemId,
       expectedTags = _ref3.expectedTags;
 
-  expect(object.get('name')).toBe(expectedObject.get('name'));
-  expect(object.get('description')).toBe(expectedObject.get('description'));
+  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('choiceItemPageUrl')).toBe(expectedObject.get('choiceItemPageUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));

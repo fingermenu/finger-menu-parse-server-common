@@ -12,10 +12,6 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
 
 var _2 = require('../');
@@ -29,27 +25,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var chance = new _chance2.default();
 var choiceItemService = new _2.ChoiceItemService();
 
-var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
+var getLanguages = function getLanguages(object) {
+  var languages = object ? object.get('name').keySeq() : (0, _immutable.List)();
+  var language = languages.isEmpty() ? null : languages.first();
+
+  return { languages: languages, language: language };
+};
+
+var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers'),
+    fields: _immutable.List.of('languages_name', 'languages_description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+      return _ + '_name';
+    }) : (0, _immutable.List)()).concat(languages ? languages.map(function (_) {
+      return _ + '_description';
+    }) : (0, _immutable.List)()),
+    language: language,
     include_tags: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true
   });
 };
 
-var createCriteria = function createCriteria(choiceItem) {
+var createCriteria = function createCriteria(object) {
+  var _getLanguages = getLanguages(object),
+      language = _getLanguages.language,
+      languages = _getLanguages.languages;
+
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: choiceItem ? choiceItem.get('name') : (0, _v2.default)(),
-      description: choiceItem ? choiceItem.get('description') : (0, _v2.default)(),
-      choiceItemPageUrl: choiceItem ? choiceItem.get('choiceItemPageUrl') : (0, _v2.default)(),
-      imageUrl: choiceItem ? choiceItem.get('imageUrl') : (0, _v2.default)(),
-      tagIds: choiceItem ? choiceItem.get('tagIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
-      ownedByUserId: choiceItem ? choiceItem.get('ownedByUserId') : (0, _v2.default)(),
-      maintainedByUserIds: choiceItem ? choiceItem.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)())
+      name: language ? object.get('name').get(language) : chance.string(),
+      description: language ? object.get('description').get(language) : chance.string(),
+      choiceItemPageUrl: object ? object.get('choiceItemPageUrl') : chance.string(),
+      imageUrl: object ? object.get('imageUrl') : chance.string(),
+      tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string()),
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
     })
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
 };
 
 var createChoiceItems = function () {
@@ -222,7 +234,7 @@ describe('read', function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            choiceItemId = (0, _v2.default)();
+            choiceItemId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
             return choiceItemService.read(choiceItemId);
@@ -296,7 +308,7 @@ describe('update', function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            choiceItemId = (0, _v2.default)();
+            choiceItemId = chance.string();
             _context7.prev = 1;
             _context7.t0 = choiceItemService;
             _context7.t1 = choiceItemService;
@@ -439,7 +451,7 @@ describe('delete', function () {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            choiceItemId = (0, _v2.default)();
+            choiceItemId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
             return choiceItemService.delete(choiceItemId);

@@ -12,10 +12,6 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
 
 var _2 = require('../');
@@ -38,18 +34,18 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   });
 };
 
-var createCriteria = function createCriteria(menuItemPrice) {
+var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      currentPrice: menuItemPrice ? menuItemPrice.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
-      wasPrice: menuItemPrice ? menuItemPrice.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
-      validFrom: menuItemPrice ? menuItemPrice.get('validFrom') : new Date(),
-      validUntil: menuItemPrice ? menuItemPrice.get('validUntil') : new Date(),
-      menuItemId: menuItemPrice ? menuItemPrice.get('menuItemId') : (0, _v2.default)(),
-      toBeServedWithMenuItemPriceIds: menuItemPrice ? menuItemPrice.get('toBeServedWithMenuItemPriceIds') : (0, _immutable.List)(),
-      choiceItemPriceIds: menuItemPrice ? menuItemPrice.get('choiceItemPriceIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)()),
-      addedByUserId: menuItemPrice ? menuItemPrice.get('addedByUserId') : (0, _v2.default)(),
-      removedByUserId: menuItemPrice ? menuItemPrice.get('removedByUserId') : (0, _v2.default)()
+      currentPrice: object ? object.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
+      wasPrice: object ? object.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
+      validFrom: object ? object.get('validFrom') : new Date(),
+      validUntil: object ? object.get('validUntil') : new Date(),
+      menuItemId: object ? object.get('menuItemId') : chance.string(),
+      toBeServedWithMenuItemPriceIds: object ? object.get('toBeServedWithMenuItemPriceIds') : (0, _immutable.List)(),
+      choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : _immutable.List.of(chance.string(), chance.string()),
+      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
+      removedByUserId: object ? object.get('removedByUserId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
 };
@@ -245,7 +241,7 @@ describe('read', function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            menuItemPriceId = (0, _v2.default)();
+            menuItemPriceId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
             return menuItemPriceService.read(menuItemPriceId);
@@ -334,7 +330,7 @@ describe('update', function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            menuItemPriceId = (0, _v2.default)();
+            menuItemPriceId = chance.string();
             _context7.prev = 1;
             _context7.t0 = menuItemPriceService;
             _context7.t1 = menuItemPriceService;
@@ -492,7 +488,7 @@ describe('delete', function () {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            menuItemPriceId = (0, _v2.default)();
+            menuItemPriceId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
             return menuItemPriceService.delete(menuItemPriceId);

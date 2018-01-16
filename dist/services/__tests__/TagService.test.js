@@ -12,10 +12,6 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _v = require('uuid/v4');
-
-var _v2 = _interopRequireDefault(_v);
-
 require('../../../bootstrap');
 
 var _2 = require('../');
@@ -29,27 +25,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var chance = new _chance2.default();
 var tagService = new _2.TagService();
 
-var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
+var getLanguages = function getLanguages(object) {
+  var languages = object ? object.get('name').keySeq() : (0, _immutable.List)();
+  var language = languages.isEmpty() ? null : languages.first();
+
+  return { languages: languages, language: language };
+};
+
+var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers'),
+    fields: _immutable.List.of('languages_name', 'languages_description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+      return _ + '_name';
+    }) : (0, _immutable.List)()).concat(languages ? languages.map(function (_) {
+      return _ + '_description';
+    }) : (0, _immutable.List)()),
+    language: language,
     include_parentTag: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true
   });
 };
 
-var createCriteria = function createCriteria(tag) {
+var createCriteria = function createCriteria(object) {
+  var _getLanguages = getLanguages(object),
+      language = _getLanguages.language,
+      languages = _getLanguages.languages;
+
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: tag ? tag.get('name') : (0, _v2.default)(),
-      description: tag ? tag.get('description') : (0, _v2.default)(),
-      level: tag ? tag.get('level') : chance.integer({ min: 1, max: 1000 }),
-      forDisplay: tag ? tag.get('forDisplay') : chance.integer({ min: 1, max: 1000 }) % 2 === 0,
-      parentTagId: tag && tag.get('parentTagId') ? tag.get('parentTagId') : undefined,
-      ownedByUserId: tag ? tag.get('ownedByUserId') : (0, _v2.default)(),
-      maintainedByUserIds: tag ? tag.get('maintainedByUserIds') : _immutable.List.of((0, _v2.default)(), (0, _v2.default)())
+      name: language ? object.get('name').get(language) : chance.string(),
+      description: language ? object.get('description').get(language) : chance.string(),
+      level: object ? object.get('level') : chance.integer(),
+      forDisplay: object ? object.get('forDisplay') : chance.bool(),
+      parentTagId: object && object.get('parentTagId') ? object.get('parentTagId') : undefined,
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
     })
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
 };
 
 var createTags = function () {
@@ -241,7 +253,7 @@ describe('read', function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            tagId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
             return tagService.read(tagId);
@@ -323,7 +335,7 @@ describe('update', function () {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            tagId = chance.string();
             _context7.prev = 1;
             _context7.t0 = tagService;
             _context7.t1 = tagService;
@@ -471,7 +483,7 @@ describe('delete', function () {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            tagId = (0, _v2.default)();
+            tagId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
             return tagService.delete(tagId);

@@ -68,6 +68,7 @@ Restaurant.updateInfoInternal = function (object, info) {
   object.set('googleMapUrl', info.get('googleMapUrl'));
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'menu', _Menu2.default);
   object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
+  object.set('pin', info.get('pin'));
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -112,7 +113,8 @@ var _initialiseProps = function _initialiseProps() {
       menuIds: menus ? menus.map(function (menu) {
         return menu.get('id');
       }) : (0, _immutable.List)(),
-      inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus')
+      inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
+      pin: object.get('pin')
     });
   };
 };
