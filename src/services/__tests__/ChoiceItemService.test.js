@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { ChoiceItemService } from '../';
 import { createChoiceItemInfo, expectChoiceItem } from '../../schema/__tests__/ChoiceItem.test';
@@ -10,26 +9,39 @@ import { createChoiceItemInfo, expectChoiceItem } from '../../schema/__tests__/C
 const chance = new Chance();
 const choiceItemService = new ChoiceItemService();
 
-const createCriteriaWthoutConditions = () =>
+const getLanguages = (object) => {
+  const languages = object ? object.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return { languages, language };
+};
+
+const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('name', 'description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers'),
+    fields: List.of('languages_name', 'languages_description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers')
+      .concat(languages ? languages.map(_ => `${_}_name`) : List())
+      .concat(languages ? languages.map(_ => `${_}_description`) : List()),
+    language,
     include_tags: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
   });
 
-const createCriteria = choiceItem =>
-  Map({
+const createCriteria = (object) => {
+  const { language, languages } = getLanguages(object);
+
+  return Map({
     conditions: Map({
-      name: choiceItem ? choiceItem.get('name') : uuid(),
-      description: choiceItem ? choiceItem.get('description') : uuid(),
-      choiceItemPageUrl: choiceItem ? choiceItem.get('choiceItemPageUrl') : uuid(),
-      imageUrl: choiceItem ? choiceItem.get('imageUrl') : uuid(),
-      tagIds: choiceItem ? choiceItem.get('tagIds') : List.of(uuid(), uuid()),
-      ownedByUserId: choiceItem ? choiceItem.get('ownedByUserId') : uuid(),
-      maintainedByUserIds: choiceItem ? choiceItem.get('maintainedByUserIds') : List.of(uuid(), uuid()),
+      name: language ? object.get('name').get(language) : chance.string(),
+      description: language ? object.get('description').get(language) : chance.string(),
+      choiceItemPageUrl: object ? object.get('choiceItemPageUrl') : chance.string(),
+      imageUrl: object ? object.get('imageUrl') : chance.string(),
+      tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
+};
 
 const createChoiceItems = async (count, useSameInfo = false) => {
   let choiceItem;
@@ -77,7 +89,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided choice item Id does not exist', async () => {
-    const choiceItemId = uuid();
+    const choiceItemId = chance.string();
 
     try {
       await choiceItemService.read(choiceItemId);
@@ -107,7 +119,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided choice item Id does not exist', async () => {
-    const choiceItemId = uuid();
+    const choiceItemId = chance.string();
 
     try {
       const choiceItem = await choiceItemService.read(
@@ -153,7 +165,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided choice item Id does not exist', async () => {
-    const choiceItemId = uuid();
+    const choiceItemId = chance.string();
 
     try {
       await choiceItemService.delete(choiceItemId);

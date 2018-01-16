@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { ChoiceItemPriceService } from '../';
 import { createChoiceItemPriceInfo, expectChoiceItemPrice } from '../../schema/__tests__/ChoiceItemPrice.test';
@@ -18,16 +17,16 @@ const createCriteriaWthoutConditions = () =>
     include_removedByUser: true,
   });
 
-const createCriteria = choiceItemPrice =>
+const createCriteria = object =>
   Map({
     conditions: Map({
-      currentPrice: choiceItemPrice ? choiceItemPrice.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
-      wasPrice: choiceItemPrice ? choiceItemPrice.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
-      validFrom: choiceItemPrice ? choiceItemPrice.get('validFrom') : new Date(),
-      validUntil: choiceItemPrice ? choiceItemPrice.get('validUntil') : new Date(),
-      choiceItemId: choiceItemPrice ? choiceItemPrice.get('choiceItemId') : uuid(),
-      addedByUserId: choiceItemPrice ? choiceItemPrice.get('addedByUserId') : uuid(),
-      removedByUserId: choiceItemPrice ? choiceItemPrice.get('removedByUserId') : uuid(),
+      currentPrice: object ? object.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
+      wasPrice: object ? object.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
+      validFrom: object ? object.get('validFrom') : new Date(),
+      validUntil: object ? object.get('validUntil') : new Date(),
+      choiceItemId: object ? object.get('choiceItemId') : chance.string(),
+      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
+      removedByUserId: object ? object.get('removedByUserId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -77,7 +76,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided choice item price Id does not exist', async () => {
-    const choiceItemPriceId = uuid();
+    const choiceItemPriceId = chance.string();
 
     try {
       await choiceItemPriceService.read(choiceItemPriceId);
@@ -107,7 +106,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided choice item price Id does not exist', async () => {
-    const choiceItemPriceId = uuid();
+    const choiceItemPriceId = chance.string();
 
     try {
       const choiceItemPrice = await choiceItemPriceService.read(
@@ -153,7 +152,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided choice item price Id does not exist', async () => {
-    const choiceItemPriceId = uuid();
+    const choiceItemPriceId = chance.string();
 
     try {
       await choiceItemPriceService.delete(choiceItemPriceId);

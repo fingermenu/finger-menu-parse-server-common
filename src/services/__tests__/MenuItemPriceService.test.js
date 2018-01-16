@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { MenuItemPriceService } from '../';
 import { createMenuItemPriceInfo, expectMenuItemPrice } from '../../schema/__tests__/MenuItemPrice.test';
@@ -28,18 +27,18 @@ const createCriteriaWthoutConditions = () =>
     include_removedByUser: true,
   });
 
-const createCriteria = menuItemPrice =>
+const createCriteria = object =>
   Map({
     conditions: Map({
-      currentPrice: menuItemPrice ? menuItemPrice.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
-      wasPrice: menuItemPrice ? menuItemPrice.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
-      validFrom: menuItemPrice ? menuItemPrice.get('validFrom') : new Date(),
-      validUntil: menuItemPrice ? menuItemPrice.get('validUntil') : new Date(),
-      menuItemId: menuItemPrice ? menuItemPrice.get('menuItemId') : uuid(),
-      toBeServedWithMenuItemPriceIds: menuItemPrice ? menuItemPrice.get('toBeServedWithMenuItemPriceIds') : List(),
-      choiceItemPriceIds: menuItemPrice ? menuItemPrice.get('choiceItemPriceIds') : List.of(uuid(), uuid()),
-      addedByUserId: menuItemPrice ? menuItemPrice.get('addedByUserId') : uuid(),
-      removedByUserId: menuItemPrice ? menuItemPrice.get('removedByUserId') : uuid(),
+      currentPrice: object ? object.get('currentPrice') : chance.floating({ min: 0, max: 1000 }),
+      wasPrice: object ? object.get('wasPrice') : chance.floating({ min: 0, max: 1000 }),
+      validFrom: object ? object.get('validFrom') : new Date(),
+      validUntil: object ? object.get('validUntil') : new Date(),
+      menuItemId: object ? object.get('menuItemId') : chance.string(),
+      toBeServedWithMenuItemPriceIds: object ? object.get('toBeServedWithMenuItemPriceIds') : List(),
+      choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : List.of(chance.string(), chance.string()),
+      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
+      removedByUserId: object ? object.get('removedByUserId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -95,7 +94,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided menu item price Id does not exist', async () => {
-    const menuItemPriceId = uuid();
+    const menuItemPriceId = chance.string();
 
     try {
       await menuItemPriceService.read(menuItemPriceId);
@@ -127,7 +126,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided menu item price Id does not exist', async () => {
-    const menuItemPriceId = uuid();
+    const menuItemPriceId = chance.string();
 
     try {
       const menuItemPrice = await menuItemPriceService.read(
@@ -175,7 +174,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided menu item price Id does not exist', async () => {
-    const menuItemPriceId = uuid();
+    const menuItemPriceId = chance.string();
 
     try {
       await menuItemPriceService.delete(menuItemPriceId);

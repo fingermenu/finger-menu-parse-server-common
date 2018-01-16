@@ -2,7 +2,6 @@
 
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
-import uuid from 'uuid/v4';
 import '../../../bootstrap';
 import { MenuService } from '../';
 import { createMenuInfo, expectMenu } from '../../schema/__tests__/Menu.test';
@@ -10,28 +9,50 @@ import { createMenuInfo, expectMenu } from '../../schema/__tests__/Menu.test';
 const chance = new Chance();
 const menuService = new MenuService();
 
-const createCriteriaWthoutConditions = () =>
+const getLanguages = (object) => {
+  const languages = object ? object.get('name').keySeq() : List();
+  const language = languages.isEmpty() ? null : languages.first();
+
+  return { languages, language };
+};
+
+const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers'),
+    fields: List.of(
+      'languages_name',
+      'languages_description',
+      'menuPageUrl',
+      'imageUrl',
+      'menuItemPrices',
+      'tags',
+      'ownedByUser',
+      'maintainedByUsers',
+    )
+      .concat(languages ? languages.map(_ => `${_}_name`) : List())
+      .concat(languages ? languages.map(_ => `${_}_description`) : List()),
+    language,
     include_menuItemPrices: true,
     include_tags: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
   });
 
-const createCriteria = menu =>
-  Map({
+const createCriteria = (object) => {
+  const { language, languages } = getLanguages(object);
+
+  return Map({
     conditions: Map({
-      name: menu ? menu.get('name') : uuid(),
-      description: menu ? menu.get('description') : uuid(),
-      menuPageUrl: menu ? menu.get('menuPageUrl') : uuid(),
-      imageUrl: menu ? menu.get('imageUrl') : uuid(),
-      menuItemPriceIds: menu ? menu.get('menuItemPriceIds') : List.of(uuid(), uuid()),
-      tagIds: menu ? menu.get('tagIds') : List.of(uuid(), uuid()),
-      ownedByUserId: menu ? menu.get('ownedByUserId') : uuid(),
-      maintainedByUserIds: menu ? menu.get('maintainedByUserIds') : List.of(uuid(), uuid()),
+      name: language ? object.get('name').get(language) : chance.string(),
+      description: language ? object.get('description').get(language) : chance.string(),
+      menuPageUrl: object ? object.get('menuPageUrl') : chance.string(),
+      imageUrl: object ? object.get('imageUrl') : chance.string(),
+      menuItemPriceIds: object ? object.get('menuItemPriceIds') : List.of(chance.string(), chance.string()),
+      tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
-  }).merge(createCriteriaWthoutConditions());
+  }).merge(createCriteriaWthoutConditions(languages, language));
+};
 
 const createMenus = async (count, useSameInfo = false) => {
   let menu;
@@ -79,7 +100,7 @@ describe('create', () => {
 
 describe('read', () => {
   test('should reject if the provided menu Id does not exist', async () => {
-    const menuId = uuid();
+    const menuId = chance.string();
 
     try {
       await menuService.read(menuId);
@@ -111,7 +132,7 @@ describe('read', () => {
 
 describe('update', () => {
   test('should reject if the provided menu Id does not exist', async () => {
-    const menuId = uuid();
+    const menuId = chance.string();
 
     try {
       const menu = await menuService.read(await menuService.create((await createMenuInfo()).menu), createCriteriaWthoutConditions());
@@ -156,7 +177,7 @@ describe('update', () => {
 
 describe('delete', () => {
   test('should reject if the provided menu Id does not exist', async () => {
-    const menuId = uuid();
+    const menuId = chance.string();
 
     try {
       await menuService.delete(menuId);
