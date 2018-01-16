@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Tag = exports.Size = exports.Restaurant = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
+exports.Tag = exports.Size = exports.Restaurant = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
 
 var _ChoiceItem2 = require('./ChoiceItem');
 
@@ -12,6 +12,10 @@ var _ChoiceItem3 = _interopRequireDefault(_ChoiceItem2);
 var _ChoiceItemPrice2 = require('./ChoiceItemPrice');
 
 var _ChoiceItemPrice3 = _interopRequireDefault(_ChoiceItemPrice2);
+
+var _Language2 = require('./Language');
+
+var _Language3 = _interopRequireDefault(_Language2);
 
 var _Menu2 = require('./Menu');
 
@@ -41,6 +45,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.ChoiceItem = _ChoiceItem3.default;
 exports.ChoiceItemPrice = _ChoiceItemPrice3.default;
+exports.Language = _Language3.default;
 exports.Menu = _Menu3.default;
 exports.MenuItem = _MenuItem3.default;
 exports.MenuItemPrice = _MenuItemPrice3.default;

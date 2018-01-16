@@ -18,6 +18,12 @@ Object.defineProperty(exports, 'ChoiceItemPrice', {
     return _schema.ChoiceItemPrice;
   }
 });
+Object.defineProperty(exports, 'Language', {
+  enumerable: true,
+  get: function get() {
+    return _schema.Language;
+  }
+});
 Object.defineProperty(exports, 'Menu', {
   enumerable: true,
   get: function get() {
@@ -67,6 +73,12 @@ Object.defineProperty(exports, 'ChoiceItemPriceService', {
   enumerable: true,
   get: function get() {
     return _services.ChoiceItemPriceService;
+  }
+});
+Object.defineProperty(exports, 'LanguageService', {
+  enumerable: true,
+  get: function get() {
+    return _services.LanguageService;
   }
 });
 Object.defineProperty(exports, 'MenuService', {

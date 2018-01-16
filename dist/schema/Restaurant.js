@@ -14,6 +14,10 @@ var _Menu = require('./Menu');
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
+var _Language = require('./Language');
+
+var _Language2 = _interopRequireDefault(_Language);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69,6 +73,7 @@ Restaurant.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'menu', _Menu2.default);
   object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
   object.set('pin', info.get('pin'));
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'language', _Language2.default);
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -89,6 +94,10 @@ var _initialiseProps = function _initialiseProps() {
     var menuObjects = object.get('menus');
     var menus = menuObjects ? _immutable2.default.fromJS(menuObjects).map(function (menu) {
       return new _Menu2.default(menu).getInfo();
+    }) : undefined;
+    var languageObjects = object.get('languages');
+    var languages = languageObjects ? _immutable2.default.fromJS(languageObjects).map(function (language) {
+      return new _Language2.default(language).getInfo();
     }) : undefined;
 
     return (0, _immutable.Map)({
@@ -114,7 +123,11 @@ var _initialiseProps = function _initialiseProps() {
         return menu.get('id');
       }) : (0, _immutable.List)(),
       inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
-      pin: object.get('pin')
+      pin: object.get('pin'),
+      languages: languages,
+      languageIds: languages ? languages.map(function (language) {
+        return language.get('id');
+      }) : (0, _immutable.List)()
     });
   };
 };

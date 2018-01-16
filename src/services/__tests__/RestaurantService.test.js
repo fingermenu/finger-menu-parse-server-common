@@ -137,13 +137,19 @@ describe('read', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
+      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
     const restaurantId = await restaurantService.create(expectedRestaurant);
     const restaurant = await restaurantService.read(restaurantId, createCriteriaWthoutConditions());
 
-    expectRestaurant(restaurant, expectedRestaurant, { expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus });
+    expectRestaurant(restaurant, expectedRestaurant, {
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
+      expectedMenus,
+      expectedLanguages,
+    });
   });
 });
 
@@ -179,6 +185,7 @@ describe('update', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
+      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -188,7 +195,12 @@ describe('update', () => {
 
     const restaurant = await restaurantService.read(restaurantId, createCriteriaWthoutConditions());
 
-    expectRestaurant(restaurant, expectedRestaurant, { expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus });
+    expectRestaurant(restaurant, expectedRestaurant, {
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
+      expectedMenus,
+      expectedLanguages,
+    });
   });
 });
 
@@ -230,6 +242,7 @@ describe('search', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
+      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -241,7 +254,12 @@ describe('search', () => {
     expect(restaurants.count).toBe(results.count);
     restaurants.forEach((restaurant) => {
       expect(results.find(_ => _.localeCompare(restaurant.get('id')) === 0)).toBeDefined();
-      expectRestaurant(restaurant, expectedRestaurant, { expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus });
+      expectRestaurant(restaurant, expectedRestaurant, {
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
+        expectedMenus,
+        expectedLanguages,
+      });
     });
   });
 });
@@ -272,6 +290,7 @@ describe('searchAll', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
+      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -295,7 +314,12 @@ describe('searchAll', () => {
     expect(restaurants.count).toBe(results.count);
     restaurants.forEach((restaurant) => {
       expect(results.find(_ => _.localeCompare(restaurant.get('id')) === 0)).toBeDefined();
-      expectRestaurant(restaurant, expectedRestaurant, { expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus });
+      expectRestaurant(restaurant, expectedRestaurant, {
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
+        expectedMenus,
+        expectedLanguages,
+      });
     });
   });
 });

@@ -7,6 +7,7 @@ import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { Restaurant } from '../';
 import createMenus from '../../services/__tests__/MenuService.test';
+import createLanguages from '../../services/__tests__/LanguageService.test';
 
 const chance = new Chance();
 
@@ -14,6 +15,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
   const menus = await createMenus(chance.integer({ min: 1, max: 3 }));
+  const languages = await createLanguages(chance.integer({ min: 1, max: 3 }));
   const restaurant = Map({
     name: TestHelper.createRandomMultiLanguagesString(),
     websiteUrl: chance.string(),
@@ -32,6 +34,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     menuIds: menus.map(menu => menu.get('id')),
     inheritParentRestaurantMenus: chance.integer(),
     pin: chance.string(),
+    languageIds: languages.map(language => language.get('id')),
   });
 
   return {
@@ -39,12 +42,13 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     ownedByUser,
     maintainedByUsers,
     menus,
+    languages,
   };
 };
 
 export const createRestaurant = async object => Restaurant.spawn(object || (await createRestaurantInfo()).restaurant);
 
-export const expectRestaurant = (object, expectedObject, { expectedMenus } = {}) => {
+export const expectRestaurant = (object, expectedObject, { expectedMenus, expectedLanguages } = {}) => {
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
   expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
@@ -59,9 +63,14 @@ export const expectRestaurant = (object, expectedObject, { expectedMenus } = {})
   expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
   expect(object.get('ping')).toBe(expectedObject.get('pin'));
+  expect(object.get('languageIds')).toEqual(expectedObject.get('languageIds'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(_ => _.get('id')));
+  }
+
+  if (expectedLanguages) {
+    expect(object.get('languageIds')).toEqual(expectedLanguages.map(_ => _.get('id')));
   }
 };
 
