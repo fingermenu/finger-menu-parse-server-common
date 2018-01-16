@@ -9,7 +9,7 @@ import createChoiceItems from '../../services/__tests__/ChoiceItemService.test';
 const chance = new Chance();
 
 export const createChoiceItemPriceInfo = async () => {
-  const choiceItem = (await createChoiceItems(chance.integer({ min: 1, max: 1 }))).first();
+  const choiceItem = (await createChoiceItems(1)).first();
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
   const choiceItemPrice = Map({

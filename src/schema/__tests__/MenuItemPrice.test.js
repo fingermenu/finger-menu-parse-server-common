@@ -10,7 +10,7 @@ import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceServ
 const chance = new Chance();
 
 export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds } = {}) => {
-  const menuItem = (await createMenuItems(chance.integer({ min: 1, max: 1 }))).first();
+  const menuItem = (await createMenuItems(1)).first();
   const choiceItemPrices = await createChoiceItemPrices(chance.integer({ min: 1, max: 3 }));
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();

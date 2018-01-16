@@ -10,7 +10,7 @@ import createRestaurants from '../../services/__tests__/RestaurantService.test';
 const chance = new Chance();
 
 export const createTableInfo = async () => {
-  const restaurant = (await createRestaurants(chance.integer({ min: 1, max: 1 }))).first();
+  const restaurant = (await createRestaurants(1)).first();
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
   const table = Map({
