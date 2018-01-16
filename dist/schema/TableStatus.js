@@ -45,6 +45,7 @@ TableStatus.spawn = function (info) {
 };
 
 TableStatus.updateInfoInternal = function (object, info) {
+  object.set('status', info.get('status'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'user');
 };
@@ -65,6 +66,7 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
+      status: object.get('status'),
       table: table,
       tableId: table ? table.id : undefined,
       user: user,

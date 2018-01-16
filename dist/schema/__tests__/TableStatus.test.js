@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.expectTableStatus = exports.createTableStatus = exports.createTableStatusInfo = undefined;
 
+var _chance = require('chance');
+
+var _chance2 = _interopRequireDefault(_chance);
+
 var _immutable = require('immutable');
 
 require('../../../bootstrap');
@@ -22,6 +26,8 @@ var _TableService2 = _interopRequireDefault(_TableService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var chance = new _chance2.default();
 
 var createTableStatusInfo = exports.createTableStatusInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -41,6 +47,7 @@ var createTableStatusInfo = exports.createTableStatusInfo = function () {
           case 5:
             user = _context.sent;
             tableStatus = (0, _immutable.Map)({
+              status: chance.string(),
               tableId: table.get('id'),
               userId: user.id
             });
@@ -105,6 +112,7 @@ var expectTableStatus = exports.expectTableStatus = function expectTableStatus(o
       tableStatusId = _ref3.tableStatusId,
       expectedTable = _ref3.expectedTable;
 
+  expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 

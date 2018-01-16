@@ -27,7 +27,7 @@ var tableStatusService = new _2.TableStatusService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('table', 'user'),
+    fields: _immutable.List.of('status', 'table', 'user'),
     include_table: true,
     include_user: true
   });
@@ -36,6 +36,7 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
 var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
+      status: object ? object.get('status') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       userId: object ? object.get('userId') : chance.string()
     })

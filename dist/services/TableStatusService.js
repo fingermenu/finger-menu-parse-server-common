@@ -28,7 +28,7 @@ var TableStatusService = function (_ServiceBase) {
   return TableStatusService;
 }(_parseServerCommon.ServiceBase);
 
-TableStatusService.fields = _immutable.List.of('table', 'user');
+TableStatusService.fields = _immutable.List.of('status', 'table', 'user');
 
 TableStatusService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -54,6 +54,7 @@ TableStatusService.buildSearchQuery = function (criteria) {
   TableStatusService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'table', 'table', _schema.Table);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 
