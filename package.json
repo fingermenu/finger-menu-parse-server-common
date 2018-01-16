@@ -8,8 +8,8 @@
     "build": "babel src --out-dir dist",
     "lint": "eslint --ext .jsx --ext .js src",
     "fixlint": "eslint --fix --ext .jsx --ext .js src",
-    "test": "jest test",
-    "test:watch": "jest test --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "publish-package": "npm run build && npm publish",
     "flow": "flow",
     "precommit": "lint-staged"
@@ -23,7 +23,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.0.6",
+    "babel-jest": "^22.1.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -36,7 +36,7 @@
     "eslint-plugin-react": "^7.5.1",
     "flow-bin": "^0.63.1",
     "husky": "^0.14.3",
-    "jest": "^22.0.6",
+    "jest": "^22.1.1",
     "lint-staged": "^6.0.0",
     "parse": "^1.11.0",
     "prettier": "^1.10.2",
