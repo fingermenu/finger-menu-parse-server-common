@@ -42,7 +42,7 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _MenuItemService2.default)(chance.integer({ min: 1, max: 1 }));
+            return (0, _MenuItemService2.default)(1);
 
           case 2:
             menuItem = _context.sent.first();

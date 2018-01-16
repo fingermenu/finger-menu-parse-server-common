@@ -35,7 +35,7 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _ChoiceItemService2.default)(chance.integer({ min: 1, max: 1 }));
+            return (0, _ChoiceItemService2.default)(1);
 
           case 2:
             choiceItem = _context.sent.first();
