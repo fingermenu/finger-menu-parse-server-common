@@ -33,6 +33,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
       'googleMapUrl',
       'menus',
       'inheritParentRestaurantMenus',
+      'pin',
     ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_parentRestaurant: true,
@@ -64,6 +65,7 @@ const createCriteria = (object) => {
       googleMapUrl: object ? object.get('googleMapUrl') : chance.string(),
       menuIds: object ? object.get('menuIds') : List.of(chance.string(), chance.string()),
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
+      pin: object ? object.get('pin') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

@@ -36,7 +36,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -69,7 +69,8 @@ var createCriteria = function createCriteria(object) {
       status: object ? object.get('status') : chance.string(),
       googleMapUrl: object ? object.get('googleMapUrl') : chance.string(),
       menuIds: object ? object.get('menuIds') : _immutable.List.of(chance.string(), chance.string()),
-      inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool()
+      inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
+      pin: object ? object.get('pin') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

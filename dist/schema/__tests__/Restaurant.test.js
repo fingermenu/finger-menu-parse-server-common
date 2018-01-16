@@ -76,7 +76,8 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               menuIds: menus.map(function (menu) {
                 return menu.get('id');
               }),
-              inheritParentRestaurantMenus: chance.integer()
+              inheritParentRestaurantMenus: chance.integer(),
+              pin: chance.string()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,
@@ -152,6 +153,7 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   expect(object.get('googleMapUrl')).toBe(expectedObject.get('googleMapUrl'));
   expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
+  expect(object.get('ping')).toBe(expectedObject.get('pin'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(function (_) {
