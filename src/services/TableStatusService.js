@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Table, TableStatus } from '../schema';
 
 export default class TableStatusService extends ServiceBase {
-  static fields = List.of('table', 'user');
+  static fields = List.of('status', 'table', 'user');
 
   constructor() {
     super(TableStatus, TableStatusService.buildSearchQuery, TableStatusService.buildIncludeQuery, 'tableStatus');
@@ -35,6 +35,7 @@ export default class TableStatusService extends ServiceBase {
     TableStatusService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
+    ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
     ServiceBase.addLinkQuery(conditions, query, 'table', 'table', Table);
     ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 

@@ -11,7 +11,7 @@ const tableStatusService = new TableStatusService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('table', 'user'),
+    fields: List.of('status', 'table', 'user'),
     include_table: true,
     include_user: true,
   });
@@ -19,6 +19,7 @@ const createCriteriaWthoutConditions = () =>
 const createCriteria = object =>
   Map({
     conditions: Map({
+      status: object ? object.get('status') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       userId: object ? object.get('userId') : chance.string(),
     }),

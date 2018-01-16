@@ -1,15 +1,19 @@
 // @flow
 
+import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { TableStatus } from '../';
 import createTables from '../../services/__tests__/TableService.test';
 
+const chance = new Chance();
+
 export const createTableStatusInfo = async () => {
   const table = (await createTables(1)).first();
   const user = await TestHelper.createUser();
   const tableStatus = Map({
+    status: chance.string(),
     tableId: table.get('id'),
     userId: user.id,
   });
@@ -24,6 +28,7 @@ export const createTableStatusInfo = async () => {
 export const createTableStatus = async object => TableStatus.spawn(object || (await createTableStatusInfo()).tableStatus);
 
 export const expectTableStatus = (object, expectedObject, { tableStatusId, expectedTable } = {}) => {
+  expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 

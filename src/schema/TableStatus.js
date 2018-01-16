@@ -14,6 +14,7 @@ export default class TableStatus extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
+    object.set('status', info.get('status'));
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createUserPointer(object, info, 'user');
   };
@@ -35,6 +36,7 @@ export default class TableStatus extends BaseObject {
 
     return Map({
       id: this.getId(),
+      status: object.get('status'),
       table,
       tableId: table ? table.id : undefined,
       user,
