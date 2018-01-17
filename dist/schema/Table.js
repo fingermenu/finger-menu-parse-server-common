@@ -14,6 +14,10 @@ var _Restaurant = require('./Restaurant');
 
 var _Restaurant2 = _interopRequireDefault(_Restaurant);
 
+var _TableState = require('./TableState');
+
+var _TableState2 = _interopRequireDefault(_TableState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48,9 +52,9 @@ Table.spawn = function (info) {
 
 Table.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
-  object.set('state', info.get('state'));
   object.set('status', info.get('status'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
+  _parseServerCommon.BaseObject.createPointer(object, info, 'tableState', _TableState2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
@@ -67,16 +71,18 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
     var restaurant = object.get('restaurant');
+    var tableState = object.get('tableState');
     var ownedByUser = object.get('ownedByUser');
     var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
       name: _this2.getMultiLanguagesString('name'),
-      state: object.get('state'),
       status: object.get('status'),
       restaurant: restaurant,
       restaurantId: restaurant ? restaurant.id : undefined,
+      tableState: tableState,
+      tableStateId: tableState ? tableState.id : undefined,
       ownedByUser: ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers: maintainedByUsers,

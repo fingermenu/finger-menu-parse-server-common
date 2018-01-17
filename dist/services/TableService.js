@@ -28,7 +28,7 @@ var TableService = function (_ServiceBase) {
   return TableService;
 }(_parseServerCommon.ServiceBase);
 
-TableService.fields = _immutable.List.of('state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
+TableService.fields = _immutable.List.of('tableState', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
 
 TableService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -36,6 +36,7 @@ TableService.buildIncludeQuery = function (query, criteria) {
   }
 
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'restaurant');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tableState');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
@@ -56,9 +57,9 @@ TableService.buildSearchQuery = function (criteria) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
-  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', _schema.Restaurant);
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tableState', 'tableState', _schema.TableState);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 

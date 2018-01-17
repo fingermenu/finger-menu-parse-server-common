@@ -12,6 +12,10 @@ var _Table = require('./Table');
 
 var _Table2 = _interopRequireDefault(_Table);
 
+var _TableState = require('./TableState');
+
+var _TableState2 = _interopRequireDefault(_TableState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45,7 +49,7 @@ TableStateChange.spawn = function (info) {
 };
 
 TableStateChange.updateInfoInternal = function (object, info) {
-  object.set('state', info.get('state'));
+  _parseServerCommon.BaseObject.createPointer(object, info, 'tableState', _TableState2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'changedByUser');
 };
@@ -61,12 +65,14 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getInfo = function () {
     var object = _this2.getObject();
+    var tableState = object.get('tableState');
     var table = object.get('table');
     var changedByUser = object.get('changedByUser');
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      state: object.get('state'),
+      tableState: tableState,
+      tableStateId: tableState ? tableState.id : undefined,
       table: table,
       tableId: table ? table.id : undefined,
       changedByUser: changedByUser,

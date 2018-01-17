@@ -34,11 +34,12 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
     include_restaurant: true,
+    include_tableState: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true
   });
@@ -52,9 +53,9 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       name: language ? object.get('name').get(language) : chance.string(),
-      state: object ? object.get('state') : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
+      tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
     })
@@ -255,7 +256,7 @@ describe('read', function () {
   })));
 
   test('should read the existing table', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedTable, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, tableId, table;
+    var _ref10, expectedTable, expectedRestaurant, expectedTableState, expectedOwnedByUser, expectedMaintainedByUsers, tableId, table;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -268,28 +269,30 @@ describe('read', function () {
             _ref10 = _context6.sent;
             expectedTable = _ref10.table;
             expectedRestaurant = _ref10.restaurant;
+            expectedTableState = _ref10.tableState;
             expectedOwnedByUser = _ref10.ownedByUser;
             expectedMaintainedByUsers = _ref10.maintainedByUsers;
-            _context6.next = 9;
+            _context6.next = 10;
             return tableService.create(expectedTable);
 
-          case 9:
+          case 10:
             tableId = _context6.sent;
-            _context6.next = 12;
+            _context6.next = 13;
             return tableService.read(tableId, createCriteriaWthoutConditions());
 
-          case 12:
+          case 13:
             table = _context6.sent;
 
 
             (0, _Table.expectTable)(table, expectedTable, {
               tableId: tableId,
               expectedRestaurant: expectedRestaurant,
+              expectedTableState: expectedTableState,
               expectedOwnedByUser: expectedOwnedByUser,
               expectedMaintainedByUsers: expectedMaintainedByUsers
             });
 
-          case 14:
+          case 15:
           case 'end':
             return _context6.stop();
         }
@@ -388,7 +391,7 @@ describe('update', function () {
   })));
 
   test('should update the existing table', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedTable, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, tableId, table;
+    var _ref15, expectedTable, expectedRestaurant, expectedTableState, expectedOwnedByUser, expectedMaintainedByUsers, tableId, table;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -401,38 +404,40 @@ describe('update', function () {
             _ref15 = _context9.sent;
             expectedTable = _ref15.table;
             expectedRestaurant = _ref15.restaurant;
+            expectedTableState = _ref15.tableState;
             expectedOwnedByUser = _ref15.ownedByUser;
             expectedMaintainedByUsers = _ref15.maintainedByUsers;
             _context9.t0 = tableService;
-            _context9.next = 10;
+            _context9.next = 11;
             return (0, _Table.createTableInfo)();
 
-          case 10:
+          case 11:
             _context9.t1 = _context9.sent.table;
-            _context9.next = 13;
+            _context9.next = 14;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 13:
+          case 14:
             tableId = _context9.sent;
-            _context9.next = 16;
+            _context9.next = 17;
             return tableService.update(expectedTable.set('id', tableId));
 
-          case 16:
-            _context9.next = 18;
+          case 17:
+            _context9.next = 19;
             return tableService.read(tableId, createCriteriaWthoutConditions());
 
-          case 18:
+          case 19:
             table = _context9.sent;
 
 
             (0, _Table.expectTable)(table, expectedTable, {
               tableId: tableId,
               expectedRestaurant: expectedRestaurant,
+              expectedTableState: expectedTableState,
               expectedOwnedByUser: expectedOwnedByUser,
               expectedMaintainedByUsers: expectedMaintainedByUsers
             });
 
-          case 20:
+          case 21:
           case 'end':
             return _context9.stop();
         }
@@ -540,7 +545,7 @@ describe('search', function () {
   })));
 
   test('should return the table matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedTable, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, results, tables;
+    var _ref20, expectedTable, expectedRestaurant, expectedTableState, expectedOwnedByUser, expectedMaintainedByUsers, results, tables;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -553,10 +558,11 @@ describe('search', function () {
             _ref20 = _context14.sent;
             expectedTable = _ref20.table;
             expectedRestaurant = _ref20.restaurant;
+            expectedTableState = _ref20.tableState;
             expectedOwnedByUser = _ref20.ownedByUser;
             expectedMaintainedByUsers = _ref20.maintainedByUsers;
             _context14.t0 = _immutable2.default;
-            _context14.next = 10;
+            _context14.next = 11;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -572,13 +578,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 10:
+          case 11:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 14;
+            _context14.next = 15;
             return tableService.search(createCriteria(expectedTable));
 
-          case 14:
+          case 15:
             tables = _context14.sent;
 
 
@@ -590,12 +596,13 @@ describe('search', function () {
               (0, _Table.expectTable)(table, expectedTable, {
                 tableId: table.get('id'),
                 expectedRestaurant: expectedRestaurant,
+                expectedTableState: expectedTableState,
                 expectedOwnedByUser: expectedOwnedByUser,
                 expectedMaintainedByUsers: expectedMaintainedByUsers
               });
             });
 
-          case 17:
+          case 18:
           case 'end':
             return _context14.stop();
         }
@@ -641,7 +648,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the table matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedTable, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, results, tables, result;
+    var _ref24, expectedTable, expectedRestaurant, expectedTableState, expectedOwnedByUser, expectedMaintainedByUsers, results, tables, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -654,10 +661,11 @@ describe('searchAll', function () {
             _ref24 = _context17.sent;
             expectedTable = _ref24.table;
             expectedRestaurant = _ref24.restaurant;
+            expectedTableState = _ref24.tableState;
             expectedOwnedByUser = _ref24.ownedByUser;
             expectedMaintainedByUsers = _ref24.maintainedByUsers;
             _context17.t0 = _immutable2.default;
-            _context17.next = 10;
+            _context17.next = 11;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -673,27 +681,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 10:
+          case 11:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             tables = (0, _immutable.List)();
             result = tableService.searchAll(createCriteria(expectedTable));
-            _context17.prev = 14;
+            _context17.prev = 15;
 
             result.event.subscribe(function (info) {
               tables = tables.push(info);
             });
 
-            _context17.next = 18;
+            _context17.next = 19;
             return result.promise;
 
-          case 18:
-            _context17.prev = 18;
+          case 19:
+            _context17.prev = 19;
 
             result.event.unsubscribeAll();
-            return _context17.finish(18);
+            return _context17.finish(19);
 
-          case 21:
+          case 22:
 
             expect(tables.count).toBe(results.count);
             tables.forEach(function (table) {
@@ -703,17 +711,18 @@ describe('searchAll', function () {
               (0, _Table.expectTable)(table, expectedTable, {
                 tableId: table.get('id'),
                 expectedRestaurant: expectedRestaurant,
+                expectedTableState: expectedTableState,
                 expectedOwnedByUser: expectedOwnedByUser,
                 expectedMaintainedByUsers: expectedMaintainedByUsers
               });
             });
 
-          case 23:
+          case 24:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[14,, 18, 21]]);
+    }, _callee17, undefined, [[15,, 19, 22]]);
   })));
 });
 

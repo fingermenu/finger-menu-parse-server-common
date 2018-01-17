@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.expectTableStateChange = exports.createTableStateChange = exports.createTableStateChangeInfo = undefined;
 
-var _chance = require('chance');
-
-var _chance2 = _interopRequireDefault(_chance);
-
 var _immutable = require('immutable');
 
 require('../../../bootstrap');
@@ -23,15 +19,17 @@ var _TableService = require('../../services/__tests__/TableService.test');
 
 var _TableService2 = _interopRequireDefault(_TableService);
 
+var _TableStateService = require('../../services/__tests__/TableStateService.test');
+
+var _TableStateService2 = _interopRequireDefault(_TableStateService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var chance = new _chance2.default();
-
 var createTableStateChangeInfo = exports.createTableStateChangeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var table, changedByUser, tableStateChange;
+    var table, tableState, changedByUser, tableStateChange;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -42,22 +40,28 @@ var createTableStateChangeInfo = exports.createTableStateChangeInfo = function (
           case 2:
             table = _context.sent.first();
             _context.next = 5;
-            return _TestHelper2.default.createUser();
+            return (0, _TableStateService2.default)(1);
 
           case 5:
+            tableState = _context.sent.first();
+            _context.next = 8;
+            return _TestHelper2.default.createUser();
+
+          case 8:
             changedByUser = _context.sent;
             tableStateChange = (0, _immutable.Map)({
-              state: chance.string(),
+              tableStateId: tableState.get('id'),
               tableId: table.get('id'),
               changedByUserId: changedByUser.id
             });
             return _context.abrupt('return', {
               tableStateChange: tableStateChange,
+              tableState: tableState,
               table: table,
               changedByUser: changedByUser
             });
 
-          case 8:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -110,9 +114,10 @@ var createTableStateChange = exports.createTableStateChange = function () {
 var expectTableStateChange = exports.expectTableStateChange = function expectTableStateChange(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       tableStateChangeId = _ref3.tableStateChangeId,
-      expectedTable = _ref3.expectedTable;
+      expectedTable = _ref3.expectedTable,
+      expectedTableState = _ref3.expectedTableState;
 
-  expect(object.get('state')).toBe(expectedObject.get('state'));
+  expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('changedByUserId')).toBe(expectedObject.get('changedByUserId'));
 
@@ -122,6 +127,10 @@ var expectTableStateChange = exports.expectTableStateChange = function expectTab
 
   if (expectedTable) {
     expect(object.get('tableId')).toEqual(expectedTable.get('id'));
+  }
+
+  if (expectedTableState) {
+    expect(object.get('tableStateId')).toEqual(expectedTableState.get('id'));
   }
 };
 

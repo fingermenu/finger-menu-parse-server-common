@@ -23,6 +23,10 @@ var _RestaurantService = require('../../services/__tests__/RestaurantService.tes
 
 var _RestaurantService2 = _interopRequireDefault(_RestaurantService);
 
+var _TableStateService = require('../../services/__tests__/TableStateService.test');
+
+var _TableStateService2 = _interopRequireDefault(_TableStateService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -31,7 +35,7 @@ var chance = new _chance2.default();
 
 var createTableInfo = exports.createTableInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var restaurant, ownedByUser, maintainedByUsers, table;
+    var restaurant, tableState, ownedByUser, maintainedByUsers, table;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -42,20 +46,25 @@ var createTableInfo = exports.createTableInfo = function () {
           case 2:
             restaurant = _context.sent.first();
             _context.next = 5;
-            return _TestHelper2.default.createUser();
+            return (0, _TableStateService2.default)(1);
 
           case 5:
-            ownedByUser = _context.sent;
+            tableState = _context.sent.first();
             _context.next = 8;
-            return _TestHelper2.default.createUsers();
+            return _TestHelper2.default.createUser();
 
           case 8:
+            ownedByUser = _context.sent;
+            _context.next = 11;
+            return _TestHelper2.default.createUsers();
+
+          case 11:
             maintainedByUsers = _context.sent;
             table = (0, _immutable.Map)({
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
-              state: chance.string(),
               status: chance.string(),
               restaurantId: restaurant.get('id'),
+              tableStateId: tableState.get('id'),
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
@@ -64,11 +73,12 @@ var createTableInfo = exports.createTableInfo = function () {
             return _context.abrupt('return', {
               table: table,
               restaurant: restaurant,
+              tableState: tableState,
               ownedByUser: ownedByUser,
               maintainedByUsers: maintainedByUsers
             });
 
-          case 11:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -121,12 +131,14 @@ var createTable = exports.createTable = function () {
 var expectTable = exports.expectTable = function expectTable(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       tableId = _ref3.tableId,
-      expectedRestaurant = _ref3.expectedRestaurant;
+      expectedRestaurant = _ref3.expectedRestaurant,
+      expectedTableState = _ref3.expectedTableState;
 
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
+  expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
@@ -136,6 +148,10 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
 
   if (expectedRestaurant) {
     expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
+  }
+
+  if (expectedTableState) {
+    expect(object.get('tableStateId')).toEqual(expectedTableState.get('id'));
   }
 };
 

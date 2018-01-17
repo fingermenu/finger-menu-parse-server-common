@@ -27,7 +27,8 @@ var tableStateChangeService = new _2.TableStateChangeService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('state', 'table', 'changedByUser'),
+    fields: _immutable.List.of('tableState', 'table', 'changedByUser'),
+    include_tableState: true,
     include_table: true,
     include_changedByUser: true
   });
@@ -36,7 +37,7 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
 var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      state: object ? object.get('state') : chance.string(),
+      tableStateId: object ? object.get('tableStateId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       changedByUserId: object ? object.get('changedByUserId') : chance.string()
     })
@@ -237,7 +238,7 @@ describe('read', function () {
   })));
 
   test('should read the existing tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedTableStateChange, expectedTable, expectedChangedByUser, tableStateChangeId, tableStateChange;
+    var _ref10, expectedTableStateChange, expectedTableState, expectedTable, expectedChangedByUser, tableStateChangeId, tableStateChange;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -249,27 +250,29 @@ describe('read', function () {
           case 2:
             _ref10 = _context6.sent;
             expectedTableStateChange = _ref10.tableStateChange;
+            expectedTableState = _ref10.tableState;
             expectedTable = _ref10.table;
             expectedChangedByUser = _ref10.changedByUser;
-            _context6.next = 8;
+            _context6.next = 9;
             return tableStateChangeService.create(expectedTableStateChange);
 
-          case 8:
+          case 9:
             tableStateChangeId = _context6.sent;
-            _context6.next = 11;
+            _context6.next = 12;
             return tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
-          case 11:
+          case 12:
             tableStateChange = _context6.sent;
 
 
             (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
               tableStateChangeId: tableStateChangeId,
+              expectedTableState: expectedTableState,
               expectedTable: expectedTable,
               expectedChangedByUser: expectedChangedByUser
             });
 
-          case 13:
+          case 14:
           case 'end':
             return _context6.stop();
         }
@@ -368,7 +371,7 @@ describe('update', function () {
   })));
 
   test('should update the existing tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedTableStateChange, expectedTable, expectedChangedByUser, tableStateChangeId, tableStateChange;
+    var _ref15, expectedTableStateChange, expectedTableState, expectedTable, expectedChangedByUser, tableStateChangeId, tableStateChange;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -380,37 +383,39 @@ describe('update', function () {
           case 2:
             _ref15 = _context9.sent;
             expectedTableStateChange = _ref15.tableStateChange;
+            expectedTableState = _ref15.tableState;
             expectedTable = _ref15.table;
             expectedChangedByUser = _ref15.changedByUser;
             _context9.t0 = tableStateChangeService;
-            _context9.next = 9;
+            _context9.next = 10;
             return (0, _TableStateChange.createTableStateChangeInfo)();
 
-          case 9:
+          case 10:
             _context9.t1 = _context9.sent.tableStateChange;
-            _context9.next = 12;
+            _context9.next = 13;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 12:
+          case 13:
             tableStateChangeId = _context9.sent;
-            _context9.next = 15;
+            _context9.next = 16;
             return tableStateChangeService.update(expectedTableStateChange.set('id', tableStateChangeId));
 
-          case 15:
-            _context9.next = 17;
+          case 16:
+            _context9.next = 18;
             return tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
-          case 17:
+          case 18:
             tableStateChange = _context9.sent;
 
 
             (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
               tableStateChangeId: tableStateChangeId,
+              expectedTableState: expectedTableState,
               expectedTable: expectedTable,
               expectedChangedByUser: expectedChangedByUser
             });
 
-          case 19:
+          case 20:
           case 'end':
             return _context9.stop();
         }
@@ -518,7 +523,7 @@ describe('search', function () {
   })));
 
   test('should return the tableStateChange matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedTableStateChange, expectedTable, expectedChangedByUser, results, tableStateChanges;
+    var _ref20, expectedTableStateChange, expectedTableState, expectedTable, expectedChangedByUser, results, tableStateChanges;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -530,10 +535,11 @@ describe('search', function () {
           case 2:
             _ref20 = _context14.sent;
             expectedTableStateChange = _ref20.tableStateChange;
+            expectedTableState = _ref20.tableState;
             expectedTable = _ref20.table;
             expectedChangedByUser = _ref20.changedByUser;
             _context14.t0 = _immutable2.default;
-            _context14.next = 9;
+            _context14.next = 10;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -549,13 +555,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 9:
+          case 10:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 13;
+            _context14.next = 14;
             return tableStateChangeService.search(createCriteria(expectedTableStateChange));
 
-          case 13:
+          case 14:
             tableStateChanges = _context14.sent;
 
 
@@ -566,12 +572,13 @@ describe('search', function () {
               })).toBeDefined();
               (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
                 tableStateChangeId: tableStateChange.get('id'),
+                expectedTableState: expectedTableState,
                 expectedTable: expectedTable,
                 expectedChangedByUser: expectedChangedByUser
               });
             });
 
-          case 16:
+          case 17:
           case 'end':
             return _context14.stop();
         }
@@ -617,7 +624,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the tableStateChange matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedTableStateChange, expectedTable, expectedChangedByUser, results, tableStateChanges, result;
+    var _ref24, expectedTableStateChange, expectedTableState, expectedTable, expectedChangedByUser, results, tableStateChanges, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -629,10 +636,11 @@ describe('searchAll', function () {
           case 2:
             _ref24 = _context17.sent;
             expectedTableStateChange = _ref24.tableStateChange;
+            expectedTableState = _ref24.tableState;
             expectedTable = _ref24.table;
             expectedChangedByUser = _ref24.changedByUser;
             _context17.t0 = _immutable2.default;
-            _context17.next = 9;
+            _context17.next = 10;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -648,27 +656,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 9:
+          case 10:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             tableStateChanges = (0, _immutable.List)();
             result = tableStateChangeService.searchAll(createCriteria(expectedTableStateChange));
-            _context17.prev = 13;
+            _context17.prev = 14;
 
             result.event.subscribe(function (info) {
               tableStateChanges = tableStateChanges.push(info);
             });
 
-            _context17.next = 17;
+            _context17.next = 18;
             return result.promise;
 
-          case 17:
-            _context17.prev = 17;
+          case 18:
+            _context17.prev = 18;
 
             result.event.unsubscribeAll();
-            return _context17.finish(17);
+            return _context17.finish(18);
 
-          case 20:
+          case 21:
 
             expect(tableStateChanges.count).toBe(results.count);
             tableStateChanges.forEach(function (tableStateChange) {
@@ -677,17 +685,18 @@ describe('searchAll', function () {
               })).toBeDefined();
               (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
                 tableStateChangeId: tableStateChange.get('id'),
+                expectedTableState: expectedTableState,
                 expectedTable: expectedTable,
                 expectedChangedByUser: expectedChangedByUser
               });
             });
 
-          case 22:
+          case 23:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[13,, 17, 20]]);
+    }, _callee17, undefined, [[14,, 18, 21]]);
   })));
 });
 
