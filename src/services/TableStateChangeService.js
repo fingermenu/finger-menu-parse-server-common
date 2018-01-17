@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Table, TableStateChange } from '../schema';
 
 export default class TableStateChangeService extends ServiceBase {
-  static fields = List.of('state', 'table', 'user');
+  static fields = List.of('state', 'table', 'changedByUser');
 
   constructor() {
     super(TableStateChange, TableStateChangeService.buildSearchQuery, TableStateChangeService.buildIncludeQuery, 'tableStateChange');
@@ -17,7 +17,7 @@ export default class TableStateChangeService extends ServiceBase {
     }
 
     ServiceBase.addIncludeQuery(criteria, query, 'table');
-    ServiceBase.addIncludeQuery(criteria, query, 'user');
+    ServiceBase.addIncludeQuery(criteria, query, 'changedByUser');
 
     return query;
   };
@@ -37,7 +37,7 @@ export default class TableStateChangeService extends ServiceBase {
     });
     ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
     ServiceBase.addLinkQuery(conditions, query, 'table', 'table', Table);
-    ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
+    ServiceBase.addUserLinkQuery(conditions, query, 'changedByUser', 'changedByUser');
 
     return query;
   };

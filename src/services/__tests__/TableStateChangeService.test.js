@@ -11,9 +11,9 @@ const tableStateChangeService = new TableStateChangeService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('state', 'table', 'user'),
+    fields: List.of('state', 'table', 'changedByUser'),
     include_table: true,
-    include_user: true,
+    include_changedByUser: true,
   });
 
 const createCriteria = object =>
@@ -21,7 +21,7 @@ const createCriteria = object =>
     conditions: Map({
       state: object ? object.get('state') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
-      userId: object ? object.get('userId') : chance.string(),
+      changedByUserId: object ? object.get('changedByUserId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -81,14 +81,18 @@ describe('read', () => {
   });
 
   test('should read the existing tableStateChange', async () => {
-    const { tableStateChange: expectedTableStateChange, table: expectedTable, user: expectedOwnedByUser } = await createTableStateChangeInfo();
+    const {
+      tableStateChange: expectedTableStateChange,
+      table: expectedTable,
+      changedByUser: expectedChangedByUser,
+    } = await createTableStateChangeInfo();
     const tableStateChangeId = await tableStateChangeService.create(expectedTableStateChange);
     const tableStateChange = await tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
     expectTableStateChange(tableStateChange, expectedTableStateChange, {
       tableStateChangeId,
       expectedTable,
-      expectedOwnedByUser,
+      expectedChangedByUser,
     });
   });
 });
@@ -118,7 +122,11 @@ describe('update', () => {
   });
 
   test('should update the existing tableStateChange', async () => {
-    const { tableStateChange: expectedTableStateChange, table: expectedTable, user: expectedOwnedByUser } = await createTableStateChangeInfo();
+    const {
+      tableStateChange: expectedTableStateChange,
+      table: expectedTable,
+      changedByUser: expectedChangedByUser,
+    } = await createTableStateChangeInfo();
     const tableStateChangeId = await tableStateChangeService.create((await createTableStateChangeInfo()).tableStateChange);
 
     await tableStateChangeService.update(expectedTableStateChange.set('id', tableStateChangeId));
@@ -128,7 +136,7 @@ describe('update', () => {
     expectTableStateChange(tableStateChange, expectedTableStateChange, {
       tableStateChangeId,
       expectedTable,
-      expectedOwnedByUser,
+      expectedChangedByUser,
     });
   });
 });
@@ -164,7 +172,11 @@ describe('search', () => {
   });
 
   test('should return the tableStateChange matches the criteria', async () => {
-    const { tableStateChange: expectedTableStateChange, table: expectedTable, user: expectedOwnedByUser } = await createTableStateChangeInfo();
+    const {
+      tableStateChange: expectedTableStateChange,
+      table: expectedTable,
+      changedByUser: expectedChangedByUser,
+    } = await createTableStateChangeInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
       .map(async () => tableStateChangeService.create(expectedTableStateChange))
       .toArray()));
@@ -176,7 +188,7 @@ describe('search', () => {
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),
         expectedTable,
-        expectedOwnedByUser,
+        expectedChangedByUser,
       });
     });
   });
@@ -201,7 +213,11 @@ describe('searchAll', () => {
   });
 
   test('should return the tableStateChange matches the criteria', async () => {
-    const { tableStateChange: expectedTableStateChange, table: expectedTable, user: expectedOwnedByUser } = await createTableStateChangeInfo();
+    const {
+      tableStateChange: expectedTableStateChange,
+      table: expectedTable,
+      changedByUser: expectedChangedByUser,
+    } = await createTableStateChangeInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => tableStateChangeService.create(expectedTableStateChange))
       .toArray()));
@@ -225,7 +241,7 @@ describe('searchAll', () => {
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),
         expectedTable,
-        expectedOwnedByUser,
+        expectedChangedByUser,
       });
     });
   });

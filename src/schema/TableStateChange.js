@@ -16,7 +16,7 @@ export default class TableStateChange extends BaseObject {
   static updateInfoInternal = (object, info) => {
     object.set('state', info.get('state'));
     BaseObject.createPointer(object, info, 'table', Table);
-    BaseObject.createUserPointer(object, info, 'user');
+    BaseObject.createUserPointer(object, info, 'changedByUser');
   };
 
   constructor(object) {
@@ -32,15 +32,15 @@ export default class TableStateChange extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const table = object.get('table');
-    const user = object.get('user');
+    const changedByUser = object.get('changedByUser');
 
     return Map({
       id: this.getId(),
       state: object.get('state'),
       table,
       tableId: table ? table.id : undefined,
-      user,
-      userId: user ? user.id : undefined,
+      changedByUser,
+      changedByUserId: changedByUser ? changedByUser.id : undefined,
     });
   };
 }

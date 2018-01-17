@@ -11,17 +11,17 @@ const chance = new Chance();
 
 export const createTableStateChangeInfo = async () => {
   const table = (await createTables(1)).first();
-  const user = await TestHelper.createUser();
+  const changedByUser = await TestHelper.createUser();
   const tableStateChange = Map({
     state: chance.string(),
     tableId: table.get('id'),
-    userId: user.id,
+    changedByUserId: changedByUser.id,
   });
 
   return {
     tableStateChange,
     table,
-    user,
+    changedByUser,
   };
 };
 
@@ -30,7 +30,7 @@ export const createTableStateChange = async object => TableStateChange.spawn(obj
 export const expectTableStateChange = (object, expectedObject, { tableStateChangeId, expectedTable } = {}) => {
   expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
-  expect(object.get('userId')).toBe(expectedObject.get('userId'));
+  expect(object.get('changedByUserId')).toBe(expectedObject.get('changedByUserId'));
 
   if (tableStateChangeId) {
     expect(object.get('id')).toBe(tableStateChangeId);
