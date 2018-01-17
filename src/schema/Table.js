@@ -3,6 +3,7 @@
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Restaurant from './Restaurant';
+import TableState from './TableState';
 
 export default class Table extends BaseObject {
   static spawn = (info) => {
@@ -15,9 +16,9 @@ export default class Table extends BaseObject {
 
   static updateInfoInternal = (object, info) => {
     BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
-    object.set('state', info.get('state'));
     object.set('status', info.get('status'));
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
+    BaseObject.createPointer(object, info, 'tableState', TableState);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   };
@@ -35,16 +36,18 @@ export default class Table extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const restaurant = object.get('restaurant');
+    const tableState = object.get('tableState');
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
     return Map({
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
-      state: object.get('state'),
       status: object.get('status'),
       restaurant,
       restaurantId: restaurant ? restaurant.id : undefined,
+      tableState,
+      tableStateId: tableState ? tableState.id : undefined,
       ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers,

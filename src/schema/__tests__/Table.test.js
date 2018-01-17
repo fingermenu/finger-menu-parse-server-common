@@ -6,18 +6,20 @@ import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { Table } from '../';
 import createRestaurants from '../../services/__tests__/RestaurantService.test';
+import createTableStates from '../../services/__tests__/TableStateService.test';
 
 const chance = new Chance();
 
 export const createTableInfo = async () => {
   const restaurant = (await createRestaurants(1)).first();
+  const tableState = (await createTableStates(1)).first();
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
   const table = Map({
     name: TestHelper.createRandomMultiLanguagesString(),
-    state: chance.string(),
     status: chance.string(),
     restaurantId: restaurant.get('id'),
+    tableStateId: tableState.get('id'),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
@@ -25,6 +27,7 @@ export const createTableInfo = async () => {
   return {
     table,
     restaurant,
+    tableState,
     ownedByUser,
     maintainedByUsers,
   };
@@ -32,11 +35,12 @@ export const createTableInfo = async () => {
 
 export const createTable = async object => Table.spawn(object || (await createTableInfo()).table);
 
-export const expectTable = (object, expectedObject, { tableId, expectedRestaurant } = {}) => {
+export const expectTable = (object, expectedObject, { tableId, expectedRestaurant, expectedTableState } = {}) => {
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
+  expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
@@ -46,6 +50,10 @@ export const expectTable = (object, expectedObject, { tableId, expectedRestauran
 
   if (expectedRestaurant) {
     expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
+  }
+
+  if (expectedTableState) {
+    expect(object.get('tableStateId')).toEqual(expectedTableState.get('id'));
   }
 };
 

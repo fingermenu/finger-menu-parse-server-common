@@ -1,25 +1,25 @@
 // @flow
 
-import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { TableStateChange } from '../';
 import createTables from '../../services/__tests__/TableService.test';
-
-const chance = new Chance();
+import createTableStates from '../../services/__tests__/TableStateService.test';
 
 export const createTableStateChangeInfo = async () => {
   const table = (await createTables(1)).first();
+  const tableState = (await createTableStates(1)).first();
   const changedByUser = await TestHelper.createUser();
   const tableStateChange = Map({
-    state: chance.string(),
+    tableStateId: tableState.get('id'),
     tableId: table.get('id'),
     changedByUserId: changedByUser.id,
   });
 
   return {
     tableStateChange,
+    tableState,
     table,
     changedByUser,
   };
@@ -27,8 +27,8 @@ export const createTableStateChangeInfo = async () => {
 
 export const createTableStateChange = async object => TableStateChange.spawn(object || (await createTableStateChangeInfo()).tableStateChange);
 
-export const expectTableStateChange = (object, expectedObject, { tableStateChangeId, expectedTable } = {}) => {
-  expect(object.get('state')).toBe(expectedObject.get('state'));
+export const expectTableStateChange = (object, expectedObject, { tableStateChangeId, expectedTable, expectedTableState } = {}) => {
+  expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('changedByUserId')).toBe(expectedObject.get('changedByUserId'));
 
@@ -38,6 +38,10 @@ export const expectTableStateChange = (object, expectedObject, { tableStateChang
 
   if (expectedTable) {
     expect(object.get('tableId')).toEqual(expectedTable.get('id'));
+  }
+
+  if (expectedTableState) {
+    expect(object.get('tableStateId')).toEqual(expectedTableState.get('id'));
   }
 };
 
