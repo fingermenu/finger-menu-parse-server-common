@@ -18,9 +18,10 @@ const getLanguages = (object) => {
 
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('languages_name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
+    fields: List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_restaurant: true,
+    include_tableState: true,
     include_ownedByUser: true,
     include_maintainedByUsers: true,
   });
@@ -31,9 +32,9 @@ const createCriteria = (object) => {
   return Map({
     conditions: Map({
       name: language ? object.get('name').get(language) : chance.string(),
-      state: object ? object.get('state') : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
+      tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
@@ -99,6 +100,7 @@ describe('read', () => {
     const {
       table: expectedTable,
       restaurant: expectedRestaurant,
+      tableState: expectedTableState,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
@@ -108,6 +110,7 @@ describe('read', () => {
     expectTable(table, expectedTable, {
       tableId,
       expectedRestaurant,
+      expectedTableState,
       expectedOwnedByUser,
       expectedMaintainedByUsers,
     });
@@ -139,6 +142,7 @@ describe('update', () => {
     const {
       table: expectedTable,
       restaurant: expectedRestaurant,
+      tableState: expectedTableState,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
@@ -151,6 +155,7 @@ describe('update', () => {
     expectTable(table, expectedTable, {
       tableId,
       expectedRestaurant,
+      expectedTableState,
       expectedOwnedByUser,
       expectedMaintainedByUsers,
     });
@@ -191,6 +196,7 @@ describe('search', () => {
     const {
       table: expectedTable,
       restaurant: expectedRestaurant,
+      tableState: expectedTableState,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
@@ -205,6 +211,7 @@ describe('search', () => {
       expectTable(table, expectedTable, {
         tableId: table.get('id'),
         expectedRestaurant,
+        expectedTableState,
         expectedOwnedByUser,
         expectedMaintainedByUsers,
       });
@@ -234,6 +241,7 @@ describe('searchAll', () => {
     const {
       table: expectedTable,
       restaurant: expectedRestaurant,
+      tableState: expectedTableState,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
@@ -260,6 +268,7 @@ describe('searchAll', () => {
       expectTable(table, expectedTable, {
         tableId: table.get('id'),
         expectedRestaurant,
+        expectedTableState,
         expectedOwnedByUser,
         expectedMaintainedByUsers,
       });

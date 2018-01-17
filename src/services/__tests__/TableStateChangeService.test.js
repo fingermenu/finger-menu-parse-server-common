@@ -11,7 +11,8 @@ const tableStateChangeService = new TableStateChangeService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('state', 'table', 'changedByUser'),
+    fields: List.of('tableState', 'table', 'changedByUser'),
+    include_tableState: true,
     include_table: true,
     include_changedByUser: true,
   });
@@ -19,7 +20,7 @@ const createCriteriaWthoutConditions = () =>
 const createCriteria = object =>
   Map({
     conditions: Map({
-      state: object ? object.get('state') : chance.string(),
+      tableStateId: object ? object.get('tableStateId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       changedByUserId: object ? object.get('changedByUserId') : chance.string(),
     }),
@@ -83,6 +84,7 @@ describe('read', () => {
   test('should read the existing tableStateChange', async () => {
     const {
       tableStateChange: expectedTableStateChange,
+      tableState: expectedTableState,
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
@@ -91,6 +93,7 @@ describe('read', () => {
 
     expectTableStateChange(tableStateChange, expectedTableStateChange, {
       tableStateChangeId,
+      expectedTableState,
       expectedTable,
       expectedChangedByUser,
     });
@@ -124,6 +127,7 @@ describe('update', () => {
   test('should update the existing tableStateChange', async () => {
     const {
       tableStateChange: expectedTableStateChange,
+      tableState: expectedTableState,
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
@@ -135,6 +139,7 @@ describe('update', () => {
 
     expectTableStateChange(tableStateChange, expectedTableStateChange, {
       tableStateChangeId,
+      expectedTableState,
       expectedTable,
       expectedChangedByUser,
     });
@@ -174,6 +179,7 @@ describe('search', () => {
   test('should return the tableStateChange matches the criteria', async () => {
     const {
       tableStateChange: expectedTableStateChange,
+      tableState: expectedTableState,
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
@@ -187,6 +193,7 @@ describe('search', () => {
       expect(results.find(_ => _.localeCompare(tableStateChange.get('id')) === 0)).toBeDefined();
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),
+        expectedTableState,
         expectedTable,
         expectedChangedByUser,
       });
@@ -215,6 +222,7 @@ describe('searchAll', () => {
   test('should return the tableStateChange matches the criteria', async () => {
     const {
       tableStateChange: expectedTableStateChange,
+      tableState: expectedTableState,
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
@@ -240,6 +248,7 @@ describe('searchAll', () => {
       expect(results.find(_ => _.localeCompare(tableStateChange.get('id')) === 0)).toBeDefined();
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),
+        expectedTableState,
         expectedTable,
         expectedChangedByUser,
       });
