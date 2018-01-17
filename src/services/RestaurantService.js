@@ -6,7 +6,6 @@ import { Language, Menu, Restaurant } from '../schema';
 
 export default class RestaurantService extends ServiceBase {
   static fields = List.of(
-    'name',
     'websiteUrl',
     'imageUrl',
     'address',

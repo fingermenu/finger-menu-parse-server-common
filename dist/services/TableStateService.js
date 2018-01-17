@@ -28,7 +28,7 @@ var TableStateService = function (_ServiceBase) {
   return TableStateService;
 }(_parseServerCommon.ServiceBase);
 
-TableStateService.fields = _immutable.List.of('key', 'name', 'imageUrl');
+TableStateService.fields = _immutable.List.of('key', 'imageUrl');
 
 TableStateService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

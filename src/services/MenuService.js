@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Menu, MenuItemPrice, Tag } from '../schema';
 
 export default class MenuService extends ServiceBase {
-  static fields = List.of('name', 'description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(Menu, MenuService.buildSearchQuery, MenuService.buildIncludeQuery, 'menu');

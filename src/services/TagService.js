@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Tag } from '../schema';
 
 export default class TagService extends ServiceBase {
-  static fields = List.of('name', 'description', 'level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
+  static fields = List.of('level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
 
   constructor() {
     super(Tag, TagService.buildSearchQuery, TagService.buildIncludeQuery, 'tag');

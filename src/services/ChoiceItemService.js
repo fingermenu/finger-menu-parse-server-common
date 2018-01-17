@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { ChoiceItem, Tag } from '../schema';
 
 export default class ChoiceItemService extends ServiceBase {
-  static fields = List.of('name', 'description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(ChoiceItem, ChoiceItemService.buildSearchQuery, ChoiceItemService.buildIncludeQuery, 'choice item');

@@ -28,7 +28,7 @@ var TableService = function (_ServiceBase) {
   return TableService;
 }(_parseServerCommon.ServiceBase);
 
-TableService.fields = _immutable.List.of('name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
+TableService.fields = _immutable.List.of('state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
 
 TableService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

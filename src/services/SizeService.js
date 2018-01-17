@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Size } from '../schema';
 
 export default class SizeService extends ServiceBase {
-  static fields = List.of('name', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(Size, SizeService.buildSearchQuery, SizeService.buildIncludeQuery, 'size');

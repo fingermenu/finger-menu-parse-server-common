@@ -28,7 +28,7 @@ var SizeService = function (_ServiceBase) {
   return SizeService;
 }(_parseServerCommon.ServiceBase);
 
-SizeService.fields = _immutable.List.of('name', 'ownedByUser', 'maintainedByUsers');
+SizeService.fields = _immutable.List.of('ownedByUser', 'maintainedByUsers');
 
 SizeService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

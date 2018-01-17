@@ -28,7 +28,7 @@ var ChoiceItemService = function (_ServiceBase) {
   return ChoiceItemService;
 }(_parseServerCommon.ServiceBase);
 
-ChoiceItemService.fields = _immutable.List.of('name', 'description', 'choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
+ChoiceItemService.fields = _immutable.List.of('choiceItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers');
 
 ChoiceItemService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

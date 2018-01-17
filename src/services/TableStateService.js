@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { TableState } from '../schema';
 
 export default class TableStateService extends ServiceBase {
-  static fields = List.of('key', 'name', 'imageUrl');
+  static fields = List.of('key', 'imageUrl');
 
   constructor() {
     super(TableState, TableStateService.buildSearchQuery, TableStateService.buildIncludeQuery, 'tableState');
