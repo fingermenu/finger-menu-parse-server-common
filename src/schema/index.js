@@ -9,5 +9,5 @@ export MenuItemPrice from './MenuItemPrice';
 export Restaurant from './Restaurant';
 export Size from './Size';
 export Table from './Table';
-export TableStatus from './TableStatus';
+export TableState from './TableState';
 export Tag from './Tag';

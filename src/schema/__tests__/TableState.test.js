@@ -4,36 +4,36 @@ import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { TableStatus } from '../';
+import { TableState } from '../';
 import createTables from '../../services/__tests__/TableService.test';
 
 const chance = new Chance();
 
-export const createTableStatusInfo = async () => {
+export const createTableStateInfo = async () => {
   const table = (await createTables(1)).first();
   const user = await TestHelper.createUser();
-  const tableStatus = Map({
+  const tableState = Map({
     status: chance.string(),
     tableId: table.get('id'),
     userId: user.id,
   });
 
   return {
-    tableStatus,
+    tableState,
     table,
     user,
   };
 };
 
-export const createTableStatus = async object => TableStatus.spawn(object || (await createTableStatusInfo()).tableStatus);
+export const createTableState = async object => TableState.spawn(object || (await createTableStateInfo()).tableState);
 
-export const expectTableStatus = (object, expectedObject, { tableStatusId, expectedTable } = {}) => {
+export const expectTableState = (object, expectedObject, { tableStateId, expectedTable } = {}) => {
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 
-  if (tableStatusId) {
-    expect(object.get('id')).toBe(tableStatusId);
+  if (tableStateId) {
+    expect(object.get('id')).toBe(tableStateId);
   }
 
   if (expectedTable) {
@@ -43,50 +43,50 @@ export const expectTableStatus = (object, expectedObject, { tableStatusId, expec
 
 describe('constructor', () => {
   test('should set class name', async () => {
-    expect((await createTableStatus()).className).toBe('TableStatus');
+    expect((await createTableState()).className).toBe('TableState');
   });
 });
 
 describe('static public methods', () => {
   test('spawn should set provided info', async () => {
-    const { tableStatus } = await createTableStatusInfo();
-    const object = await createTableStatus(tableStatus);
+    const { tableState } = await createTableStateInfo();
+    const object = await createTableState(tableState);
     const info = object.getInfo();
 
-    expectTableStatus(info, tableStatus);
+    expectTableState(info, tableState);
   });
 });
 
 describe('public methods', () => {
   test('getObject should return provided object', async () => {
-    const object = await createTableStatus();
+    const object = await createTableState();
 
-    expect(new TableStatus(object).getObject()).toBe(object);
+    expect(new TableState(object).getObject()).toBe(object);
   });
 
   test('getId should return provided object Id', async () => {
-    const object = await createTableStatus();
+    const object = await createTableState();
 
-    expect(new TableStatus(object).getId()).toBe(object.id);
+    expect(new TableState(object).getId()).toBe(object.id);
   });
 
   test('updateInfo should update object info', async () => {
-    const object = await createTableStatus();
-    const { tableStatus: updatedTableStatus } = await createTableStatusInfo();
+    const object = await createTableState();
+    const { tableState: updatedTableState } = await createTableStateInfo();
 
-    object.updateInfo(updatedTableStatus);
+    object.updateInfo(updatedTableState);
 
     const info = object.getInfo();
 
-    expectTableStatus(info, updatedTableStatus);
+    expectTableState(info, updatedTableState);
   });
 
   test('getInfo should return provided info', async () => {
-    const { tableStatus } = await createTableStatusInfo();
-    const object = await createTableStatus(tableStatus);
+    const { tableState } = await createTableStateInfo();
+    const object = await createTableState(tableState);
     const info = object.getInfo();
 
     expect(info.get('id')).toBe(object.getId());
-    expectTableStatus(info, tableStatus);
+    expectTableState(info, tableState);
   });
 });

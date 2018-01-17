@@ -20,31 +20,31 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TableStatus = function (_BaseObject) {
-  _inherits(TableStatus, _BaseObject);
+var TableState = function (_BaseObject) {
+  _inherits(TableState, _BaseObject);
 
-  function TableStatus(object) {
-    _classCallCheck(this, TableStatus);
+  function TableState(object) {
+    _classCallCheck(this, TableState);
 
-    var _this = _possibleConstructorReturn(this, (TableStatus.__proto__ || Object.getPrototypeOf(TableStatus)).call(this, object, 'TableStatus'));
+    var _this = _possibleConstructorReturn(this, (TableState.__proto__ || Object.getPrototypeOf(TableState)).call(this, object, 'TableState'));
 
     _initialiseProps.call(_this);
 
     return _this;
   }
 
-  return TableStatus;
+  return TableState;
 }(_parseServerCommon.BaseObject);
 
-TableStatus.spawn = function (info) {
-  var object = new TableStatus();
+TableState.spawn = function (info) {
+  var object = new TableState();
 
-  TableStatus.updateInfoInternal(object, info);
+  TableState.updateInfoInternal(object, info);
 
   return object;
 };
 
-TableStatus.updateInfoInternal = function (object, info) {
+TableState.updateInfoInternal = function (object, info) {
   object.set('status', info.get('status'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'user');
@@ -54,7 +54,7 @@ var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.updateInfo = function (info) {
-    TableStatus.updateInfoInternal(_this2.getObject(), info);
+    TableState.updateInfoInternal(_this2.getObject(), info);
 
     return _this2;
   };
@@ -75,4 +75,4 @@ var _initialiseProps = function _initialiseProps() {
   };
 };
 
-exports.default = TableStatus;
+exports.default = TableState;

@@ -2,13 +2,13 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { Table, TableStatus } from '../schema';
+import { Table, TableState } from '../schema';
 
-export default class TableStatusService extends ServiceBase {
+export default class TableStateService extends ServiceBase {
   static fields = List.of('status', 'table', 'user');
 
   constructor() {
-    super(TableStatus, TableStatusService.buildSearchQuery, TableStatusService.buildIncludeQuery, 'tableStatus');
+    super(TableState, TableStateService.buildSearchQuery, TableStateService.buildIncludeQuery, 'tableState');
   }
 
   static buildIncludeQuery = (query, criteria) => {
@@ -23,8 +23,8 @@ export default class TableStatusService extends ServiceBase {
   };
 
   static buildSearchQuery = (criteria) => {
-    const queryWithoutIncludes = ParseWrapperService.createQuery(TableStatus, criteria);
-    const query = TableStatusService.buildIncludeQuery(queryWithoutIncludes, criteria);
+    const queryWithoutIncludes = ParseWrapperService.createQuery(TableState, criteria);
+    const query = TableStateService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
     if (!criteria.has('conditions')) {
       return query;
@@ -32,7 +32,7 @@ export default class TableStatusService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    TableStatusService.fields.forEach((field) => {
+    TableStateService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');

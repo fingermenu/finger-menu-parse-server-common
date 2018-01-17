@@ -4,11 +4,11 @@ import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Table from './Table';
 
-export default class TableStatus extends BaseObject {
+export default class TableState extends BaseObject {
   static spawn = (info) => {
-    const object = new TableStatus();
+    const object = new TableState();
 
-    TableStatus.updateInfoInternal(object, info);
+    TableState.updateInfoInternal(object, info);
 
     return object;
   };
@@ -20,11 +20,11 @@ export default class TableStatus extends BaseObject {
   };
 
   constructor(object) {
-    super(object, 'TableStatus');
+    super(object, 'TableState');
   }
 
   updateInfo = (info) => {
-    TableStatus.updateInfoInternal(this.getObject(), info);
+    TableState.updateInfoInternal(this.getObject(), info);
 
     return this;
   };

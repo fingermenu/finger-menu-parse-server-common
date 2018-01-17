@@ -16,21 +16,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TableStatusService = function (_ServiceBase) {
-  _inherits(TableStatusService, _ServiceBase);
+var TableStateService = function (_ServiceBase) {
+  _inherits(TableStateService, _ServiceBase);
 
-  function TableStatusService() {
-    _classCallCheck(this, TableStatusService);
+  function TableStateService() {
+    _classCallCheck(this, TableStateService);
 
-    return _possibleConstructorReturn(this, (TableStatusService.__proto__ || Object.getPrototypeOf(TableStatusService)).call(this, _schema.TableStatus, TableStatusService.buildSearchQuery, TableStatusService.buildIncludeQuery, 'tableStatus'));
+    return _possibleConstructorReturn(this, (TableStateService.__proto__ || Object.getPrototypeOf(TableStateService)).call(this, _schema.TableState, TableStateService.buildSearchQuery, TableStateService.buildIncludeQuery, 'tableState'));
   }
 
-  return TableStatusService;
+  return TableStateService;
 }(_parseServerCommon.ServiceBase);
 
-TableStatusService.fields = _immutable.List.of('status', 'table', 'user');
+TableStateService.fields = _immutable.List.of('status', 'table', 'user');
 
-TableStatusService.buildIncludeQuery = function (query, criteria) {
+TableStateService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
@@ -41,9 +41,9 @@ TableStatusService.buildIncludeQuery = function (query, criteria) {
   return query;
 };
 
-TableStatusService.buildSearchQuery = function (criteria) {
-  var queryWithoutIncludes = _parseServerCommon.ParseWrapperService.createQuery(_schema.TableStatus, criteria);
-  var query = TableStatusService.buildIncludeQuery(queryWithoutIncludes, criteria);
+TableStateService.buildSearchQuery = function (criteria) {
+  var queryWithoutIncludes = _parseServerCommon.ParseWrapperService.createQuery(_schema.TableState, criteria);
+  var query = TableStateService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
   if (!criteria.has('conditions')) {
     return query;
@@ -51,7 +51,7 @@ TableStatusService.buildSearchQuery = function (criteria) {
 
   var conditions = criteria.get('conditions');
 
-  TableStatusService.fields.forEach(function (field) {
+  TableStateService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
@@ -61,4 +61,4 @@ TableStatusService.buildSearchQuery = function (criteria) {
   return query;
 };
 
-exports.default = TableStatusService;
+exports.default = TableStateService;
