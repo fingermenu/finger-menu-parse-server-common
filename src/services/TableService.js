@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Restaurant, Table } from '../schema';
 
 export default class TableService extends ServiceBase {
-  static fields = List.of('name', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(Table, TableService.buildSearchQuery, TableService.buildIncludeQuery, 'table');
@@ -37,6 +37,7 @@ export default class TableService extends ServiceBase {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
+    ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
     ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
     ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', Restaurant);
     ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');

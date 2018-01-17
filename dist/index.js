@@ -60,10 +60,10 @@ Object.defineProperty(exports, 'Table', {
     return _schema.Table;
   }
 });
-Object.defineProperty(exports, 'TableState', {
+Object.defineProperty(exports, 'TableStateChange', {
   enumerable: true,
   get: function get() {
-    return _schema.TableState;
+    return _schema.TableStateChange;
   }
 });
 Object.defineProperty(exports, 'Tag', {
@@ -129,10 +129,10 @@ Object.defineProperty(exports, 'TableService', {
     return _services.TableService;
   }
 });
-Object.defineProperty(exports, 'TableStateService', {
+Object.defineProperty(exports, 'TableStateChangeService', {
   enumerable: true,
   get: function get() {
-    return _services.TableStateService;
+    return _services.TableStateChangeService;
   }
 });
 Object.defineProperty(exports, 'TagService', {

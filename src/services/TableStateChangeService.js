@@ -2,13 +2,13 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { Table, TableState } from '../schema';
+import { Table, TableStateChange } from '../schema';
 
-export default class TableStateService extends ServiceBase {
-  static fields = List.of('status', 'table', 'user');
+export default class TableStateChangeService extends ServiceBase {
+  static fields = List.of('state', 'table', 'user');
 
   constructor() {
-    super(TableState, TableStateService.buildSearchQuery, TableStateService.buildIncludeQuery, 'tableState');
+    super(TableStateChange, TableStateChangeService.buildSearchQuery, TableStateChangeService.buildIncludeQuery, 'tableStateChange');
   }
 
   static buildIncludeQuery = (query, criteria) => {
@@ -23,8 +23,8 @@ export default class TableStateService extends ServiceBase {
   };
 
   static buildSearchQuery = (criteria) => {
-    const queryWithoutIncludes = ParseWrapperService.createQuery(TableState, criteria);
-    const query = TableStateService.buildIncludeQuery(queryWithoutIncludes, criteria);
+    const queryWithoutIncludes = ParseWrapperService.createQuery(TableStateChange, criteria);
+    const query = TableStateChangeService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
     if (!criteria.has('conditions')) {
       return query;
@@ -32,10 +32,10 @@ export default class TableStateService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    TableStateService.fields.forEach((field) => {
+    TableStateChangeService.fields.forEach((field) => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
-    ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
+    ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
     ServiceBase.addLinkQuery(conditions, query, 'table', 'table', Table);
     ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 

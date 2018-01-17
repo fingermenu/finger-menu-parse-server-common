@@ -20,32 +20,32 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TableState = function (_BaseObject) {
-  _inherits(TableState, _BaseObject);
+var TableStateChange = function (_BaseObject) {
+  _inherits(TableStateChange, _BaseObject);
 
-  function TableState(object) {
-    _classCallCheck(this, TableState);
+  function TableStateChange(object) {
+    _classCallCheck(this, TableStateChange);
 
-    var _this = _possibleConstructorReturn(this, (TableState.__proto__ || Object.getPrototypeOf(TableState)).call(this, object, 'TableState'));
+    var _this = _possibleConstructorReturn(this, (TableStateChange.__proto__ || Object.getPrototypeOf(TableStateChange)).call(this, object, 'TableStateChange'));
 
     _initialiseProps.call(_this);
 
     return _this;
   }
 
-  return TableState;
+  return TableStateChange;
 }(_parseServerCommon.BaseObject);
 
-TableState.spawn = function (info) {
-  var object = new TableState();
+TableStateChange.spawn = function (info) {
+  var object = new TableStateChange();
 
-  TableState.updateInfoInternal(object, info);
+  TableStateChange.updateInfoInternal(object, info);
 
   return object;
 };
 
-TableState.updateInfoInternal = function (object, info) {
-  object.set('status', info.get('status'));
+TableStateChange.updateInfoInternal = function (object, info) {
+  object.set('state', info.get('state'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'user');
 };
@@ -54,7 +54,7 @@ var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.updateInfo = function (info) {
-    TableState.updateInfoInternal(_this2.getObject(), info);
+    TableStateChange.updateInfoInternal(_this2.getObject(), info);
 
     return _this2;
   };
@@ -66,7 +66,7 @@ var _initialiseProps = function _initialiseProps() {
 
     return (0, _immutable.Map)({
       id: _this2.getId(),
-      status: object.get('status'),
+      state: object.get('state'),
       table: table,
       tableId: table ? table.id : undefined,
       user: user,
@@ -75,4 +75,4 @@ var _initialiseProps = function _initialiseProps() {
   };
 };
 
-exports.default = TableState;
+exports.default = TableStateChange;

@@ -4,27 +4,27 @@ import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Table from './Table';
 
-export default class TableState extends BaseObject {
+export default class TableStateChange extends BaseObject {
   static spawn = (info) => {
-    const object = new TableState();
+    const object = new TableStateChange();
 
-    TableState.updateInfoInternal(object, info);
+    TableStateChange.updateInfoInternal(object, info);
 
     return object;
   };
 
   static updateInfoInternal = (object, info) => {
-    object.set('status', info.get('status'));
+    object.set('state', info.get('state'));
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createUserPointer(object, info, 'user');
   };
 
   constructor(object) {
-    super(object, 'TableState');
+    super(object, 'TableStateChange');
   }
 
   updateInfo = (info) => {
-    TableState.updateInfoInternal(this.getObject(), info);
+    TableStateChange.updateInfoInternal(this.getObject(), info);
 
     return this;
   };
@@ -36,7 +36,7 @@ export default class TableState extends BaseObject {
 
     return Map({
       id: this.getId(),
-      status: object.get('status'),
+      state: object.get('state'),
       table,
       tableId: table ? table.id : undefined,
       user,

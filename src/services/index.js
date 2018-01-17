@@ -9,5 +9,5 @@ export MenuItemPriceService from './MenuItemPriceService';
 export RestaurantService from './RestaurantService';
 export SizeService from './SizeService';
 export TableService from './TableService';
-export TableStateService from './TableStateService';
+export TableStateChangeService from './TableStateChangeService';
 export TagService from './TagService';

@@ -28,7 +28,7 @@ var TableService = function (_ServiceBase) {
   return TableService;
 }(_parseServerCommon.ServiceBase);
 
-TableService.fields = _immutable.List.of('name', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
+TableService.fields = _immutable.List.of('name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers');
 
 TableService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -56,6 +56,7 @@ TableService.buildSearchQuery = function (criteria) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', _schema.Restaurant);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');

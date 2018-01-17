@@ -18,7 +18,7 @@ const getLanguages = (object) => {
 
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('languages_name', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
+    fields: List.of('languages_name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_restaurant: true,
     include_ownedByUser: true,
@@ -31,6 +31,7 @@ const createCriteria = (object) => {
   return Map({
     conditions: Map({
       name: language ? object.get('name').get(language) : chance.string(),
+      state: object ? object.get('state') : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),

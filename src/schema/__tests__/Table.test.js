@@ -15,6 +15,7 @@ export const createTableInfo = async () => {
   const maintainedByUsers = await TestHelper.createUsers();
   const table = Map({
     name: TestHelper.createRandomMultiLanguagesString(),
+    state: chance.string(),
     status: chance.string(),
     restaurantId: restaurant.get('id'),
     ownedByUserId: ownedByUser.id,
@@ -33,6 +34,7 @@ export const createTable = async object => Table.spawn(object || (await createTa
 
 export const expectTable = (object, expectedObject, { tableId, expectedRestaurant } = {}) => {
   expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));

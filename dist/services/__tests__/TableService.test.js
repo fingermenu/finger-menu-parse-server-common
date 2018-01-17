@@ -34,7 +34,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'state', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -52,6 +52,7 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       name: language ? object.get('name').get(language) : chance.string(),
+      state: object ? object.get('state') : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),

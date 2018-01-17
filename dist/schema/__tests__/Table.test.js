@@ -53,6 +53,7 @@ var createTableInfo = exports.createTableInfo = function () {
             maintainedByUsers = _context.sent;
             table = (0, _immutable.Map)({
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
+              state: chance.string(),
               status: chance.string(),
               restaurantId: restaurant.get('id'),
               ownedByUserId: ownedByUser.id,
@@ -123,6 +124,7 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
       expectedRestaurant = _ref3.expectedRestaurant;
 
   expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));

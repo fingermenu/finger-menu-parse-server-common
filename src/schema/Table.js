@@ -15,6 +15,7 @@ export default class Table extends BaseObject {
 
   static updateInfoInternal = (object, info) => {
     BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+    object.set('state', info.get('state'));
     object.set('status', info.get('status'));
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
@@ -40,6 +41,7 @@ export default class Table extends BaseObject {
     return Map({
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
+      state: object.get('state'),
       status: object.get('status'),
       restaurant,
       restaurantId: restaurant ? restaurant.id : undefined,

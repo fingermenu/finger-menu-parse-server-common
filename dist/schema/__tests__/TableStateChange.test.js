@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.expectTableState = exports.createTableState = exports.createTableStateInfo = undefined;
+exports.expectTableStateChange = exports.createTableStateChange = exports.createTableStateChangeInfo = undefined;
 
 var _chance = require('chance');
 
@@ -29,9 +29,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var chance = new _chance2.default();
 
-var createTableStateInfo = exports.createTableStateInfo = function () {
+var createTableStateChangeInfo = exports.createTableStateChangeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var table, user, tableState;
+    var table, user, tableStateChange;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -46,13 +46,13 @@ var createTableStateInfo = exports.createTableStateInfo = function () {
 
           case 5:
             user = _context.sent;
-            tableState = (0, _immutable.Map)({
-              status: chance.string(),
+            tableStateChange = (0, _immutable.Map)({
+              state: chance.string(),
               tableId: table.get('id'),
               userId: user.id
             });
             return _context.abrupt('return', {
-              tableState: tableState,
+              tableStateChange: tableStateChange,
               table: table,
               user: user
             });
@@ -65,18 +65,18 @@ var createTableStateInfo = exports.createTableStateInfo = function () {
     }, _callee, undefined);
   }));
 
-  return function createTableStateInfo() {
+  return function createTableStateChangeInfo() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createTableState = exports.createTableState = function () {
+var createTableStateChange = exports.createTableStateChange = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _.TableState;
+            _context2.t0 = _.TableStateChange;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -85,10 +85,10 @@ var createTableState = exports.createTableState = function () {
             }
 
             _context2.next = 5;
-            return createTableStateInfo();
+            return createTableStateChangeInfo();
 
           case 5:
-            _context2.t1 = _context2.sent.tableState;
+            _context2.t1 = _context2.sent.tableStateChange;
 
           case 6:
             _context2.t2 = _context2.t1;
@@ -102,22 +102,22 @@ var createTableState = exports.createTableState = function () {
     }, _callee2, undefined);
   }));
 
-  return function createTableState(_x) {
+  return function createTableStateChange(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var expectTableState = exports.expectTableState = function expectTableState(object, expectedObject) {
+var expectTableStateChange = exports.expectTableStateChange = function expectTableStateChange(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      tableStateId = _ref3.tableStateId,
+      tableStateChangeId = _ref3.tableStateChangeId,
       expectedTable = _ref3.expectedTable;
 
-  expect(object.get('status')).toBe(expectedObject.get('status'));
+  expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 
-  if (tableStateId) {
-    expect(object.get('id')).toBe(tableStateId);
+  if (tableStateChangeId) {
+    expect(object.get('id')).toBe(tableStateChangeId);
   }
 
   if (expectedTable) {
@@ -133,11 +133,11 @@ describe('constructor', function () {
           case 0:
             _context3.t0 = expect;
             _context3.next = 3;
-            return createTableState();
+            return createTableStateChange();
 
           case 3:
             _context3.t1 = _context3.sent.className;
-            (0, _context3.t0)(_context3.t1).toBe('TableState');
+            (0, _context3.t0)(_context3.t1).toBe('TableStateChange');
 
           case 5:
           case 'end':
@@ -150,27 +150,27 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, tableState, object, info;
+    var _ref6, tableStateChange, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return createTableStateInfo();
+            return createTableStateChangeInfo();
 
           case 2:
             _ref6 = _context4.sent;
-            tableState = _ref6.tableState;
+            tableStateChange = _ref6.tableStateChange;
             _context4.next = 6;
-            return createTableState(tableState);
+            return createTableStateChange(tableStateChange);
 
           case 6:
             object = _context4.sent;
             info = object.getInfo();
 
 
-            expectTableState(info, tableState);
+            expectTableStateChange(info, tableStateChange);
 
           case 9:
           case 'end':
@@ -189,13 +189,13 @@ describe('public methods', function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return createTableState();
+            return createTableStateChange();
 
           case 2:
             object = _context5.sent;
 
 
-            expect(new _.TableState(object).getObject()).toBe(object);
+            expect(new _.TableStateChange(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -212,13 +212,13 @@ describe('public methods', function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return createTableState();
+            return createTableStateChange();
 
           case 2:
             object = _context6.sent;
 
 
-            expect(new _.TableState(object).getId()).toBe(object.id);
+            expect(new _.TableStateChange(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -229,31 +229,31 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedTableState, info;
+    var object, _ref10, updatedTableStateChange, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return createTableState();
+            return createTableStateChange();
 
           case 2:
             object = _context7.sent;
             _context7.next = 5;
-            return createTableStateInfo();
+            return createTableStateChangeInfo();
 
           case 5:
             _ref10 = _context7.sent;
-            updatedTableState = _ref10.tableState;
+            updatedTableStateChange = _ref10.tableStateChange;
 
 
-            object.updateInfo(updatedTableState);
+            object.updateInfo(updatedTableStateChange);
 
             info = object.getInfo();
 
 
-            expectTableState(info, updatedTableState);
+            expectTableStateChange(info, updatedTableStateChange);
 
           case 10:
           case 'end':
@@ -264,20 +264,20 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, tableState, object, info;
+    var _ref12, tableStateChange, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return createTableStateInfo();
+            return createTableStateChangeInfo();
 
           case 2:
             _ref12 = _context8.sent;
-            tableState = _ref12.tableState;
+            tableStateChange = _ref12.tableStateChange;
             _context8.next = 6;
-            return createTableState(tableState);
+            return createTableStateChange(tableStateChange);
 
           case 6:
             object = _context8.sent;
@@ -285,7 +285,7 @@ describe('public methods', function () {
 
 
             expect(info.get('id')).toBe(object.getId());
-            expectTableState(info, tableState);
+            expectTableStateChange(info, tableStateChange);
 
           case 10:
           case 'end':

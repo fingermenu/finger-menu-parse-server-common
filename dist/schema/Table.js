@@ -48,6 +48,7 @@ Table.spawn = function (info) {
 
 Table.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+  object.set('state', info.get('state'));
   object.set('status', info.get('status'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
@@ -72,6 +73,7 @@ var _initialiseProps = function _initialiseProps() {
     return (0, _immutable.Map)({
       id: _this2.getId(),
       name: _this2.getMultiLanguagesString('name'),
+      state: object.get('state'),
       status: object.get('status'),
       restaurant: restaurant,
       restaurantId: restaurant ? restaurant.id : undefined,

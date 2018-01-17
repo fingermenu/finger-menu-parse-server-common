@@ -16,21 +16,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TableStateService = function (_ServiceBase) {
-  _inherits(TableStateService, _ServiceBase);
+var TableStateChangeService = function (_ServiceBase) {
+  _inherits(TableStateChangeService, _ServiceBase);
 
-  function TableStateService() {
-    _classCallCheck(this, TableStateService);
+  function TableStateChangeService() {
+    _classCallCheck(this, TableStateChangeService);
 
-    return _possibleConstructorReturn(this, (TableStateService.__proto__ || Object.getPrototypeOf(TableStateService)).call(this, _schema.TableState, TableStateService.buildSearchQuery, TableStateService.buildIncludeQuery, 'tableState'));
+    return _possibleConstructorReturn(this, (TableStateChangeService.__proto__ || Object.getPrototypeOf(TableStateChangeService)).call(this, _schema.TableStateChange, TableStateChangeService.buildSearchQuery, TableStateChangeService.buildIncludeQuery, 'tableStateChange'));
   }
 
-  return TableStateService;
+  return TableStateChangeService;
 }(_parseServerCommon.ServiceBase);
 
-TableStateService.fields = _immutable.List.of('status', 'table', 'user');
+TableStateChangeService.fields = _immutable.List.of('state', 'table', 'user');
 
-TableStateService.buildIncludeQuery = function (query, criteria) {
+TableStateChangeService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
@@ -41,9 +41,9 @@ TableStateService.buildIncludeQuery = function (query, criteria) {
   return query;
 };
 
-TableStateService.buildSearchQuery = function (criteria) {
-  var queryWithoutIncludes = _parseServerCommon.ParseWrapperService.createQuery(_schema.TableState, criteria);
-  var query = TableStateService.buildIncludeQuery(queryWithoutIncludes, criteria);
+TableStateChangeService.buildSearchQuery = function (criteria) {
+  var queryWithoutIncludes = _parseServerCommon.ParseWrapperService.createQuery(_schema.TableStateChange, criteria);
+  var query = TableStateChangeService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
   if (!criteria.has('conditions')) {
     return query;
@@ -51,14 +51,14 @@ TableStateService.buildSearchQuery = function (criteria) {
 
   var conditions = criteria.get('conditions');
 
-  TableStateService.fields.forEach(function (field) {
+  TableStateChangeService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'status', 'status');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'state', 'state');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'table', 'table', _schema.Table);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 
   return query;
 };
 
-exports.default = TableStateService;
+exports.default = TableStateChangeService;

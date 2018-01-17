@@ -16,18 +16,18 @@ require('../../../bootstrap');
 
 var _2 = require('../');
 
-var _TableState = require('../../schema/__tests__/TableState.test');
+var _TableStateChange = require('../../schema/__tests__/TableStateChange.test');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var chance = new _chance2.default();
-var tableStateService = new _2.TableStateService();
+var tableStateChangeService = new _2.TableStateChangeService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('status', 'table', 'user'),
+    fields: _immutable.List.of('state', 'table', 'user'),
     include_table: true,
     include_user: true
   });
@@ -36,24 +36,24 @@ var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
 var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      status: object ? object.get('status') : chance.string(),
+      state: object ? object.get('state') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       userId: object ? object.get('userId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
 };
 
-var createTableStates = function () {
+var createTableStateChanges = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(count) {
     var useSameInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-    var tableState, _ref2, tempTableState;
+    var tableStateChange, _ref2, tempTableStateChange;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            tableState = void 0;
+            tableStateChange = void 0;
 
             if (!useSameInfo) {
               _context2.next = 7;
@@ -61,51 +61,51 @@ var createTableStates = function () {
             }
 
             _context2.next = 4;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 4:
             _ref2 = _context2.sent;
-            tempTableState = _ref2.tableState;
+            tempTableStateChange = _ref2.tableStateChange;
 
 
-            tableState = tempTableState;
+            tableStateChange = tempTableStateChange;
 
           case 7:
             _context2.t0 = _immutable2.default;
             _context2.next = 10;
             return Promise.all((0, _immutable.Range)(0, count).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var finalTableState, _ref4, _tempTableState;
+              var finalTableStateChange, _ref4, _tempTableStateChange;
 
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      finalTableState = void 0;
+                      finalTableStateChange = void 0;
 
                       if (!useSameInfo) {
                         _context.next = 5;
                         break;
                       }
 
-                      finalTableState = tableState;
+                      finalTableStateChange = tableStateChange;
                       _context.next = 10;
                       break;
 
                     case 5:
                       _context.next = 7;
-                      return (0, _TableState.createTableStateInfo)();
+                      return (0, _TableStateChange.createTableStateChangeInfo)();
 
                     case 7:
                       _ref4 = _context.sent;
-                      _tempTableState = _ref4.tableState;
+                      _tempTableStateChange = _ref4.tableStateChange;
 
 
-                      finalTableState = _tempTableState;
+                      finalTableStateChange = _tempTableStateChange;
 
                     case 10:
-                      _context.t0 = tableStateService;
+                      _context.t0 = tableStateChangeService;
                       _context.next = 13;
-                      return tableStateService.create(finalTableState);
+                      return tableStateChangeService.create(finalTableStateChange);
 
                     case 13:
                       _context.t1 = _context.sent;
@@ -132,35 +132,35 @@ var createTableStates = function () {
     }, _callee2, undefined);
   }));
 
-  return function createTableStates(_x) {
+  return function createTableStateChanges(_x) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.default = createTableStates;
+exports.default = createTableStateChanges;
 
 
 describe('create', function () {
-  test('should return the created tableState Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var tableStateId;
+  test('should return the created tableStateChange Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var tableStateChangeId;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.t0 = tableStateService;
+            _context3.t0 = tableStateChangeService;
             _context3.next = 3;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 3:
-            _context3.t1 = _context3.sent.tableState;
+            _context3.t1 = _context3.sent.tableStateChange;
             _context3.next = 6;
             return _context3.t0.create.call(_context3.t0, _context3.t1);
 
           case 6:
-            tableStateId = _context3.sent;
+            tableStateChangeId = _context3.sent;
 
 
-            expect(tableStateId).toBeDefined();
+            expect(tableStateChangeId).toBeDefined();
 
           case 8:
           case 'end':
@@ -170,32 +170,32 @@ describe('create', function () {
     }, _callee3, undefined);
   })));
 
-  test('should create the tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref7, tableState, tableStateId, fetchedTableState;
+  test('should create the tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var _ref7, tableStateChange, tableStateChangeId, fetchedTableStateChange;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref7 = _context4.sent;
-            tableState = _ref7.tableState;
+            tableStateChange = _ref7.tableStateChange;
             _context4.next = 6;
-            return tableStateService.create(tableState);
+            return tableStateChangeService.create(tableStateChange);
 
           case 6:
-            tableStateId = _context4.sent;
+            tableStateChangeId = _context4.sent;
             _context4.next = 9;
-            return tableStateService.read(tableStateId, createCriteriaWthoutConditions());
+            return tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
           case 9:
-            fetchedTableState = _context4.sent;
+            fetchedTableStateChange = _context4.sent;
 
 
-            expect(fetchedTableState).toBeDefined();
+            expect(fetchedTableStateChange).toBeDefined();
 
           case 11:
           case 'end':
@@ -207,16 +207,16 @@ describe('create', function () {
 });
 
 describe('read', function () {
-  test('should reject if the provided tableState Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-    var tableStateId;
+  test('should reject if the provided tableStateChange Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+    var tableStateChangeId;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tableStateId = chance.string();
+            tableStateChangeId = chance.string();
             _context5.prev = 1;
             _context5.next = 4;
-            return tableStateService.read(tableStateId);
+            return tableStateChangeService.read(tableStateChangeId);
 
           case 4:
             _context5.next = 9;
@@ -226,7 +226,7 @@ describe('read', function () {
             _context5.prev = 6;
             _context5.t0 = _context5['catch'](1);
 
-            expect(_context5.t0.message).toBe('No tableState found with Id: ' + tableStateId);
+            expect(_context5.t0.message).toBe('No tableStateChange found with Id: ' + tableStateChangeId);
 
           case 9:
           case 'end':
@@ -236,35 +236,35 @@ describe('read', function () {
     }, _callee5, undefined, [[1, 6]]);
   })));
 
-  test('should read the existing tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedTableState, expectedTable, expectedOwnedByUser, tableStateId, tableState;
+  test('should read the existing tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+    var _ref10, expectedTableStateChange, expectedTable, expectedOwnedByUser, tableStateChangeId, tableStateChange;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref10 = _context6.sent;
-            expectedTableState = _ref10.tableState;
+            expectedTableStateChange = _ref10.tableStateChange;
             expectedTable = _ref10.table;
             expectedOwnedByUser = _ref10.user;
             _context6.next = 8;
-            return tableStateService.create(expectedTableState);
+            return tableStateChangeService.create(expectedTableStateChange);
 
           case 8:
-            tableStateId = _context6.sent;
+            tableStateChangeId = _context6.sent;
             _context6.next = 11;
-            return tableStateService.read(tableStateId, createCriteriaWthoutConditions());
+            return tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
           case 11:
-            tableState = _context6.sent;
+            tableStateChange = _context6.sent;
 
 
-            (0, _TableState.expectTableState)(tableState, expectedTableState, {
-              tableStateId: tableStateId,
+            (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
+              tableStateChangeId: tableStateChangeId,
               expectedTable: expectedTable,
               expectedOwnedByUser: expectedOwnedByUser
             });
@@ -279,21 +279,21 @@ describe('read', function () {
 });
 
 describe('update', function () {
-  test('should reject if the provided tableState Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var tableStateId, tableState;
+  test('should reject if the provided tableStateChange Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+    var tableStateChangeId, tableStateChange;
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            tableStateId = chance.string();
+            tableStateChangeId = chance.string();
             _context7.prev = 1;
-            _context7.t0 = tableStateService;
-            _context7.t1 = tableStateService;
+            _context7.t0 = tableStateChangeService;
+            _context7.t1 = tableStateChangeService;
             _context7.next = 6;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 6:
-            _context7.t2 = _context7.sent.tableState;
+            _context7.t2 = _context7.sent.tableStateChange;
             _context7.next = 9;
             return _context7.t1.create.call(_context7.t1, _context7.t2);
 
@@ -304,9 +304,9 @@ describe('update', function () {
             return _context7.t0.read.call(_context7.t0, _context7.t3, _context7.t4);
 
           case 13:
-            tableState = _context7.sent;
+            tableStateChange = _context7.sent;
             _context7.next = 16;
-            return tableStateService.update(tableState.set('id', tableStateId));
+            return tableStateChangeService.update(tableStateChange.set('id', tableStateChangeId));
 
           case 16:
             _context7.next = 21;
@@ -316,7 +316,7 @@ describe('update', function () {
             _context7.prev = 18;
             _context7.t5 = _context7['catch'](1);
 
-            expect(_context7.t5.message).toBe('No tableState found with Id: ' + tableStateId);
+            expect(_context7.t5.message).toBe('No tableStateChange found with Id: ' + tableStateChangeId);
 
           case 21:
           case 'end':
@@ -326,38 +326,38 @@ describe('update', function () {
     }, _callee7, undefined, [[1, 18]]);
   })));
 
-  test('should return the Id of the updated tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref13, expectedTableState, tableStateId, id;
+  test('should return the Id of the updated tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+    var _ref13, expectedTableStateChange, tableStateChangeId, id;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref13 = _context8.sent;
-            expectedTableState = _ref13.tableState;
-            _context8.t0 = tableStateService;
+            expectedTableStateChange = _ref13.tableStateChange;
+            _context8.t0 = tableStateChangeService;
             _context8.next = 7;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 7:
-            _context8.t1 = _context8.sent.tableState;
+            _context8.t1 = _context8.sent.tableStateChange;
             _context8.next = 10;
             return _context8.t0.create.call(_context8.t0, _context8.t1);
 
           case 10:
-            tableStateId = _context8.sent;
+            tableStateChangeId = _context8.sent;
             _context8.next = 13;
-            return tableStateService.update(expectedTableState.set('id', tableStateId));
+            return tableStateChangeService.update(expectedTableStateChange.set('id', tableStateChangeId));
 
           case 13:
             id = _context8.sent;
 
 
-            expect(id).toBe(tableStateId);
+            expect(id).toBe(tableStateChangeId);
 
           case 15:
           case 'end':
@@ -367,45 +367,45 @@ describe('update', function () {
     }, _callee8, undefined);
   })));
 
-  test('should update the existing tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedTableState, expectedTable, expectedOwnedByUser, tableStateId, tableState;
+  test('should update the existing tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
+    var _ref15, expectedTableStateChange, expectedTable, expectedOwnedByUser, tableStateChangeId, tableStateChange;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref15 = _context9.sent;
-            expectedTableState = _ref15.tableState;
+            expectedTableStateChange = _ref15.tableStateChange;
             expectedTable = _ref15.table;
             expectedOwnedByUser = _ref15.user;
-            _context9.t0 = tableStateService;
+            _context9.t0 = tableStateChangeService;
             _context9.next = 9;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 9:
-            _context9.t1 = _context9.sent.tableState;
+            _context9.t1 = _context9.sent.tableStateChange;
             _context9.next = 12;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
           case 12:
-            tableStateId = _context9.sent;
+            tableStateChangeId = _context9.sent;
             _context9.next = 15;
-            return tableStateService.update(expectedTableState.set('id', tableStateId));
+            return tableStateChangeService.update(expectedTableStateChange.set('id', tableStateChangeId));
 
           case 15:
             _context9.next = 17;
-            return tableStateService.read(tableStateId, createCriteriaWthoutConditions());
+            return tableStateChangeService.read(tableStateChangeId, createCriteriaWthoutConditions());
 
           case 17:
-            tableState = _context9.sent;
+            tableStateChange = _context9.sent;
 
 
-            (0, _TableState.expectTableState)(tableState, expectedTableState, {
-              tableStateId: tableStateId,
+            (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
+              tableStateChangeId: tableStateChangeId,
               expectedTable: expectedTable,
               expectedOwnedByUser: expectedOwnedByUser
             });
@@ -420,16 +420,16 @@ describe('update', function () {
 });
 
 describe('delete', function () {
-  test('should reject if the provided tableState Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
-    var tableStateId;
+  test('should reject if the provided tableStateChange Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+    var tableStateChangeId;
     return regeneratorRuntime.wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            tableStateId = chance.string();
+            tableStateChangeId = chance.string();
             _context10.prev = 1;
             _context10.next = 4;
-            return tableStateService.delete(tableStateId);
+            return tableStateChangeService.delete(tableStateChangeId);
 
           case 4:
             _context10.next = 9;
@@ -439,7 +439,7 @@ describe('delete', function () {
             _context10.prev = 6;
             _context10.t0 = _context10['catch'](1);
 
-            expect(_context10.t0.message).toBe('No tableState found with Id: ' + tableStateId);
+            expect(_context10.t0.message).toBe('No tableStateChange found with Id: ' + tableStateChangeId);
 
           case 9:
           case 'end':
@@ -449,30 +449,30 @@ describe('delete', function () {
     }, _callee10, undefined, [[1, 6]]);
   })));
 
-  test('should delete the existing tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
-    var tableStateId;
+  test('should delete the existing tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
+    var tableStateChangeId;
     return regeneratorRuntime.wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _context11.t0 = tableStateService;
+            _context11.t0 = tableStateChangeService;
             _context11.next = 3;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 3:
-            _context11.t1 = _context11.sent.tableState;
+            _context11.t1 = _context11.sent.tableStateChange;
             _context11.next = 6;
             return _context11.t0.create.call(_context11.t0, _context11.t1);
 
           case 6:
-            tableStateId = _context11.sent;
+            tableStateChangeId = _context11.sent;
             _context11.next = 9;
-            return tableStateService.delete(tableStateId);
+            return tableStateChangeService.delete(tableStateChangeId);
 
           case 9:
             _context11.prev = 9;
             _context11.next = 12;
-            return tableStateService.delete(tableStateId);
+            return tableStateChangeService.delete(tableStateChangeId);
 
           case 12:
             _context11.next = 17;
@@ -482,7 +482,7 @@ describe('delete', function () {
             _context11.prev = 14;
             _context11.t2 = _context11['catch'](9);
 
-            expect(_context11.t2.message).toBe('No tableState found with Id: ' + tableStateId);
+            expect(_context11.t2.message).toBe('No tableStateChange found with Id: ' + tableStateChangeId);
 
           case 17:
           case 'end':
@@ -494,20 +494,20 @@ describe('delete', function () {
 });
 
 describe('search', function () {
-  test('should return no tableState if provided criteria matches no tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
-    var tableStates;
+  test('should return no tableStateChange if provided criteria matches no tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
+    var tableStateChanges;
     return regeneratorRuntime.wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
             _context12.next = 2;
-            return tableStateService.search(createCriteria());
+            return tableStateChangeService.search(createCriteria());
 
           case 2:
-            tableStates = _context12.sent;
+            tableStateChanges = _context12.sent;
 
 
-            expect(tableStates.count()).toBe(0);
+            expect(tableStateChanges.count()).toBe(0);
 
           case 4:
           case 'end':
@@ -517,19 +517,19 @@ describe('search', function () {
     }, _callee12, undefined);
   })));
 
-  test('should return the tableState matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedTableState, expectedTable, expectedOwnedByUser, results, tableStates;
+  test('should return the tableStateChange matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
+    var _ref20, expectedTableStateChange, expectedTable, expectedOwnedByUser, results, tableStateChanges;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref20 = _context14.sent;
-            expectedTableState = _ref20.tableState;
+            expectedTableStateChange = _ref20.tableStateChange;
             expectedTable = _ref20.table;
             expectedOwnedByUser = _ref20.user;
             _context14.t0 = _immutable2.default;
@@ -539,7 +539,7 @@ describe('search', function () {
                 while (1) {
                   switch (_context13.prev = _context13.next) {
                     case 0:
-                      return _context13.abrupt('return', tableStateService.create(expectedTableState));
+                      return _context13.abrupt('return', tableStateChangeService.create(expectedTableStateChange));
 
                     case 1:
                     case 'end':
@@ -553,19 +553,19 @@ describe('search', function () {
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
             _context14.next = 13;
-            return tableStateService.search(createCriteria(expectedTableState));
+            return tableStateChangeService.search(createCriteria(expectedTableStateChange));
 
           case 13:
-            tableStates = _context14.sent;
+            tableStateChanges = _context14.sent;
 
 
-            expect(tableStates.count).toBe(results.count);
-            tableStates.forEach(function (tableState) {
+            expect(tableStateChanges.count).toBe(results.count);
+            tableStateChanges.forEach(function (tableStateChange) {
               expect(results.find(function (_) {
-                return _.localeCompare(tableState.get('id')) === 0;
+                return _.localeCompare(tableStateChange.get('id')) === 0;
               })).toBeDefined();
-              (0, _TableState.expectTableState)(tableState, expectedTableState, {
-                tableStateId: tableState.get('id'),
+              (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
+                tableStateChangeId: tableStateChange.get('id'),
                 expectedTable: expectedTable,
                 expectedOwnedByUser: expectedOwnedByUser
               });
@@ -581,18 +581,18 @@ describe('search', function () {
 });
 
 describe('searchAll', function () {
-  test('should return no tableState if provided criteria matches no tableState', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
-    var tableStates, result;
+  test('should return no tableStateChange if provided criteria matches no tableStateChange', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
+    var tableStateChanges, result;
     return regeneratorRuntime.wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
-            tableStates = (0, _immutable.List)();
-            result = tableStateService.searchAll(createCriteria());
+            tableStateChanges = (0, _immutable.List)();
+            result = tableStateChangeService.searchAll(createCriteria());
             _context15.prev = 2;
 
             result.event.subscribe(function (info) {
-              tableStates = tableStates.push(info);
+              tableStateChanges = tableStateChanges.push(info);
             });
 
             _context15.next = 6;
@@ -606,7 +606,7 @@ describe('searchAll', function () {
 
           case 9:
 
-            expect(tableStates.count()).toBe(0);
+            expect(tableStateChanges.count()).toBe(0);
 
           case 10:
           case 'end':
@@ -616,19 +616,19 @@ describe('searchAll', function () {
     }, _callee15, undefined, [[2,, 6, 9]]);
   })));
 
-  test('should return the tableState matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedTableState, expectedTable, expectedOwnedByUser, results, tableStates, result;
+  test('should return the tableStateChange matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
+    var _ref24, expectedTableStateChange, expectedTable, expectedOwnedByUser, results, tableStateChanges, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
             _context17.next = 2;
-            return (0, _TableState.createTableStateInfo)();
+            return (0, _TableStateChange.createTableStateChangeInfo)();
 
           case 2:
             _ref24 = _context17.sent;
-            expectedTableState = _ref24.tableState;
+            expectedTableStateChange = _ref24.tableStateChange;
             expectedTable = _ref24.table;
             expectedOwnedByUser = _ref24.user;
             _context17.t0 = _immutable2.default;
@@ -638,7 +638,7 @@ describe('searchAll', function () {
                 while (1) {
                   switch (_context16.prev = _context16.next) {
                     case 0:
-                      return _context16.abrupt('return', tableStateService.create(expectedTableState));
+                      return _context16.abrupt('return', tableStateChangeService.create(expectedTableStateChange));
 
                     case 1:
                     case 'end':
@@ -651,12 +651,12 @@ describe('searchAll', function () {
           case 9:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
-            tableStates = (0, _immutable.List)();
-            result = tableStateService.searchAll(createCriteria(expectedTableState));
+            tableStateChanges = (0, _immutable.List)();
+            result = tableStateChangeService.searchAll(createCriteria(expectedTableStateChange));
             _context17.prev = 13;
 
             result.event.subscribe(function (info) {
-              tableStates = tableStates.push(info);
+              tableStateChanges = tableStateChanges.push(info);
             });
 
             _context17.next = 17;
@@ -670,13 +670,13 @@ describe('searchAll', function () {
 
           case 20:
 
-            expect(tableStates.count).toBe(results.count);
-            tableStates.forEach(function (tableState) {
+            expect(tableStateChanges.count).toBe(results.count);
+            tableStateChanges.forEach(function (tableStateChange) {
               expect(results.find(function (_) {
-                return _.localeCompare(tableState.get('id')) === 0;
+                return _.localeCompare(tableStateChange.get('id')) === 0;
               })).toBeDefined();
-              (0, _TableState.expectTableState)(tableState, expectedTableState, {
-                tableStateId: tableState.get('id'),
+              (0, _TableStateChange.expectTableStateChange)(tableStateChange, expectedTableStateChange, {
+                tableStateChangeId: tableStateChange.get('id'),
                 expectedTable: expectedTable,
                 expectedOwnedByUser: expectedOwnedByUser
               });
@@ -692,14 +692,14 @@ describe('searchAll', function () {
 });
 
 describe('exists', function () {
-  test('should return false if no tableState match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
+  test('should return false if no tableStateChange match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
     return regeneratorRuntime.wrap(function _callee18$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
           case 0:
             _context18.t0 = expect;
             _context18.next = 3;
-            return tableStateService.exists(createCriteria());
+            return tableStateChangeService.exists(createCriteria());
 
           case 3:
             _context18.t1 = _context18.sent;
@@ -713,20 +713,20 @@ describe('exists', function () {
     }, _callee18, undefined);
   })));
 
-  test('should return true if any tableState match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
-    var tableStates;
+  test('should return true if any tableStateChange match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
+    var tableStateChanges;
     return regeneratorRuntime.wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
             _context19.next = 2;
-            return createTableStates(chance.integer({ min: 1, max: 10 }), true);
+            return createTableStateChanges(chance.integer({ min: 1, max: 10 }), true);
 
           case 2:
-            tableStates = _context19.sent;
+            tableStateChanges = _context19.sent;
             _context19.t0 = expect;
             _context19.next = 6;
-            return tableStateService.exists(createCriteria(tableStates.first()));
+            return tableStateChangeService.exists(createCriteria(tableStateChanges.first()));
 
           case 6:
             _context19.t1 = _context19.sent;
@@ -742,14 +742,14 @@ describe('exists', function () {
 });
 
 describe('count', function () {
-  test('should return 0 if no tableState match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
+  test('should return 0 if no tableStateChange match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
     return regeneratorRuntime.wrap(function _callee20$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
           case 0:
             _context20.t0 = expect;
             _context20.next = 3;
-            return tableStateService.count(createCriteria());
+            return tableStateChangeService.count(createCriteria());
 
           case 3:
             _context20.t1 = _context20.sent;
@@ -763,24 +763,24 @@ describe('count', function () {
     }, _callee20, undefined);
   })));
 
-  test('should return the count of tableState match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
-    var tableStates;
+  test('should return the count of tableStateChange match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
+    var tableStateChanges;
     return regeneratorRuntime.wrap(function _callee21$(_context21) {
       while (1) {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.next = 2;
-            return createTableStates(chance.integer({ min: 1, max: 10 }), true);
+            return createTableStateChanges(chance.integer({ min: 1, max: 10 }), true);
 
           case 2:
-            tableStates = _context21.sent;
+            tableStateChanges = _context21.sent;
             _context21.t0 = expect;
             _context21.next = 6;
-            return tableStateService.count(createCriteria(tableStates.first()));
+            return tableStateChangeService.count(createCriteria(tableStateChanges.first()));
 
           case 6:
             _context21.t1 = _context21.sent;
-            _context21.t2 = tableStates.count();
+            _context21.t2 = tableStateChanges.count();
             (0, _context21.t0)(_context21.t1).toBe(_context21.t2);
 
           case 9:
