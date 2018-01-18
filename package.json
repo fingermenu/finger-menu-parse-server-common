@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -31,12 +31,12 @@
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jest": "^21.6.2",
+    "eslint-plugin-jest": "^21.7.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "flow-bin": "^0.63.1",
     "husky": "^0.14.3",
-    "jest": "^22.1.1",
+    "jest": "^22.1.2",
     "lint-staged": "^6.0.0",
     "parse": "^1.11.0",
     "prettier": "^1.10.2",
