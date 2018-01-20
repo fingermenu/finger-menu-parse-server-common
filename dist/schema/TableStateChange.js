@@ -52,6 +52,10 @@ TableStateChange.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createPointer(object, info, 'tableState', _TableState2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'changedByUser');
+  object.set('numberOfAdults', info.get('numberOfAdults'));
+  object.set('numberOfChildren', info.get('numberOfChildren'));
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
+  object.set('notes', info.get('notes'));
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -76,7 +80,11 @@ var _initialiseProps = function _initialiseProps() {
       table: table,
       tableId: table ? table.id : undefined,
       changedByUser: changedByUser,
-      changedByUserId: changedByUser ? changedByUser.id : undefined
+      changedByUserId: changedByUser ? changedByUser.id : undefined,
+      numberOfAdults: object.get('numberOfAdults'),
+      numberOfChildren: object.get('numberOfChildren'),
+      customerName: object.get('customerName'),
+      notes: object.get('notes')
     });
   };
 };

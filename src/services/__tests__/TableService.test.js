@@ -18,7 +18,18 @@ const getLanguages = (object) => {
 
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(_ => `${_}_name`) : List()),
+    fields: List.of(
+      'languages_name',
+      'status',
+      'restaurant',
+      'tableState',
+      'ownedByUser',
+      'maintainedByUsers',
+      'numberOfAdults',
+      'numberOfChildren',
+      'customerName',
+      'notes',
+    ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_restaurant: true,
     include_tableState: true,
@@ -37,6 +48,10 @@ const createCriteria = (object) => {
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
+      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
+      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
+      customerName: object ? object.get('customerName') : chance.string(),
+      notes: object ? object.get('notes') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

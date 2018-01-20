@@ -1,11 +1,14 @@
 // @flow
 
+import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { TableStateChange } from '../';
 import createTables from '../../services/__tests__/TableService.test';
 import createTableStates from '../../services/__tests__/TableStateService.test';
+
+const chance = new Chance();
 
 export const createTableStateChangeInfo = async () => {
   const table = (await createTables(1)).first();
@@ -15,6 +18,10 @@ export const createTableStateChangeInfo = async () => {
     tableStateId: tableState.get('id'),
     tableId: table.get('id'),
     changedByUserId: changedByUser.id,
+    numberOfAdults: chance.integer(),
+    numberOfChildren: chance.integer(),
+    customerName: chance.string(),
+    notes: chance.string(),
   });
 
   return {
@@ -31,6 +38,10 @@ export const expectTableStateChange = (object, expectedObject, { tableStateChang
   expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('changedByUserId')).toBe(expectedObject.get('changedByUserId'));
+  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
+  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
+  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
+  expect(object.get('notes')).toBe(expectedObject.get('notes'));
 
   if (tableStateChangeId) {
     expect(object.get('id')).toBe(tableStateChangeId);

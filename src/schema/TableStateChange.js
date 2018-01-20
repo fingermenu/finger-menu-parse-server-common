@@ -18,6 +18,10 @@ export default class TableStateChange extends BaseObject {
     BaseObject.createPointer(object, info, 'tableState', TableState);
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createUserPointer(object, info, 'changedByUser');
+    object.set('numberOfAdults', info.get('numberOfAdults'));
+    object.set('numberOfChildren', info.get('numberOfChildren'));
+    BaseObject.createStringColumn(object, info, 'customerName');
+    object.set('notes', info.get('notes'));
   };
 
   constructor(object) {
@@ -44,6 +48,10 @@ export default class TableStateChange extends BaseObject {
       tableId: table ? table.id : undefined,
       changedByUser,
       changedByUserId: changedByUser ? changedByUser.id : undefined,
+      numberOfAdults: object.get('numberOfAdults'),
+      numberOfChildren: object.get('numberOfChildren'),
+      customerName: object.get('customerName'),
+      notes: object.get('notes'),
     });
   };
 }

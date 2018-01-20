@@ -21,6 +21,10 @@ export default class Table extends BaseObject {
     BaseObject.createPointer(object, info, 'tableState', TableState);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+    object.set('numberOfAdults', info.get('numberOfAdults'));
+    object.set('numberOfChildren', info.get('numberOfChildren'));
+    BaseObject.createStringColumn(object, info, 'customerName');
+    object.set('notes', info.get('notes'));
   };
 
   constructor(object) {
@@ -52,6 +56,10 @@ export default class Table extends BaseObject {
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers,
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
+      numberOfAdults: object.get('numberOfAdults'),
+      numberOfChildren: object.get('numberOfChildren'),
+      customerName: object.get('customerName'),
+      notes: object.get('notes'),
     });
   };
 }

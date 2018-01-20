@@ -28,7 +28,7 @@ var TableStateChangeService = function (_ServiceBase) {
   return TableStateChangeService;
 }(_parseServerCommon.ServiceBase);
 
-TableStateChangeService.fields = _immutable.List.of('tableState', 'table', 'changedByUser');
+TableStateChangeService.fields = _immutable.List.of('tableState', 'table', 'changedByUser', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes');
 
 TableStateChangeService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -58,6 +58,10 @@ TableStateChangeService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tableState', 'tableState', _schema.TableState);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'table', 'table', _schema.Table);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'changedByUser', 'changedByUser');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'numberOfAdults', 'numberOfAdults');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
 
   return query;
 };

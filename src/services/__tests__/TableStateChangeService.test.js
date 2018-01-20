@@ -11,7 +11,7 @@ const tableStateChangeService = new TableStateChangeService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('tableState', 'table', 'changedByUser'),
+    fields: List.of('tableState', 'table', 'changedByUser', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes'),
     include_tableState: true,
     include_table: true,
     include_changedByUser: true,
@@ -23,6 +23,10 @@ const createCriteria = object =>
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
       changedByUserId: object ? object.get('changedByUserId') : chance.string(),
+      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
+      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
+      customerName: object ? object.get('customerName') : chance.string(),
+      notes: object ? object.get('notes') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());
 

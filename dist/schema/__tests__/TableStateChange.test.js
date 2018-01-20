@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.expectTableStateChange = exports.createTableStateChange = exports.createTableStateChangeInfo = undefined;
 
+var _chance = require('chance');
+
+var _chance2 = _interopRequireDefault(_chance);
+
 var _immutable = require('immutable');
 
 require('../../../bootstrap');
@@ -26,6 +30,8 @@ var _TableStateService2 = _interopRequireDefault(_TableStateService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var chance = new _chance2.default();
 
 var createTableStateChangeInfo = exports.createTableStateChangeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -52,7 +58,11 @@ var createTableStateChangeInfo = exports.createTableStateChangeInfo = function (
             tableStateChange = (0, _immutable.Map)({
               tableStateId: tableState.get('id'),
               tableId: table.get('id'),
-              changedByUserId: changedByUser.id
+              changedByUserId: changedByUser.id,
+              numberOfAdults: chance.integer(),
+              numberOfChildren: chance.integer(),
+              customerName: chance.string(),
+              notes: chance.string()
             });
             return _context.abrupt('return', {
               tableStateChange: tableStateChange,
@@ -120,6 +130,10 @@ var expectTableStateChange = exports.expectTableStateChange = function expectTab
   expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
   expect(object.get('changedByUserId')).toBe(expectedObject.get('changedByUserId'));
+  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
+  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
+  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
+  expect(object.get('notes')).toBe(expectedObject.get('notes'));
 
   if (tableStateChangeId) {
     expect(object.get('id')).toBe(tableStateChangeId);

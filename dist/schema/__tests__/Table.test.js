@@ -68,7 +68,11 @@ var createTableInfo = exports.createTableInfo = function () {
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
-              })
+              }),
+              numberOfAdults: chance.integer(),
+              numberOfChildren: chance.integer(),
+              customerName: chance.string(),
+              notes: chance.string()
             });
             return _context.abrupt('return', {
               table: table,
@@ -141,6 +145,10 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
   expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
+  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
+  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
+  expect(object.get('notes')).toBe(expectedObject.get('notes'));
 
   if (tableId) {
     expect(object.get('id')).toBe(tableId);

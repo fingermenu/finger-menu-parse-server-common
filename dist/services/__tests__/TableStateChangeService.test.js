@@ -27,7 +27,7 @@ var tableStateChangeService = new _2.TableStateChangeService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('tableState', 'table', 'changedByUser'),
+    fields: _immutable.List.of('tableState', 'table', 'changedByUser', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes'),
     include_tableState: true,
     include_table: true,
     include_changedByUser: true
@@ -39,7 +39,11 @@ var createCriteria = function createCriteria(object) {
     conditions: (0, _immutable.Map)({
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
-      changedByUserId: object ? object.get('changedByUserId') : chance.string()
+      changedByUserId: object ? object.get('changedByUserId') : chance.string(),
+      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
+      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
+      customerName: object ? object.get('customerName') : chance.string(),
+      notes: object ? object.get('notes') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
 };

@@ -22,6 +22,10 @@ export const createTableInfo = async () => {
     tableStateId: tableState.get('id'),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
+    numberOfAdults: chance.integer(),
+    numberOfChildren: chance.integer(),
+    customerName: chance.string(),
+    notes: chance.string(),
   });
 
   return {
@@ -43,6 +47,10 @@ export const expectTable = (object, expectedObject, { tableId, expectedRestauran
   expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
+  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
+  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
+  expect(object.get('notes')).toBe(expectedObject.get('notes'));
 
   if (tableId) {
     expect(object.get('id')).toBe(tableId);

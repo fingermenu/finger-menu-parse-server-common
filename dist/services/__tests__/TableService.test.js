@@ -34,7 +34,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -57,7 +57,11 @@ var createCriteria = function createCriteria(object) {
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
-      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string()),
+      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
+      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
+      customerName: object ? object.get('customerName') : chance.string(),
+      notes: object ? object.get('notes') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
