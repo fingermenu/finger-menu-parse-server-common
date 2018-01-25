@@ -5,12 +5,14 @@ import { List, Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
 import { MenuItemPrice } from '../';
 import createMenuItems from '../../services/__tests__/MenuItemService.test';
+import createSizes from '../../services/__tests__/SizeService.test';
 import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceService.test';
 
 const chance = new Chance();
 
 export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds } = {}) => {
   const menuItem = (await createMenuItems(1)).first();
+  const size = (await createSizes(1)).first();
   const choiceItemPrices = await createChoiceItemPrices(chance.integer({ min: 1, max: 3 }));
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
@@ -20,6 +22,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     validFrom: new Date(),
     validUntil: new Date(),
     menuItemId: menuItem.get('id'),
+    sizeId: size.get('id'),
     toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPriceIds || List(),
     choiceItemPriceIds: choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')),
     addedByUserId: addedByUser.id,
@@ -29,6 +32,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
   return {
     menuItemPrice,
     menuItem,
+    size,
     choiceItemPrices,
     addedByUser,
     removedByUser,
@@ -37,12 +41,15 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
 
 export const createMenuItemPrice = async object => MenuItemPrice.spawn(object || (await createMenuItemPriceInfo()).menuItemPrice);
 
-export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, expectedMenuItem, expectedChoiceItemPrices } = {}) => {
+export const expectMenuItemPrice = (object, expectedObject, {
+  menuItemPriceId, expectedMenuItem, expectedSize, expectedChoiceItemPrices,
+} = {}) => {
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
+  expect(object.get('sizeId')).toBe(expectedObject.get('sizeId'));
   expect(object.get('toBeServedWithMenuItemPriceIds')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceIds'));
   expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
@@ -54,6 +61,10 @@ export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, e
 
   if (expectedMenuItem) {
     expect(object.get('menuItemId')).toEqual(expectedMenuItem.get('id'));
+  }
+
+  if (expectedSize) {
+    expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
   }
 
   if (expectedChoiceItemPrices) {

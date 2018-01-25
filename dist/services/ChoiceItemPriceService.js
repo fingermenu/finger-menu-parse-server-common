@@ -28,7 +28,7 @@ var ChoiceItemPriceService = function (_ServiceBase) {
   return ChoiceItemPriceService;
 }(_parseServerCommon.ServiceBase);
 
-ChoiceItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'addedByUser', 'removedByUser');
+ChoiceItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser');
 
 ChoiceItemPriceService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -36,6 +36,7 @@ ChoiceItemPriceService.buildIncludeQuery = function (query, criteria) {
   }
 
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItem');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'size');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
 
@@ -60,6 +61,7 @@ ChoiceItemPriceService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItem', 'choiceItem', _schema.ChoiceItem);
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'size', 'size', _schema.Size);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
 

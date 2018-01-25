@@ -28,7 +28,7 @@ var MenuItemPriceService = function (_ServiceBase) {
   return MenuItemPriceService;
 }(_parseServerCommon.ServiceBase);
 
-MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser');
+MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser');
 
 MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -36,8 +36,9 @@ MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   }
 
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'toBeServedWithMenuItemPrices');
-  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItem');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'size');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
 
@@ -62,6 +63,7 @@ MenuItemPriceService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItem', _schema.MenuItem);
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'size', 'size', _schema.Size);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'toBeServedWithMenuItemPrice', 'toBeServedWithMenuItemPrices', _schema.MenuItemPrice);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', _schema.ChoiceItemPrice);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');

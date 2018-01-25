@@ -21,6 +21,10 @@ var _ChoiceItemService = require('../../services/__tests__/ChoiceItemService.tes
 
 var _ChoiceItemService2 = _interopRequireDefault(_ChoiceItemService);
 
+var _SizeService = require('../../services/__tests__/SizeService.test');
+
+var _SizeService2 = _interopRequireDefault(_SizeService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -29,7 +33,7 @@ var chance = new _chance2.default();
 
 var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var choiceItem, addedByUser, removedByUser, choiceItemPrice;
+    var choiceItem, size, addedByUser, removedByUser, choiceItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -40,14 +44,19 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
           case 2:
             choiceItem = _context.sent.first();
             _context.next = 5;
-            return _TestHelper2.default.createUser();
+            return (0, _SizeService2.default)(1);
 
           case 5:
-            addedByUser = _context.sent;
+            size = _context.sent.first();
             _context.next = 8;
             return _TestHelper2.default.createUser();
 
           case 8:
+            addedByUser = _context.sent;
+            _context.next = 11;
+            return _TestHelper2.default.createUser();
+
+          case 11:
             removedByUser = _context.sent;
             choiceItemPrice = (0, _immutable.Map)({
               currentPrice: chance.floating(),
@@ -55,17 +64,19 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
               validFrom: new Date(),
               validUntil: new Date(),
               choiceItemId: choiceItem.get('id'),
+              sizeId: size.get('id'),
               addedByUserId: addedByUser.id,
               removedByUserId: removedByUser.id
             });
             return _context.abrupt('return', {
               choiceItemPrice: choiceItemPrice,
               choiceItem: choiceItem,
+              size: size,
               addedByUser: addedByUser,
               removedByUser: removedByUser
             });
 
-          case 11:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -118,13 +129,15 @@ var createChoiceItemPrice = exports.createChoiceItemPrice = function () {
 var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoiceItemPrice(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       choiceItemPriceId = _ref3.choiceItemPriceId,
-      expectedChoiceItem = _ref3.expectedChoiceItem;
+      expectedChoiceItem = _ref3.expectedChoiceItem,
+      expectedSize = _ref3.expectedSize;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('choiceItemId')).toBe(expectedObject.get('choiceItemId'));
+  expect(object.get('sizeId')).toBe(expectedObject.get('sizeId'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
 
@@ -134,6 +147,10 @@ var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoic
 
   if (expectedChoiceItem) {
     expect(object.get('choiceItemId')).toEqual(expectedChoiceItem.get('id'));
+  }
+
+  if (expectedSize) {
+    expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
   }
 };
 

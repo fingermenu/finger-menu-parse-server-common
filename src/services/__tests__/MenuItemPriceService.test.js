@@ -17,6 +17,7 @@ const createCriteriaWthoutConditions = () =>
       'validFrom',
       'validUntil',
       'menuItem',
+      'size',
       'toBeServedWithMenuItemPrices',
       'choiceItemPrices',
       'addedByUser',
@@ -35,6 +36,7 @@ const createCriteria = object =>
       validFrom: object ? object.get('validFrom') : new Date(),
       validUntil: object ? object.get('validUntil') : new Date(),
       menuItemId: object ? object.get('menuItemId') : chance.string(),
+      sizeId: object ? object.get('sizeId') : chance.string(),
       toBeServedWithMenuItemPriceIds: object ? object.get('toBeServedWithMenuItemPriceIds') : List(),
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
@@ -107,6 +109,7 @@ describe('read', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      size: expectedSize,
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
@@ -117,6 +120,7 @@ describe('read', () => {
     expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
       menuItemPriceId,
       expectedMenuItem,
+      expectedSize,
       expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
@@ -152,6 +156,7 @@ describe('update', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      size: expectedSize,
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
@@ -165,6 +170,7 @@ describe('update', () => {
     expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
       menuItemPriceId,
       expectedMenuItem,
+      expectedSize,
       expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
@@ -206,6 +212,7 @@ describe('search', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      size: expectedSize,
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
@@ -221,6 +228,7 @@ describe('search', () => {
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),
         expectedMenuItem,
+        expectedSize,
         expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,
@@ -251,6 +259,7 @@ describe('searchAll', () => {
     const {
       menuItemPrice: expectedMenuItemPrice,
       menuItem: expectedMenuItem,
+      size: expectedSize,
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
@@ -278,6 +287,7 @@ describe('searchAll', () => {
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),
         expectedMenuItem,
+        expectedSize,
         expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,

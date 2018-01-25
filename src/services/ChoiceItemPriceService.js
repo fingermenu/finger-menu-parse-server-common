@@ -2,10 +2,10 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { ChoiceItemPrice, ChoiceItem } from '../schema';
+import { ChoiceItemPrice, ChoiceItem, Size } from '../schema';
 
 export default class ChoiceItemPriceService extends ServiceBase {
-  static fields = List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'addedByUser', 'removedByUser');
+  static fields = List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser');
 
   constructor() {
     super(ChoiceItemPrice, ChoiceItemPriceService.buildSearchQuery, ChoiceItemPriceService.buildIncludeQuery, 'choice item price');
@@ -17,6 +17,7 @@ export default class ChoiceItemPriceService extends ServiceBase {
     }
 
     ServiceBase.addIncludeQuery(criteria, query, 'choiceItem');
+    ServiceBase.addIncludeQuery(criteria, query, 'size');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
 
@@ -41,6 +42,7 @@ export default class ChoiceItemPriceService extends ServiceBase {
     ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
     ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
     ServiceBase.addLinkQuery(conditions, query, 'choiceItem', 'choiceItem', ChoiceItem);
+    ServiceBase.addLinkQuery(conditions, query, 'size', 'size', Size);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
 

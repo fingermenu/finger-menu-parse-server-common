@@ -3,6 +3,7 @@
 import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import ChoiceItem from './ChoiceItem';
+import Size from './Size';
 
 export default class ChoiceItemPrice extends BaseObject {
   static spawn = (info) => {
@@ -19,6 +20,7 @@ export default class ChoiceItemPrice extends BaseObject {
     object.set('validFrom', info.get('validFrom'));
     object.set('validUntil', info.get('validUntil'));
     BaseObject.createPointer(object, info, 'choiceItem', ChoiceItem);
+    BaseObject.createPointer(object, info, 'size', Size);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
   };
@@ -36,6 +38,7 @@ export default class ChoiceItemPrice extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const choiceItem = object.get('choiceItem');
+    const size = object.get('size');
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
 
@@ -47,6 +50,8 @@ export default class ChoiceItemPrice extends BaseObject {
       validUntil: object.get('validUntil'),
       choiceItem,
       choiceItemId: choiceItem ? choiceItem.id : undefined,
+      size,
+      sizeId: size ? size.id : undefined,
       addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser,

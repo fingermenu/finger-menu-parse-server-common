@@ -4,6 +4,7 @@ import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import ChoiceItemPrice from './ChoiceItemPrice';
 import MenuItem from './MenuItem';
+import Size from './Size';
 
 export default class MenuItemPrice extends BaseObject {
   static spawn = (info) => {
@@ -20,6 +21,7 @@ export default class MenuItemPrice extends BaseObject {
     object.set('validFrom', info.get('validFrom'));
     object.set('validUntil', info.get('validUntil'));
     BaseObject.createPointer(object, info, 'menuItem', MenuItem);
+    BaseObject.createPointer(object, info, 'size', Size);
     BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
     BaseObject.createArrayPointer(object, info, 'choiceItemPrice', ChoiceItemPrice);
     BaseObject.createUserPointer(object, info, 'addedByUser');
@@ -39,6 +41,7 @@ export default class MenuItemPrice extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const menuItem = object.get('menuItem');
+    const size = object.get('size');
     const toBeServedWithMenuItemPriceObjects = object.get('toBeServedWithMenuItemPrices');
     const toBeServedWithMenuItemPrices = toBeServedWithMenuItemPriceObjects
       ? Immutable.fromJS(toBeServedWithMenuItemPriceObjects).map(toBeServedWithMenuItemPrice =>
@@ -59,6 +62,8 @@ export default class MenuItemPrice extends BaseObject {
       validUntil: object.get('validUntil'),
       menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
+      size,
+      sizeId: size ? size.id : undefined,
       toBeServedWithMenuItemPrices,
       toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPrices
         ? toBeServedWithMenuItemPrices.map(toBeServedWithMenuItemPrice => toBeServedWithMenuItemPrice.get('id'))
