@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _commonJavascript = require('@microbusiness/common-javascript');
 
-var _commonJavascript2 = _interopRequireDefault(_commonJavascript);
-
 var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
@@ -95,7 +93,7 @@ var _initialiseProps = function _initialiseProps() {
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
 
-    return _commonJavascript2.default.removeUndefinedProps((0, _immutable.Map)({
+    return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       currentPrice: object.get('currentPrice'),
       wasPrice: object.get('wasPrice'),

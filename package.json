@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
