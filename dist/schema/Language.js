@@ -4,9 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _commonJavascript = require('@microbusiness/common-javascript');
+
+var _commonJavascript2 = _interopRequireDefault(_commonJavascript);
+
 var _immutable = require('immutable');
 
 var _parseServerCommon = require('@microbusiness/parse-server-common');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56,12 +62,12 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
 
-    return (0, _immutable.Map)({
+    return _commonJavascript2.default.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       key: object.get('key'),
       name: object.get('name'),
       imageUrl: object.get('imageUrl')
-    });
+    }));
   };
 };
 

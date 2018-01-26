@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _commonJavascript = require('@microbusiness/common-javascript');
+
+var _commonJavascript2 = _interopRequireDefault(_commonJavascript);
+
 var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
@@ -74,7 +78,7 @@ var _initialiseProps = function _initialiseProps() {
     var ownedByUser = object.get('ownedByUser');
     var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
-    return (0, _immutable.Map)({
+    return _commonJavascript2.default.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       name: _this2.getMultiLanguagesString('name'),
       description: _this2.getMultiLanguagesString('description'),
@@ -90,7 +94,7 @@ var _initialiseProps = function _initialiseProps() {
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
         return maintainedByUser.id;
       }) : (0, _immutable.List)()
-    });
+    }));
   };
 };
 

@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Table from './Table';
@@ -40,7 +41,7 @@ export default class TableStateChange extends BaseObject {
     const table = object.get('table');
     const changedByUser = object.get('changedByUser');
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       tableState,
       tableStateId: tableState ? tableState.id : undefined,
@@ -52,6 +53,6 @@ export default class TableStateChange extends BaseObject {
       numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes'),
-    });
+    }));
   };
 }

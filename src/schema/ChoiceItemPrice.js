@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import ChoiceItem from './ChoiceItem';
@@ -42,7 +43,7 @@ export default class ChoiceItemPrice extends BaseObject {
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       currentPrice: object.get('currentPrice'),
       wasPrice: object.get('wasPrice'),
@@ -56,6 +57,6 @@ export default class ChoiceItemPrice extends BaseObject {
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser,
       removedByUserId: removedByUser ? removedByUser.id : undefined,
-    });
+    }));
   };
 }

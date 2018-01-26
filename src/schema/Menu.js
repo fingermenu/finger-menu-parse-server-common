@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import MenuItemPrice from './MenuItemPrice';
@@ -46,7 +47,7 @@ export default class Menu extends BaseObject {
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
       description: this.getMultiLanguagesString('description'),
@@ -60,6 +61,6 @@ export default class Menu extends BaseObject {
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers,
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-    });
+    }));
   };
 }

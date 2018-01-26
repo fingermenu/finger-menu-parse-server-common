@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _commonJavascript = require('@microbusiness/common-javascript');
+
+var _commonJavascript2 = _interopRequireDefault(_commonJavascript);
+
 var _immutable = require('immutable');
 
 var _parseServerCommon = require('@microbusiness/parse-server-common');
@@ -73,7 +77,7 @@ var _initialiseProps = function _initialiseProps() {
     var table = object.get('table');
     var changedByUser = object.get('changedByUser');
 
-    return (0, _immutable.Map)({
+    return _commonJavascript2.default.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       tableState: tableState,
       tableStateId: tableState ? tableState.id : undefined,
@@ -85,7 +89,7 @@ var _initialiseProps = function _initialiseProps() {
       numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes')
-    });
+    }));
   };
 };
 

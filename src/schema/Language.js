@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 
@@ -31,11 +32,11 @@ export default class Language extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       key: object.get('key'),
       name: object.get('name'),
       imageUrl: object.get('imageUrl'),
-    });
+    }));
   };
 }

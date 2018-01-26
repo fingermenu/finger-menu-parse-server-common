@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Restaurant from './Restaurant';
@@ -44,7 +45,7 @@ export default class Table extends BaseObject {
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
       status: object.get('status'),
@@ -60,6 +61,6 @@ export default class Table extends BaseObject {
       numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes'),
-    });
+    }));
   };
 }

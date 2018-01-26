@@ -1,5 +1,6 @@
 // @flow
 
+import ImmutableEx from '@microbusiness/common-javascript';
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Menu from './Menu';
@@ -61,7 +62,7 @@ export default class Restaurant extends BaseObject {
     const languageObjects = object.get('languages');
     const languages = languageObjects ? Immutable.fromJS(languageObjects).map(language => new Language(language).getInfo()) : undefined;
 
-    return Map({
+    return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
       websiteUrl: object.get('websiteUrl'),
@@ -83,6 +84,6 @@ export default class Restaurant extends BaseObject {
       pin: object.get('pin'),
       languages,
       languageIds: languages ? languages.map(language => language.get('id')) : List(),
-    });
+    }));
   };
 }
