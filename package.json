@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "homepage": "https://bitbucket.org/fingermenu/finger-menu-parse-server-common#readme",
   "dependencies": {
     "@microbusiness/common-javascript": "^1.1.6",
-    "@microbusiness/parse-server-common": "^1.1.19",
+    "@microbusiness/parse-server-common": "^1.1.20",
     "immutable": "^4.0.0-rc.9"
   },
   "devDependencies": {
