@@ -6,6 +6,7 @@ export Language from './Language';
 export Menu from './Menu';
 export MenuItem from './MenuItem';
 export MenuItemPrice from './MenuItemPrice';
+export OrderState from './OrderState';
 export Restaurant from './Restaurant';
 export Size from './Size';
 export Table from './Table';
