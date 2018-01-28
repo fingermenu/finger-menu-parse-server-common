@@ -17,4 +17,12 @@ export default class TestHelper {
 
   static createRandomMultiLanguagesString = () =>
     List.of('en_US', 'en_GB', 'en_NZ').reduce((reduction, language) => reduction.set(language, chance.string()), Map());
+
+  static createRandomMap = () =>
+    Range(0, chance.integer({ min: 1, max: 10 }))
+      .map(() => Map({ key: chance.string(), value: chance.string() }))
+      .reduce((reduction, value) => reduction.set(value.get('key'), value.get('value')), Map());
+
+  static createRandomList = () =>
+    Range(0, chance.integer({ min: 1, max: 10 })).map(() => TestHelper.createRandomMap());
 }

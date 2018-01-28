@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.expectChoiceItemPrice = exports.createChoiceItemPrice = exports.createChoiceItemPriceInfo = undefined;
+exports.expectOrder = exports.createOrder = exports.createOrderInfo = undefined;
 
 var _chance = require('chance');
 
@@ -11,19 +11,21 @@ var _chance2 = _interopRequireDefault(_chance);
 
 var _immutable = require('immutable');
 
+require('../../../bootstrap');
+
 var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
-var _ChoiceItemService = require('../../services/__tests__/ChoiceItemService.test');
+var _TableService = require('../../services/__tests__/TableService.test');
 
-var _ChoiceItemService2 = _interopRequireDefault(_ChoiceItemService);
+var _TableService2 = _interopRequireDefault(_TableService);
 
-var _SizeService = require('../../services/__tests__/SizeService.test');
+var _OrderStateService = require('../../services/__tests__/OrderStateService.test');
 
-var _SizeService2 = _interopRequireDefault(_SizeService);
+var _OrderStateService2 = _interopRequireDefault(_OrderStateService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31,52 +33,39 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var chance = new _chance2.default();
 
-var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () {
+var createOrderInfo = exports.createOrderInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var choiceItem, size, addedByUser, removedByUser, choiceItemPrice;
+    var table, orderState, order;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _ChoiceItemService2.default)(1);
+            return (0, _TableService2.default)(1);
 
           case 2:
-            choiceItem = _context.sent.first();
+            table = _context.sent.first();
             _context.next = 5;
-            return (0, _SizeService2.default)(1);
+            return (0, _OrderStateService2.default)(1);
 
           case 5:
-            size = _context.sent.first();
-            _context.next = 8;
-            return _TestHelper2.default.createUser();
-
-          case 8:
-            addedByUser = _context.sent;
-            _context.next = 11;
-            return _TestHelper2.default.createUser();
-
-          case 11:
-            removedByUser = _context.sent;
-            choiceItemPrice = (0, _immutable.Map)({
-              currentPrice: chance.floating({ min: 0, max: 1000 }),
-              wasPrice: chance.floating({ min: 0, max: 1000 }),
-              validFrom: new Date(),
-              validUntil: new Date(),
-              choiceItemId: choiceItem.get('id'),
-              sizeId: size.get('id'),
-              addedByUserId: addedByUser.id,
-              removedByUserId: removedByUser.id
+            orderState = _context.sent.first();
+            order = (0, _immutable.Map)({
+              details: _TestHelper2.default.createRandomList(),
+              tableId: table.get('id'),
+              orderStateId: orderState.get('id'),
+              customerName: chance.string(),
+              notes: chance.string(),
+              totalPrice: chance.floating({ min: 0, max: 1000 }),
+              placedAt: new Date()
             });
             return _context.abrupt('return', {
-              choiceItemPrice: choiceItemPrice,
-              choiceItem: choiceItem,
-              size: size,
-              addedByUser: addedByUser,
-              removedByUser: removedByUser
+              order: order,
+              table: table,
+              orderState: orderState
             });
 
-          case 14:
+          case 8:
           case 'end':
             return _context.stop();
         }
@@ -84,18 +73,18 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
     }, _callee, undefined);
   }));
 
-  return function createChoiceItemPriceInfo() {
+  return function createOrderInfo() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var createChoiceItemPrice = exports.createChoiceItemPrice = function () {
+var createOrder = exports.createOrder = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(object) {
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.t0 = _.ChoiceItemPrice;
+            _context2.t0 = _.Order;
             _context2.t1 = object;
 
             if (_context2.t1) {
@@ -104,10 +93,10 @@ var createChoiceItemPrice = exports.createChoiceItemPrice = function () {
             }
 
             _context2.next = 5;
-            return createChoiceItemPriceInfo();
+            return createOrderInfo();
 
           case 5:
-            _context2.t1 = _context2.sent.choiceItemPrice;
+            _context2.t1 = _context2.sent.order;
 
           case 6:
             _context2.t2 = _context2.t1;
@@ -121,36 +110,35 @@ var createChoiceItemPrice = exports.createChoiceItemPrice = function () {
     }, _callee2, undefined);
   }));
 
-  return function createChoiceItemPrice(_x) {
+  return function createOrder(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoiceItemPrice(object, expectedObject) {
+var expectOrder = exports.expectOrder = function expectOrder(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      choiceItemPriceId = _ref3.choiceItemPriceId,
-      expectedChoiceItem = _ref3.expectedChoiceItem,
-      expectedSize = _ref3.expectedSize;
+      orderId = _ref3.orderId,
+      expectedTable = _ref3.expectedTable,
+      expectedOrderState = _ref3.expectedOrderState;
 
-  expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
-  expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
-  expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
-  expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
-  expect(object.get('choiceItemId')).toBe(expectedObject.get('choiceItemId'));
-  expect(object.get('sizeId')).toBe(expectedObject.get('sizeId'));
-  expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
-  expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
+  expect(object.get('details')).toEqual(expectedObject.get('details'));
+  expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
+  expect(object.get('orderStateId')).toBe(expectedObject.get('orderStateId'));
+  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
+  expect(object.get('notes')).toBe(expectedObject.get('notes'));
+  expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));
+  expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
 
-  if (choiceItemPriceId) {
-    expect(object.get('id')).toBe(choiceItemPriceId);
+  if (orderId) {
+    expect(object.get('id')).toBe(orderId);
   }
 
-  if (expectedChoiceItem) {
-    expect(object.get('choiceItemId')).toEqual(expectedChoiceItem.get('id'));
+  if (expectedTable) {
+    expect(object.get('tableId')).toEqual(expectedTable.get('id'));
   }
 
-  if (expectedSize) {
-    expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
+  if (expectedOrderState) {
+    expect(object.get('orderStateId')).toEqual(expectedOrderState.get('id'));
   }
 };
 
@@ -162,11 +150,11 @@ describe('constructor', function () {
           case 0:
             _context3.t0 = expect;
             _context3.next = 3;
-            return createChoiceItemPrice();
+            return createOrder();
 
           case 3:
             _context3.t1 = _context3.sent.className;
-            (0, _context3.t0)(_context3.t1).toBe('ChoiceItemPrice');
+            (0, _context3.t0)(_context3.t1).toBe('Order');
 
           case 5:
           case 'end':
@@ -179,27 +167,27 @@ describe('constructor', function () {
 
 describe('static public methods', function () {
   test('spawn should set provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var _ref6, choiceItemPrice, object, info;
+    var _ref6, order, object, info;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.next = 2;
-            return createChoiceItemPriceInfo();
+            return createOrderInfo();
 
           case 2:
             _ref6 = _context4.sent;
-            choiceItemPrice = _ref6.choiceItemPrice;
+            order = _ref6.order;
             _context4.next = 6;
-            return createChoiceItemPrice(choiceItemPrice);
+            return createOrder(order);
 
           case 6:
             object = _context4.sent;
             info = object.getInfo();
 
 
-            expectChoiceItemPrice(info, choiceItemPrice);
+            expectOrder(info, order);
 
           case 9:
           case 'end':
@@ -218,13 +206,13 @@ describe('public methods', function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return createChoiceItemPrice();
+            return createOrder();
 
           case 2:
             object = _context5.sent;
 
 
-            expect(new _.ChoiceItemPrice(object).getObject()).toBe(object);
+            expect(new _.Order(object).getObject()).toBe(object);
 
           case 4:
           case 'end':
@@ -241,13 +229,13 @@ describe('public methods', function () {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.next = 2;
-            return createChoiceItemPrice();
+            return createOrder();
 
           case 2:
             object = _context6.sent;
 
 
-            expect(new _.ChoiceItemPrice(object).getId()).toBe(object.id);
+            expect(new _.Order(object).getId()).toBe(object.id);
 
           case 4:
           case 'end':
@@ -258,31 +246,31 @@ describe('public methods', function () {
   })));
 
   test('updateInfo should update object info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var object, _ref10, updatedChoiceItemPrice, info;
+    var object, _ref10, updatedOrder, info;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return createChoiceItemPrice();
+            return createOrder();
 
           case 2:
             object = _context7.sent;
             _context7.next = 5;
-            return createChoiceItemPriceInfo();
+            return createOrderInfo();
 
           case 5:
             _ref10 = _context7.sent;
-            updatedChoiceItemPrice = _ref10.choiceItemPrice;
+            updatedOrder = _ref10.order;
 
 
-            object.updateInfo(updatedChoiceItemPrice);
+            object.updateInfo(updatedOrder);
 
             info = object.getInfo();
 
 
-            expectChoiceItemPrice(info, updatedChoiceItemPrice);
+            expectOrder(info, updatedOrder);
 
           case 10:
           case 'end':
@@ -293,20 +281,20 @@ describe('public methods', function () {
   })));
 
   test('getInfo should return provided info', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var _ref12, choiceItemPrice, object, info;
+    var _ref12, order, object, info;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return createChoiceItemPriceInfo();
+            return createOrderInfo();
 
           case 2:
             _ref12 = _context8.sent;
-            choiceItemPrice = _ref12.choiceItemPrice;
+            order = _ref12.order;
             _context8.next = 6;
-            return createChoiceItemPrice(choiceItemPrice);
+            return createOrder(order);
 
           case 6:
             object = _context8.sent;
@@ -314,7 +302,7 @@ describe('public methods', function () {
 
 
             expect(info.get('id')).toBe(object.getId());
-            expectChoiceItemPrice(info, choiceItemPrice);
+            expectOrder(info, order);
 
           case 10:
           case 'end':

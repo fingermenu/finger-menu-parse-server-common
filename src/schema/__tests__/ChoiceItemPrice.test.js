@@ -15,8 +15,8 @@ export const createChoiceItemPriceInfo = async () => {
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
   const choiceItemPrice = Map({
-    currentPrice: chance.floating(),
-    wasPrice: chance.floating(),
+    currentPrice: chance.floating({ min: 0, max: 1000 }),
+    wasPrice: chance.floating({ min: 0, max: 1000 }),
     validFrom: new Date(),
     validUntil: new Date(),
     choiceItemId: choiceItem.get('id'),

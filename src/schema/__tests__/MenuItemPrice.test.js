@@ -17,8 +17,8 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
   const menuItemPrice = Map({
-    currentPrice: chance.floating(),
-    wasPrice: chance.floating(),
+    currentPrice: chance.floating({ min: 0, max: 1000 }),
+    wasPrice: chance.floating({ min: 0, max: 1000 }),
     validFrom: new Date(),
     validUntil: new Date(),
     menuItemId: menuItem.get('id'),

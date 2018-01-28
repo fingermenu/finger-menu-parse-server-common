@@ -71,8 +71,8 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
           case 14:
             removedByUser = _context.sent;
             menuItemPrice = (0, _immutable.Map)({
-              currentPrice: chance.floating(),
-              wasPrice: chance.floating(),
+              currentPrice: chance.floating({ min: 0, max: 1000 }),
+              wasPrice: chance.floating({ min: 0, max: 1000 }),
               validFrom: new Date(),
               validUntil: new Date(),
               menuItemId: menuItem.get('id'),
