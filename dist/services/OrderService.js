@@ -28,15 +28,15 @@ var OrderService = function (_ServiceBase) {
   return OrderService;
 }(_parseServerCommon.ServiceBase);
 
-OrderService.fields = _immutable.List.of('details', 'orderState', 'table', 'customerName', 'notes', 'totalPrice', 'placedAt');
+OrderService.fields = _immutable.List.of('details', 'restaurant', 'table', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt');
 
 OrderService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'restaurant');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'table');
-  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'orderState');
 
   return query;
 };
@@ -54,12 +54,13 @@ OrderService.buildSearchQuery = function (criteria) {
   OrderService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', _schema.Restaurant);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'table', 'table', _schema.Table);
-  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'orderState', 'orderState', _schema.OrderState);
   _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
   _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
   _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
+  _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');
 
   return query;
 };

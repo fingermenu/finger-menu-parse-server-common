@@ -12,9 +12,9 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var _parseServerCommon = require('@microbusiness/parse-server-common');
 
-var _OrderState = require('./OrderState');
+var _Restaurant = require('./Restaurant');
 
-var _OrderState2 = _interopRequireDefault(_OrderState);
+var _Restaurant2 = _interopRequireDefault(_Restaurant);
 
 var _Table = require('./Table');
 
@@ -55,11 +55,12 @@ Order.spawn = function (info) {
 Order.updateInfoInternal = function (object, info) {
   object.set('details', info.get('details').toJS());
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
-  _parseServerCommon.BaseObject.createPointer(object, info, 'orderState', _OrderState2.default);
+  _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
   object.set('notes', info.get('notes'));
   object.set('totalPrice', info.get('totalPrice'));
   object.set('placedAt', info.get('placedAt'));
+  object.set('cancelledAt', info.get('cancelledAt'));
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -73,20 +74,21 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getInfo = function () {
     var object = _this2.getObject();
+    var restaurant = object.get('restaurant');
     var table = object.get('table');
-    var orderState = object.get('orderState');
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       details: _immutable2.default.fromJS(object.get('details')),
+      restaurant: restaurant,
+      restaurantId: restaurant ? restaurant.id : undefined,
       table: table,
       tableId: table ? table.id : undefined,
-      orderState: orderState,
-      orderStateId: orderState ? orderState.id : undefined,
       customerName: object.get('customerName'),
       notes: object.get('notes'),
       totalPrice: object.get('totalPrice'),
-      placedAt: object.get('placedAt')
+      placedAt: object.get('placedAt'),
+      cancelledAt: object.get('cancelledAt')
     }));
   };
 };

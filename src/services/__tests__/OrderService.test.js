@@ -12,21 +12,22 @@ const orderService = new OrderService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('details', 'table', 'orderState', 'customerName', 'notes', 'totalPrice', 'placedAt'),
+    fields: List.of('details', 'restaurant', 'table', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt'),
     include_table: true,
-    include_orderState: true,
+    include_restaurant: true,
   });
 
 const createCriteria = object =>
   Map({
     conditions: Map({
       details: object ? object.get('details') : TestHelper.createRandomList(),
+      restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
-      orderStateId: object ? object.get('orderStateId') : chance.string(),
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       totalPrice: object ? object.get('totalPrice') : chance.floating({ min: 0, max: 1000 }),
       placedAt: object ? object.get('placedAt') : new Date(),
+      cancelledAt: object ? object.get('cancelledAt') : new Date(),
     }),
   });
 
@@ -86,14 +87,14 @@ describe('read', () => {
   });
 
   test('should read the existing order', async () => {
-    const { order: expectedOrder, table: expectedTable, orderState: expectedOrderState } = await createOrderInfo();
+    const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
     const orderId = await orderService.create(expectedOrder);
     const order = await orderService.read(orderId, createCriteriaWthoutConditions());
 
     expectOrder(order, expectedOrder, {
       orderId,
       expectedTable,
-      expectedOrderState,
+      expectedRestaurant,
     });
   });
 });
@@ -120,7 +121,7 @@ describe('update', () => {
   });
 
   test('should update the existing order', async () => {
-    const { order: expectedOrder, table: expectedTable, orderState: expectedOrderState } = await createOrderInfo();
+    const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
     const orderId = await orderService.create((await createOrderInfo()).order);
 
     await orderService.update(expectedOrder.set('id', orderId));
@@ -130,7 +131,7 @@ describe('update', () => {
     expectOrder(order, expectedOrder, {
       orderId,
       expectedTable,
-      expectedOrderState,
+      expectedRestaurant,
     });
   });
 });
@@ -166,7 +167,7 @@ describe('search', () => {
   });
 
   test('should return the order matches the criteria', async () => {
-    const { order: expectedOrder, table: expectedTable, orderState: expectedOrderState } = await createOrderInfo();
+    const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
       .map(async () => orderService.create(expectedOrder))
       .toArray()));
@@ -178,7 +179,7 @@ describe('search', () => {
       expectOrder(order, expectedOrder, {
         orderId: order.get('id'),
         expectedTable,
-        expectedOrderState,
+        expectedRestaurant,
       });
     });
   });
@@ -203,7 +204,7 @@ describe('searchAll', () => {
   });
 
   test('should return the order matches the criteria', async () => {
-    const { order: expectedOrder, table: expectedTable, orderState: expectedOrderState } = await createOrderInfo();
+    const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
     const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
       .map(async () => orderService.create(expectedOrder))
       .toArray()));
@@ -227,7 +228,7 @@ describe('searchAll', () => {
       expectOrder(order, expectedOrder, {
         orderId: order.get('id'),
         expectedTable,
-        expectedOrderState,
+        expectedRestaurant,
       });
     });
   });

@@ -31,9 +31,9 @@ var orderService = new _2.OrderService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('details', 'table', 'orderState', 'customerName', 'notes', 'totalPrice', 'placedAt'),
+    fields: _immutable.List.of('details', 'restaurant', 'table', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt'),
     include_table: true,
-    include_orderState: true
+    include_restaurant: true
   });
 };
 
@@ -41,12 +41,13 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       details: object ? object.get('details') : _TestHelper2.default.createRandomList(),
+      restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableId: object ? object.get('tableId') : chance.string(),
-      orderStateId: object ? object.get('orderStateId') : chance.string(),
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       totalPrice: object ? object.get('totalPrice') : chance.floating({ min: 0, max: 1000 }),
-      placedAt: object ? object.get('placedAt') : new Date()
+      placedAt: object ? object.get('placedAt') : new Date(),
+      cancelledAt: object ? object.get('cancelledAt') : new Date()
     })
   });
 };
@@ -245,7 +246,7 @@ describe('read', function () {
   })));
 
   test('should read the existing order', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedOrder, expectedTable, expectedOrderState, orderId, order;
+    var _ref10, expectedOrder, expectedTable, expectedRestaurant, orderId, order;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -258,7 +259,7 @@ describe('read', function () {
             _ref10 = _context6.sent;
             expectedOrder = _ref10.order;
             expectedTable = _ref10.table;
-            expectedOrderState = _ref10.orderState;
+            expectedRestaurant = _ref10.restaurant;
             _context6.next = 8;
             return orderService.create(expectedOrder);
 
@@ -274,7 +275,7 @@ describe('read', function () {
             (0, _Order.expectOrder)(order, expectedOrder, {
               orderId: orderId,
               expectedTable: expectedTable,
-              expectedOrderState: expectedOrderState
+              expectedRestaurant: expectedRestaurant
             });
 
           case 13:
@@ -376,7 +377,7 @@ describe('update', function () {
   })));
 
   test('should update the existing order', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedOrder, expectedTable, expectedOrderState, orderId, order;
+    var _ref15, expectedOrder, expectedTable, expectedRestaurant, orderId, order;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -389,7 +390,7 @@ describe('update', function () {
             _ref15 = _context9.sent;
             expectedOrder = _ref15.order;
             expectedTable = _ref15.table;
-            expectedOrderState = _ref15.orderState;
+            expectedRestaurant = _ref15.restaurant;
             _context9.t0 = orderService;
             _context9.next = 9;
             return (0, _Order.createOrderInfo)();
@@ -415,7 +416,7 @@ describe('update', function () {
             (0, _Order.expectOrder)(order, expectedOrder, {
               orderId: orderId,
               expectedTable: expectedTable,
-              expectedOrderState: expectedOrderState
+              expectedRestaurant: expectedRestaurant
             });
 
           case 19:
@@ -526,7 +527,7 @@ describe('search', function () {
   })));
 
   test('should return the order matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedOrder, expectedTable, expectedOrderState, results, orders;
+    var _ref20, expectedOrder, expectedTable, expectedRestaurant, results, orders;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -539,7 +540,7 @@ describe('search', function () {
             _ref20 = _context14.sent;
             expectedOrder = _ref20.order;
             expectedTable = _ref20.table;
-            expectedOrderState = _ref20.orderState;
+            expectedRestaurant = _ref20.restaurant;
             _context14.t0 = _immutable2.default;
             _context14.next = 9;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
@@ -575,7 +576,7 @@ describe('search', function () {
               (0, _Order.expectOrder)(order, expectedOrder, {
                 orderId: order.get('id'),
                 expectedTable: expectedTable,
-                expectedOrderState: expectedOrderState
+                expectedRestaurant: expectedRestaurant
               });
             });
 
@@ -625,7 +626,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the order matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedOrder, expectedTable, expectedOrderState, results, orders, result;
+    var _ref24, expectedOrder, expectedTable, expectedRestaurant, results, orders, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -638,7 +639,7 @@ describe('searchAll', function () {
             _ref24 = _context17.sent;
             expectedOrder = _ref24.order;
             expectedTable = _ref24.table;
-            expectedOrderState = _ref24.orderState;
+            expectedRestaurant = _ref24.restaurant;
             _context17.t0 = _immutable2.default;
             _context17.next = 9;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
@@ -686,7 +687,7 @@ describe('searchAll', function () {
               (0, _Order.expectOrder)(order, expectedOrder, {
                 orderId: order.get('id'),
                 expectedTable: expectedTable,
-                expectedOrderState: expectedOrderState
+                expectedRestaurant: expectedRestaurant
               });
             });
 

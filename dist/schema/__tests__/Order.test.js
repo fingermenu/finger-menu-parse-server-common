@@ -19,13 +19,13 @@ var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
+var _RestaurantService = require('../../services/__tests__/RestaurantService.test');
+
+var _RestaurantService2 = _interopRequireDefault(_RestaurantService);
+
 var _TableService = require('../../services/__tests__/TableService.test');
 
 var _TableService2 = _interopRequireDefault(_TableService);
-
-var _OrderStateService = require('../../services/__tests__/OrderStateService.test');
-
-var _OrderStateService2 = _interopRequireDefault(_OrderStateService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,34 +35,35 @@ var chance = new _chance2.default();
 
 var createOrderInfo = exports.createOrderInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var table, orderState, order;
+    var restaurant, table, order;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return (0, _TableService2.default)(1);
+            return (0, _RestaurantService2.default)(1);
 
           case 2:
-            table = _context.sent.first();
+            restaurant = _context.sent.first();
             _context.next = 5;
-            return (0, _OrderStateService2.default)(1);
+            return (0, _TableService2.default)(1);
 
           case 5:
-            orderState = _context.sent.first();
+            table = _context.sent.first();
             order = (0, _immutable.Map)({
               details: _TestHelper2.default.createRandomList(),
+              restaurantId: restaurant.get('id'),
               tableId: table.get('id'),
-              orderStateId: orderState.get('id'),
               customerName: chance.string(),
               notes: chance.string(),
               totalPrice: chance.floating({ min: 0, max: 1000 }),
-              placedAt: new Date()
+              placedAt: new Date(),
+              cancelledAt: new Date()
             });
             return _context.abrupt('return', {
               order: order,
-              table: table,
-              orderState: orderState
+              restaurant: restaurant,
+              table: table
             });
 
           case 8:
@@ -119,26 +120,27 @@ var expectOrder = exports.expectOrder = function expectOrder(object, expectedObj
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       orderId = _ref3.orderId,
       expectedTable = _ref3.expectedTable,
-      expectedOrderState = _ref3.expectedOrderState;
+      expectedRestaurant = _ref3.expectedRestaurant;
 
   expect(object.get('details')).toEqual(expectedObject.get('details'));
+  expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
-  expect(object.get('orderStateId')).toBe(expectedObject.get('orderStateId'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
   expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));
   expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
+  expect(object.get('cancelledAt')).toBe(expectedObject.get('cancelledAt'));
 
   if (orderId) {
     expect(object.get('id')).toBe(orderId);
   }
 
-  if (expectedTable) {
-    expect(object.get('tableId')).toEqual(expectedTable.get('id'));
+  if (expectedRestaurant) {
+    expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
   }
 
-  if (expectedOrderState) {
-    expect(object.get('orderStateId')).toEqual(expectedOrderState.get('id'));
+  if (expectedTable) {
+    expect(object.get('tableId')).toEqual(expectedTable.get('id'));
   }
 };
 

@@ -5,52 +5,54 @@ import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { Order } from '../';
+import createRestaurants from '../../services/__tests__/RestaurantService.test';
 import createTables from '../../services/__tests__/TableService.test';
-import createOrderStates from '../../services/__tests__/OrderStateService.test';
 
 const chance = new Chance();
 
 export const createOrderInfo = async () => {
+  const restaurant = (await createRestaurants(1)).first();
   const table = (await createTables(1)).first();
-  const orderState = (await createOrderStates(1)).first();
   const order = Map({
     details: TestHelper.createRandomList(),
+    restaurantId: restaurant.get('id'),
     tableId: table.get('id'),
-    orderStateId: orderState.get('id'),
     customerName: chance.string(),
     notes: chance.string(),
     totalPrice: chance.floating({ min: 0, max: 1000 }),
     placedAt: new Date(),
+    cancelledAt: new Date(),
   });
 
   return {
     order,
+    restaurant,
     table,
-    orderState,
   };
 };
 
 export const createOrder = async object => Order.spawn(object || (await createOrderInfo()).order);
 
-export const expectOrder = (object, expectedObject, { orderId, expectedTable, expectedOrderState } = {}) => {
+export const expectOrder = (object, expectedObject, { orderId, expectedTable, expectedRestaurant } = {}) => {
   expect(object.get('details')).toEqual(expectedObject.get('details'));
+  expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
-  expect(object.get('orderStateId')).toBe(expectedObject.get('orderStateId'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
   expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));
   expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
+  expect(object.get('cancelledAt')).toBe(expectedObject.get('cancelledAt'));
 
   if (orderId) {
     expect(object.get('id')).toBe(orderId);
   }
 
-  if (expectedTable) {
-    expect(object.get('tableId')).toEqual(expectedTable.get('id'));
+  if (expectedRestaurant) {
+    expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
   }
 
-  if (expectedOrderState) {
-    expect(object.get('orderStateId')).toEqual(expectedOrderState.get('id'));
+  if (expectedTable) {
+    expect(object.get('tableId')).toEqual(expectedTable.get('id'));
   }
 };
 
