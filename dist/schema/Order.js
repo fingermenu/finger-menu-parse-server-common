@@ -53,7 +53,14 @@ Order.spawn = function (info) {
 };
 
 Order.updateInfoInternal = function (object, info) {
-  object.set('details', info.get('details').toJS());
+  var details = info.get('details');
+
+  if (_commonJavascript.Common.isNull(details)) {
+    object.set('details', []);
+  } else if (details) {
+    object.set('details', info.get('details').toJS());
+  }
+
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');

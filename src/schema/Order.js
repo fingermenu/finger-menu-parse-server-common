@@ -1,6 +1,6 @@
 // @flow
 
-import { ImmutableEx } from '@microbusiness/common-javascript';
+import { Common, ImmutableEx } from '@microbusiness/common-javascript';
 import Immutable, { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Restaurant from './Restaurant';
@@ -16,7 +16,14 @@ export default class Order extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    object.set('details', info.get('details').toJS());
+    const details = info.get('details');
+
+    if (Common.isNull(details)) {
+      object.set('details', []);
+    } else if (details) {
+      object.set('details', info.get('details').toJS());
+    }
+
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
     BaseObject.createStringColumn(object, info, 'customerName');
