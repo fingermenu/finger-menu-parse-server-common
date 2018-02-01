@@ -60,8 +60,8 @@ TableStateChangeService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'changedByUser', 'changedByUser');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'numberOfAdults', 'numberOfAdults');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
 
   return query;
 };

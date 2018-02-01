@@ -20,7 +20,7 @@ export default class Order extends BaseObject {
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
     BaseObject.createStringColumn(object, info, 'customerName');
-    object.set('notes', info.get('notes'));
+    BaseObject.createStringColumn(object, info, 'notes');
     object.set('totalPrice', info.get('totalPrice'));
     object.set('placedAt', info.get('placedAt'));
     object.set('cancelledAt', info.get('cancelledAt'));

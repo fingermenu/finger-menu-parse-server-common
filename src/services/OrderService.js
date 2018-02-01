@@ -37,8 +37,8 @@ export default class OrderService extends ServiceBase {
     });
     ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', Restaurant);
     ServiceBase.addLinkQuery(conditions, query, 'table', 'table', Table);
-    ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
-    ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
+    ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
+    ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
     ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
     ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
     ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');

@@ -25,7 +25,7 @@ export default class Table extends BaseObject {
     object.set('numberOfAdults', info.get('numberOfAdults'));
     object.set('numberOfChildren', info.get('numberOfChildren'));
     BaseObject.createStringColumn(object, info, 'customerName');
-    object.set('notes', info.get('notes'));
+    BaseObject.createStringColumn(object, info, 'notes');
   };
 
   constructor(object) {

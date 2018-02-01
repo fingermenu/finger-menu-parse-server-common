@@ -56,8 +56,8 @@ OrderService.buildSearchQuery = function (criteria) {
   });
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', _schema.Restaurant);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'table', 'table', _schema.Table);
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
-  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
   _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');

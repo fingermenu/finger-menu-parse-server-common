@@ -62,7 +62,7 @@ Table.updateInfoInternal = function (object, info) {
   object.set('numberOfAdults', info.get('numberOfAdults'));
   object.set('numberOfChildren', info.get('numberOfChildren'));
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
-  object.set('notes', info.get('notes'));
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
 };
 
 var _initialiseProps = function _initialiseProps() {

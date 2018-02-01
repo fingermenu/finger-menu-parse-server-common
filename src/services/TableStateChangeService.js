@@ -41,8 +41,8 @@ export default class TableStateChangeService extends ServiceBase {
     ServiceBase.addUserLinkQuery(conditions, query, 'changedByUser', 'changedByUser');
     ServiceBase.addEqualityQuery(conditions, query, 'numberOfAdults', 'numberOfAdults');
     ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
-    ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerName');
-    ServiceBase.addStringQuery(conditions, query, 'notes', 'notes');
+    ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
+    ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
 
     return query;
   };

@@ -57,7 +57,7 @@ Order.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
-  object.set('notes', info.get('notes'));
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
   object.set('totalPrice', info.get('totalPrice'));
   object.set('placedAt', info.get('placedAt'));
   object.set('cancelledAt', info.get('cancelledAt'));
