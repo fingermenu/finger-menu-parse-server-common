@@ -63,6 +63,8 @@ Order.updateInfoInternal = function (object, info) {
 
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
+  object.set('numberOfAdults', info.get('numberOfAdults'));
+  object.set('numberOfChildren', info.get('numberOfChildren'));
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
   object.set('totalPrice', info.get('totalPrice'));
@@ -91,6 +93,8 @@ var _initialiseProps = function _initialiseProps() {
       restaurantId: restaurant ? restaurant.id : undefined,
       table: table,
       tableId: table ? table.id : undefined,
+      numberOfAdults: object.get('numberOfAdults'),
+      numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes'),
       totalPrice: object.get('totalPrice'),

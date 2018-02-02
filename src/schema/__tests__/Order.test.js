@@ -17,6 +17,8 @@ export const createOrderInfo = async () => {
     details: TestHelper.createRandomList(),
     restaurantId: restaurant.get('id'),
     tableId: table.get('id'),
+    numberOfAdults: chance.integer(),
+    numberOfChildren: chance.integer(),
     customerName: chance.string(),
     notes: chance.string(),
     totalPrice: chance.floating({ min: 0, max: 1000 }),
@@ -37,6 +39,8 @@ export const expectOrder = (object, expectedObject, { orderId, expectedTable, ex
   expect(object.get('details')).toEqual(expectedObject.get('details'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
+  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
+  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
   expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));

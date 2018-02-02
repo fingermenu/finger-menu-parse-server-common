@@ -26,6 +26,8 @@ export default class Order extends BaseObject {
 
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
+    object.set('numberOfAdults', info.get('numberOfAdults'));
+    object.set('numberOfChildren', info.get('numberOfChildren'));
     BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
     object.set('totalPrice', info.get('totalPrice'));
@@ -55,6 +57,8 @@ export default class Order extends BaseObject {
       restaurantId: restaurant ? restaurant.id : undefined,
       table,
       tableId: table ? table.id : undefined,
+      numberOfAdults: object.get('numberOfAdults'),
+      numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes'),
       totalPrice: object.get('totalPrice'),
