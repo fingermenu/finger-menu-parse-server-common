@@ -76,6 +76,14 @@ Restaurant.updateInfoInternal = function (object, info) {
   object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
   object.set('pin', info.get('pin'));
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'language', _Language2.default);
+
+  var configurations = info.get('configurations');
+
+  if (_commonJavascript.Common.isNull(configurations)) {
+    object.set('configurations', {});
+  } else if (configurations) {
+    object.set('configurations', configurations.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -129,7 +137,8 @@ var _initialiseProps = function _initialiseProps() {
       languages: languages,
       languageIds: languages ? languages.map(function (language) {
         return language.get('id');
-      }) : (0, _immutable.List)()
+      }) : (0, _immutable.List)(),
+      configurations: _immutable2.default.fromJS(object.get('configurations'))
     }));
   };
 };

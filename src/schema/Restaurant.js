@@ -1,6 +1,6 @@
 // @flow
 
-import { ImmutableEx } from '@microbusiness/common-javascript';
+import { Common, ImmutableEx } from '@microbusiness/common-javascript';
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Menu from './Menu';
@@ -39,6 +39,14 @@ export default class Restaurant extends BaseObject {
     object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
     object.set('pin', info.get('pin'));
     BaseObject.createArrayPointer(object, info, 'language', Language);
+
+    const configurations = info.get('configurations');
+
+    if (Common.isNull(configurations)) {
+      object.set('configurations', {});
+    } else if (configurations) {
+      object.set('configurations', configurations.toJS());
+    }
   };
 
   constructor(object) {
@@ -84,6 +92,7 @@ export default class Restaurant extends BaseObject {
       pin: object.get('pin'),
       languages,
       languageIds: languages ? languages.map(language => language.get('id')) : List(),
+      configurations: Immutable.fromJS(object.get('configurations')),
     }));
   };
 }

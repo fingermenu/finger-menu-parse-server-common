@@ -20,6 +20,7 @@ export default class RestaurantService extends ServiceBase {
     'inheritParentRestaurantMenus',
     'pin',
     'languages',
+    'configurations',
   );
 
   constructor() {

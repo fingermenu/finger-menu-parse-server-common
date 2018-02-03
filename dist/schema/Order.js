@@ -58,7 +58,7 @@ Order.updateInfoInternal = function (object, info) {
   if (_commonJavascript.Common.isNull(details)) {
     object.set('details', []);
   } else if (details) {
-    object.set('details', info.get('details').toJS());
+    object.set('details', details.toJS());
   }
 
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);

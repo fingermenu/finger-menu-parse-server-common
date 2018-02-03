@@ -16,6 +16,10 @@ var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 require('../../../bootstrap');
 
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
+
 var _2 = require('../');
 
 var _Restaurant = require('../../schema/__tests__/Restaurant.test');
@@ -36,7 +40,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -70,7 +74,8 @@ var createCriteria = function createCriteria(object) {
       googleMapUrl: object ? object.get('googleMapUrl') : chance.string(),
       menuIds: object ? object.get('menuIds') : _immutable.List.of(chance.string(), chance.string()),
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
-      pin: object ? object.get('pin') : chance.string()
+      pin: object ? object.get('pin') : chance.string(),
+      configurations: object ? object.get('configurations') : _TestHelper2.default.createRandomMap()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

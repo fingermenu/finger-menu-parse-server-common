@@ -4,6 +4,7 @@ import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import { ParseWrapperService } from '@microbusiness/parse-server-common';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { RestaurantService } from '../';
 import { createRestaurantInfo, expectRestaurant } from '../../schema/__tests__/Restaurant.test';
 
@@ -34,6 +35,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
       'menus',
       'inheritParentRestaurantMenus',
       'pin',
+      'configurations',
     ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_parentRestaurant: true,
@@ -66,6 +68,7 @@ const createCriteria = (object) => {
       menuIds: object ? object.get('menuIds') : List.of(chance.string(), chance.string()),
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
       pin: object ? object.get('pin') : chance.string(),
+      configurations: object ? object.get('configurations') : TestHelper.createRandomMap(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

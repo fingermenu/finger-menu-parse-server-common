@@ -21,7 +21,7 @@ export default class Order extends BaseObject {
     if (Common.isNull(details)) {
       object.set('details', []);
     } else if (details) {
-      object.set('details', info.get('details').toJS());
+      object.set('details', details.toJS());
     }
 
     BaseObject.createPointer(object, info, 'table', Table);

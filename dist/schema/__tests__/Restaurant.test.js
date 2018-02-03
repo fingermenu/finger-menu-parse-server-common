@@ -89,7 +89,8 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               pin: chance.string(),
               languageIds: languages.map(function (language) {
                 return language.get('id');
-              })
+              }),
+              configurations: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,
@@ -169,6 +170,7 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
   expect(object.get('ping')).toBe(expectedObject.get('pin'));
   expect(object.get('languageIds')).toEqual(expectedObject.get('languageIds'));
+  expect(object.get('configurations')).toEqual(expectedObject.get('configurations'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(function (_) {
