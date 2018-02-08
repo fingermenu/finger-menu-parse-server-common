@@ -19,7 +19,6 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
   const restaurant = Map({
     name: TestHelper.createRandomMultiLanguagesString(),
     websiteUrl: chance.string(),
-    imageUrl: chance.string(),
     address: chance.string(),
     phones: List.of(Map({ label: 'business', number: chance.string() }), Map({ label: 'business', number: chance.string() })),
     geoLocation: ParseWrapperService.createGeoPoint({
@@ -52,7 +51,6 @@ export const createRestaurant = async object => Restaurant.spawn(object || (awai
 export const expectRestaurant = (object, expectedObject, { expectedMenus, expectedLanguages } = {}) => {
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
-  expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('address')).toBe(expectedObject.get('address'));
   expect(object.get('phones')).toEqual(expectedObject.get('phones'));
   expect(object.get('geoLocation')).toEqual(expectedObject.get('geoLocation'));

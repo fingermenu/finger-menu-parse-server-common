@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.1.0",
+    "babel-jest": "^22.2.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -37,7 +37,7 @@
     "eslint-plugin-react": "^7.6.1",
     "flow-bin": "^0.65.0",
     "husky": "^0.14.3",
-    "jest": "^22.1.4",
+    "jest": "^22.2.1",
     "lint-staged": "^6.1.0",
     "parse": "^1.11.0",
     "prettier": "^1.10.2",

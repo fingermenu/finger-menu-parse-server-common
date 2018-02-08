@@ -18,7 +18,6 @@ export default class Restaurant extends BaseObject {
   static updateInfoInternal = (object, info) => {
     BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
     object.set('websiteUrl', info.get('websiteUrl'));
-    object.set('imageUrl', info.get('imageUrl'));
     object.set('address', info.get('address'));
 
     if (info.has('phones')) {
@@ -74,7 +73,6 @@ export default class Restaurant extends BaseObject {
       id: this.getId(),
       name: this.getMultiLanguagesString('name'),
       websiteUrl: object.get('websiteUrl'),
-      imageUrl: object.get('imageUrl'),
       address: object.get('address'),
       phones: Immutable.fromJS(object.get('phones')),
       geoLocation: object.get('geoLocation'),

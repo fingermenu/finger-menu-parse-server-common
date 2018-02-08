@@ -40,7 +40,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -60,7 +60,6 @@ var createCriteria = function createCriteria(object) {
     conditions: (0, _immutable.Map)({
       name: language ? object.get('name').get(language) : chance.string(),
       websiteUrl: object ? object.get('websiteUrl') : chance.string(),
-      imageUrl: object ? object.get('imageUrl') : chance.string(),
       address: object ? object.get('address') : chance.string(),
       phones: object ? object.get('phones') : (0, _immutable.Map)({ business: chance.string() }),
       near_geoLocation: object ? object.get('geoLocation') : _parseServerCommon.ParseWrapperService.createGeoPoint({

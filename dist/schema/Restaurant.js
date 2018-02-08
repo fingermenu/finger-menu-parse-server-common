@@ -55,7 +55,6 @@ Restaurant.spawn = function (info) {
 Restaurant.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
   object.set('websiteUrl', info.get('websiteUrl'));
-  object.set('imageUrl', info.get('imageUrl'));
   object.set('address', info.get('address'));
 
   if (info.has('phones')) {
@@ -114,7 +113,6 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       name: _this2.getMultiLanguagesString('name'),
       websiteUrl: object.get('websiteUrl'),
-      imageUrl: object.get('imageUrl'),
       address: object.get('address'),
       phones: _immutable2.default.fromJS(object.get('phones')),
       geoLocation: object.get('geoLocation'),

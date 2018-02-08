@@ -28,7 +28,7 @@ var RestaurantService = function (_ServiceBase) {
   return RestaurantService;
 }(_parseServerCommon.ServiceBase);
 
-RestaurantService.fields = _immutable.List.of('websiteUrl', 'imageUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'languages', 'configurations');
+RestaurantService.fields = _immutable.List.of('websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'languages', 'configurations');
 
 RestaurantService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -59,7 +59,6 @@ RestaurantService.buildSearchQuery = function (criteria) {
   });
   _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
-  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');
   _parseServerCommon.ServiceBase.addGeoLocationQuery(conditions, query, 'geoLocation', 'geoLocation');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'parentRestaurant', 'parentRestaurant', _schema.Restaurant);

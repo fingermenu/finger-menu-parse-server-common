@@ -7,7 +7,6 @@ import { Language, Menu, Restaurant } from '../schema';
 export default class RestaurantService extends ServiceBase {
   static fields = List.of(
     'websiteUrl',
-    'imageUrl',
     'address',
     'phones',
     'geoLocation',
@@ -56,7 +55,6 @@ export default class RestaurantService extends ServiceBase {
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
     ServiceBase.addEqualityQuery(conditions, query, 'websiteUrl', 'websiteUrl');
-    ServiceBase.addEqualityQuery(conditions, query, 'imageUrl', 'imageUrl');
     ServiceBase.addEqualityQuery(conditions, query, 'address', 'address');
     ServiceBase.addGeoLocationQuery(conditions, query, 'geoLocation', 'geoLocation');
     ServiceBase.addLinkQuery(conditions, query, 'parentRestaurant', 'parentRestaurant', Restaurant);

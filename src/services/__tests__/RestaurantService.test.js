@@ -23,7 +23,6 @@ const createCriteriaWthoutConditions = (languages, language) =>
     fields: List.of(
       'languages_name',
       'websiteUrl',
-      'imageUrl',
       'address',
       'phones',
       'geoLocation',
@@ -51,7 +50,6 @@ const createCriteria = (object) => {
     conditions: Map({
       name: language ? object.get('name').get(language) : chance.string(),
       websiteUrl: object ? object.get('websiteUrl') : chance.string(),
-      imageUrl: object ? object.get('imageUrl') : chance.string(),
       address: object ? object.get('address') : chance.string(),
       phones: object ? object.get('phones') : Map({ business: chance.string() }),
       near_geoLocation: object

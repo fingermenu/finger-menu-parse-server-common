@@ -68,7 +68,6 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
             restaurant = (0, _immutable.Map)({
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
               websiteUrl: chance.string(),
-              imageUrl: chance.string(),
               address: chance.string(),
               phones: _immutable.List.of((0, _immutable.Map)({ label: 'business', number: chance.string() }), (0, _immutable.Map)({ label: 'business', number: chance.string() })),
               geoLocation: _parseServerCommon.ParseWrapperService.createGeoPoint({
@@ -157,7 +156,6 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
 
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
-  expect(object.get('imageUrl')).toBe(expectedObject.get('imageUrl'));
   expect(object.get('address')).toBe(expectedObject.get('address'));
   expect(object.get('phones')).toEqual(expectedObject.get('phones'));
   expect(object.get('geoLocation')).toEqual(expectedObject.get('geoLocation'));
