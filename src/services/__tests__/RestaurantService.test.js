@@ -138,7 +138,6 @@ describe('read', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
-      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -149,7 +148,6 @@ describe('read', () => {
       expectedOwnedByUser,
       expectedMaintainedByUsers,
       expectedMenus,
-      expectedLanguages,
     });
   });
 });
@@ -186,7 +184,6 @@ describe('update', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
-      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -200,7 +197,6 @@ describe('update', () => {
       expectedOwnedByUser,
       expectedMaintainedByUsers,
       expectedMenus,
-      expectedLanguages,
     });
   });
 });
@@ -243,7 +239,6 @@ describe('search', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
-      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -259,7 +254,6 @@ describe('search', () => {
         expectedOwnedByUser,
         expectedMaintainedByUsers,
         expectedMenus,
-        expectedLanguages,
       });
     });
   });
@@ -291,7 +285,6 @@ describe('searchAll', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
       menus: expectedMenus,
-      languages: expectedLanguages,
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
@@ -319,7 +312,6 @@ describe('searchAll', () => {
         expectedOwnedByUser,
         expectedMaintainedByUsers,
         expectedMenus,
-        expectedLanguages,
       });
     });
   });

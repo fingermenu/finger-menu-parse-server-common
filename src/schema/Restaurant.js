@@ -4,7 +4,6 @@ import { Common, ImmutableEx } from '@microbusiness/common-javascript';
 import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Menu from './Menu';
-import Language from './Language';
 
 export default class Restaurant extends BaseObject {
   static spawn = (info) => {
@@ -37,7 +36,6 @@ export default class Restaurant extends BaseObject {
     BaseObject.createArrayPointer(object, info, 'menu', Menu);
     object.set('inheritParentRestaurantMenus', info.get('inheritParentRestaurantMenus'));
     object.set('pin', info.get('pin'));
-    BaseObject.createArrayPointer(object, info, 'language', Language);
 
     const configurations = info.get('configurations');
 
@@ -66,8 +64,6 @@ export default class Restaurant extends BaseObject {
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
     const menuObjects = object.get('menus');
     const menus = menuObjects ? Immutable.fromJS(menuObjects).map(menu => new Menu(menu).getInfo()) : undefined;
-    const languageObjects = object.get('languages');
-    const languages = languageObjects ? Immutable.fromJS(languageObjects).map(language => new Language(language).getInfo()) : undefined;
 
     return ImmutableEx.removeUndefinedProps(Map({
       id: this.getId(),
@@ -88,8 +84,6 @@ export default class Restaurant extends BaseObject {
       menuIds: menus ? menus.map(menu => menu.get('id')) : List(),
       inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
       pin: object.get('pin'),
-      languages,
-      languageIds: languages ? languages.map(language => language.get('id')) : List(),
       configurations: Immutable.fromJS(object.get('configurations')),
     }));
   };

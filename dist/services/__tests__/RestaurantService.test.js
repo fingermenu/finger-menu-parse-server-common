@@ -292,7 +292,7 @@ describe('read', function () {
   })));
 
   test('should read the existing restaurant', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, parentRestaurant, parentRestaurantId, _ref11, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, expectedLanguages, restaurantId, restaurant;
+    var _ref10, parentRestaurant, parentRestaurantId, _ref11, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, restaurantId, restaurant;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -320,27 +320,25 @@ describe('read', function () {
             expectedOwnedByUser = _ref11.ownedByUser;
             expectedMaintainedByUsers = _ref11.maintainedByUsers;
             expectedMenus = _ref11.menus;
-            expectedLanguages = _ref11.languages;
-            _context6.next = 17;
+            _context6.next = 16;
             return restaurantService.create(expectedRestaurant);
 
-          case 17:
+          case 16:
             restaurantId = _context6.sent;
-            _context6.next = 20;
+            _context6.next = 19;
             return restaurantService.read(restaurantId, createCriteriaWthoutConditions());
 
-          case 20:
+          case 19:
             restaurant = _context6.sent;
 
 
             (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
               expectedOwnedByUser: expectedOwnedByUser,
               expectedMaintainedByUsers: expectedMaintainedByUsers,
-              expectedMenus: expectedMenus,
-              expectedLanguages: expectedLanguages
+              expectedMenus: expectedMenus
             });
 
-          case 22:
+          case 21:
           case 'end':
             return _context6.stop();
         }
@@ -439,7 +437,7 @@ describe('update', function () {
   })));
 
   test('should update the existing restaurant', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref16, parentRestaurant, parentRestaurantId, _ref17, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, expectedLanguages, restaurantId, restaurant;
+    var _ref16, parentRestaurant, parentRestaurantId, _ref17, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, restaurantId, restaurant;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -467,37 +465,35 @@ describe('update', function () {
             expectedOwnedByUser = _ref17.ownedByUser;
             expectedMaintainedByUsers = _ref17.maintainedByUsers;
             expectedMenus = _ref17.menus;
-            expectedLanguages = _ref17.languages;
             _context9.t0 = restaurantService;
-            _context9.next = 18;
+            _context9.next = 17;
             return (0, _Restaurant.createRestaurantInfo)();
 
-          case 18:
+          case 17:
             _context9.t1 = _context9.sent.restaurant;
-            _context9.next = 21;
+            _context9.next = 20;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 21:
+          case 20:
             restaurantId = _context9.sent;
-            _context9.next = 24;
+            _context9.next = 23;
             return restaurantService.update(expectedRestaurant.set('id', restaurantId));
 
-          case 24:
-            _context9.next = 26;
+          case 23:
+            _context9.next = 25;
             return restaurantService.read(restaurantId, createCriteriaWthoutConditions());
 
-          case 26:
+          case 25:
             restaurant = _context9.sent;
 
 
             (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
               expectedOwnedByUser: expectedOwnedByUser,
               expectedMaintainedByUsers: expectedMaintainedByUsers,
-              expectedMenus: expectedMenus,
-              expectedLanguages: expectedLanguages
+              expectedMenus: expectedMenus
             });
 
-          case 28:
+          case 27:
           case 'end':
             return _context9.stop();
         }
@@ -605,7 +601,7 @@ describe('search', function () {
   })));
 
   test('should return the restaurant matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref22, parentRestaurant, parentRestaurantId, _ref23, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, expectedLanguages, results, restaurants;
+    var _ref22, parentRestaurant, parentRestaurantId, _ref23, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, results, restaurants;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -633,9 +629,8 @@ describe('search', function () {
             expectedOwnedByUser = _ref23.ownedByUser;
             expectedMaintainedByUsers = _ref23.maintainedByUsers;
             expectedMenus = _ref23.menus;
-            expectedLanguages = _ref23.languages;
             _context14.t0 = _immutable2.default;
-            _context14.next = 18;
+            _context14.next = 17;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -651,13 +646,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 18:
+          case 17:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 22;
+            _context14.next = 21;
             return restaurantService.search(createCriteria(expectedRestaurant));
 
-          case 22:
+          case 21:
             restaurants = _context14.sent;
 
 
@@ -669,12 +664,11 @@ describe('search', function () {
               (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
                 expectedOwnedByUser: expectedOwnedByUser,
                 expectedMaintainedByUsers: expectedMaintainedByUsers,
-                expectedMenus: expectedMenus,
-                expectedLanguages: expectedLanguages
+                expectedMenus: expectedMenus
               });
             });
 
-          case 25:
+          case 24:
           case 'end':
             return _context14.stop();
         }
@@ -720,7 +714,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the restaurant matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref27, parentRestaurant, parentRestaurantId, _ref28, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, expectedLanguages, results, restaurants, result;
+    var _ref27, parentRestaurant, parentRestaurantId, _ref28, expectedRestaurant, expectedOwnedByUser, expectedMaintainedByUsers, expectedMenus, results, restaurants, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -748,9 +742,8 @@ describe('searchAll', function () {
             expectedOwnedByUser = _ref28.ownedByUser;
             expectedMaintainedByUsers = _ref28.maintainedByUsers;
             expectedMenus = _ref28.menus;
-            expectedLanguages = _ref28.languages;
             _context17.t0 = _immutable2.default;
-            _context17.next = 18;
+            _context17.next = 17;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -766,27 +759,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 18:
+          case 17:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             restaurants = (0, _immutable.List)();
             result = restaurantService.searchAll(createCriteria(expectedRestaurant));
-            _context17.prev = 22;
+            _context17.prev = 21;
 
             result.event.subscribe(function (info) {
               restaurants = restaurants.push(info);
             });
 
-            _context17.next = 26;
+            _context17.next = 25;
             return result.promise;
 
-          case 26:
-            _context17.prev = 26;
+          case 25:
+            _context17.prev = 25;
 
             result.event.unsubscribeAll();
-            return _context17.finish(26);
+            return _context17.finish(25);
 
-          case 29:
+          case 28:
 
             expect(restaurants.count).toBe(results.count);
             restaurants.forEach(function (restaurant) {
@@ -796,17 +789,16 @@ describe('searchAll', function () {
               (0, _Restaurant.expectRestaurant)(restaurant, expectedRestaurant, {
                 expectedOwnedByUser: expectedOwnedByUser,
                 expectedMaintainedByUsers: expectedMaintainedByUsers,
-                expectedMenus: expectedMenus,
-                expectedLanguages: expectedLanguages
+                expectedMenus: expectedMenus
               });
             });
 
-          case 31:
+          case 30:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[22,, 26, 29]]);
+    }, _callee17, undefined, [[21,, 25, 28]]);
   })));
 });
 

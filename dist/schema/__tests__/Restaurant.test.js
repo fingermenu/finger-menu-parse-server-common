@@ -25,10 +25,6 @@ var _MenuService = require('../../services/__tests__/MenuService.test');
 
 var _MenuService2 = _interopRequireDefault(_MenuService);
 
-var _LanguageService = require('../../services/__tests__/LanguageService.test');
-
-var _LanguageService2 = _interopRequireDefault(_LanguageService);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -40,7 +36,7 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         parentRestaurantId = _ref2.parentRestaurantId;
 
-    var ownedByUser, maintainedByUsers, menus, languages, restaurant;
+    var ownedByUser, maintainedByUsers, menus, restaurant;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -60,11 +56,6 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
 
           case 8:
             menus = _context.sent;
-            _context.next = 11;
-            return (0, _LanguageService2.default)(chance.integer({ min: 1, max: 3 }));
-
-          case 11:
-            languages = _context.sent;
             restaurant = (0, _immutable.Map)({
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
               websiteUrl: chance.string(),
@@ -86,20 +77,16 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               }),
               inheritParentRestaurantMenus: chance.integer(),
               pin: chance.string(),
-              languageIds: languages.map(function (language) {
-                return language.get('id');
-              }),
               configurations: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,
               ownedByUser: ownedByUser,
               maintainedByUsers: maintainedByUsers,
-              menus: menus,
-              languages: languages
+              menus: menus
             });
 
-          case 14:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -151,8 +138,7 @@ var createRestaurant = exports.createRestaurant = function () {
 
 var expectRestaurant = exports.expectRestaurant = function expectRestaurant(object, expectedObject) {
   var _ref4 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      expectedMenus = _ref4.expectedMenus,
-      expectedLanguages = _ref4.expectedLanguages;
+      expectedMenus = _ref4.expectedMenus;
 
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('websiteUrl')).toBe(expectedObject.get('websiteUrl'));
@@ -167,17 +153,10 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   expect(object.get('menuIds')).toEqual(expectedObject.get('menuIds'));
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
   expect(object.get('ping')).toBe(expectedObject.get('pin'));
-  expect(object.get('languageIds')).toEqual(expectedObject.get('languageIds'));
   expect(object.get('configurations')).toEqual(expectedObject.get('configurations'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(function (_) {
-      return _.get('id');
-    }));
-  }
-
-  if (expectedLanguages) {
-    expect(object.get('languageIds')).toEqual(expectedLanguages.map(function (_) {
       return _.get('id');
     }));
   }
