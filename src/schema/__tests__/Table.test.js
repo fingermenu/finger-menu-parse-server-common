@@ -26,6 +26,7 @@ export const createTableInfo = async () => {
     numberOfChildren: chance.integer(),
     customerName: chance.string(),
     notes: chance.string(),
+    sortOrderIndex: chance.integer(),
   });
 
   return {
@@ -51,6 +52,7 @@ export const expectTable = (object, expectedObject, { tableId, expectedRestauran
   expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
+  expect(object.get('sortOrderIndex')).toBe(expectedObject.get('sortOrderIndex'));
 
   if (tableId) {
     expect(object.get('id')).toBe(tableId);

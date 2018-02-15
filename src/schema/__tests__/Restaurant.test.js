@@ -32,6 +32,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     inheritParentRestaurantMenus: chance.integer(),
     pin: chance.string(),
     configurations: TestHelper.createRandomMap(),
+    menuSortOrderIndices: TestHelper.createRandomList(),
   });
 
   return {
@@ -59,6 +60,7 @@ export const expectRestaurant = (object, expectedObject, { expectedMenus } = {})
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
   expect(object.get('ping')).toBe(expectedObject.get('pin'));
   expect(object.get('configurations')).toEqual(expectedObject.get('configurations'));
+  expect(object.get('menuSortOrderIndices')).toEqual(expectedObject.get('menuSortOrderIndices'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(_ => _.get('id')));

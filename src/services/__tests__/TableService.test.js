@@ -9,7 +9,7 @@ import { createTableInfo, expectTable } from '../../schema/__tests__/Table.test'
 const chance = new Chance();
 const tableService = new TableService();
 
-const getLanguages = (object) => {
+const getLanguages = object => {
   const languages = object ? object.get('name').keySeq() : List();
   const language = languages.isEmpty() ? null : languages.first();
 
@@ -29,6 +29,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
       'numberOfChildren',
       'customerName',
       'notes',
+      'sortOrderIndex',
     ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_restaurant: true,
@@ -37,7 +38,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (object) => {
+const createCriteria = object => {
   const { language, languages } = getLanguages(object);
 
   return Map({
@@ -52,6 +53,7 @@ const createCriteria = (object) => {
       numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
+      sortOrderIndex: object ? object.get('sortOrderIndex') : chance.integer(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
@@ -65,21 +67,25 @@ const createTables = async (count, useSameInfo = false) => {
     table = tempTable;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalTable;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalTable;
 
-      if (useSameInfo) {
-        finalTable = table;
-      } else {
-        const { table: tempTable } = await createTableInfo();
+          if (useSameInfo) {
+            finalTable = table;
+          } else {
+            const { table: tempTable } = await createTableInfo();
 
-        finalTable = tempTable;
-      }
+            finalTable = tempTable;
+          }
 
-      return tableService.read(await tableService.create(finalTable), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return tableService.read(await tableService.create(finalTable), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createTables;
@@ -215,13 +221,17 @@ describe('search', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => tableService.create(expectedTable))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => tableService.create(expectedTable))
+          .toArray(),
+      ),
+    );
     const tables = await tableService.search(createCriteria(expectedTable));
 
     expect(tables.count).toBe(results.count);
-    tables.forEach((table) => {
+    tables.forEach(table => {
       expect(results.find(_ => _.localeCompare(table.get('id')) === 0)).toBeDefined();
       expectTable(table, expectedTable, {
         tableId: table.get('id'),
@@ -240,7 +250,7 @@ describe('searchAll', () => {
     const result = tableService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tables = tables.push(info);
       });
 
@@ -260,15 +270,19 @@ describe('searchAll', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createTableInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => tableService.create(expectedTable))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => tableService.create(expectedTable))
+          .toArray(),
+      ),
+    );
 
     let tables = List();
     const result = tableService.searchAll(createCriteria(expectedTable));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tables = tables.push(info);
       });
 
@@ -278,7 +292,7 @@ describe('searchAll', () => {
     }
 
     expect(tables.count).toBe(results.count);
-    tables.forEach((table) => {
+    tables.forEach(table => {
       expect(results.find(_ => _.localeCompare(table.get('id')) === 0)).toBeDefined();
       expectTable(table, expectedTable, {
         tableId: table.get('id'),

@@ -6,7 +6,7 @@ import { BaseObject } from '@microbusiness/parse-server-common';
 import Menu from './Menu';
 
 export default class Restaurant extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new Restaurant();
 
     Restaurant.updateInfoInternal(object, info);
@@ -44,13 +44,21 @@ export default class Restaurant extends BaseObject {
     } else if (configurations) {
       object.set('configurations', configurations.toJS());
     }
+
+    const menuSortOrderIndices = info.get('menuSortOrderIndices');
+
+    if (Common.isNull(menuSortOrderIndices)) {
+      object.set('menuSortOrderIndices', []);
+    } else if (menuSortOrderIndices) {
+      object.set('menuSortOrderIndices', menuSortOrderIndices.toJS());
+    }
   };
 
   constructor(object) {
     super(object, 'Restaurant');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     Restaurant.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -65,26 +73,29 @@ export default class Restaurant extends BaseObject {
     const menuObjects = object.get('menus');
     const menus = menuObjects ? Immutable.fromJS(menuObjects).map(menu => new Menu(menu).getInfo()) : undefined;
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      name: this.getMultiLanguagesString('name'),
-      websiteUrl: object.get('websiteUrl'),
-      address: object.get('address'),
-      phones: Immutable.fromJS(object.get('phones')),
-      geoLocation: object.get('geoLocation'),
-      parentRestaurant: parentRestaurant ? parentRestaurant.getInfo() : undefined,
-      parentRestaurantId: parentRestaurant ? parentRestaurant.getId() : undefined,
-      ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
-      maintainedByUsers,
-      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-      status: object.get('status'),
-      googleMapUrl: object.get('googleMapUrl'),
-      menus,
-      menuIds: menus ? menus.map(menu => menu.get('id')) : List(),
-      inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
-      pin: object.get('pin'),
-      configurations: Immutable.fromJS(object.get('configurations')),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        name: this.getMultiLanguagesString('name'),
+        websiteUrl: object.get('websiteUrl'),
+        address: object.get('address'),
+        phones: Immutable.fromJS(object.get('phones')),
+        geoLocation: object.get('geoLocation'),
+        parentRestaurant: parentRestaurant ? parentRestaurant.getInfo() : undefined,
+        parentRestaurantId: parentRestaurant ? parentRestaurant.getId() : undefined,
+        ownedByUser,
+        ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+        maintainedByUsers,
+        maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
+        status: object.get('status'),
+        googleMapUrl: object.get('googleMapUrl'),
+        menus,
+        menuIds: menus ? menus.map(menu => menu.get('id')) : List(),
+        inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
+        pin: object.get('pin'),
+        configurations: Immutable.fromJS(object.get('configurations')),
+        menuSortOrderIndices: Immutable.fromJS(object.get('menuSortOrderIndices')),
+      }),
+    );
   };
 }

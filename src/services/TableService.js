@@ -15,6 +15,7 @@ export default class TableService extends ServiceBase {
     'numberOfChildren',
     'customerName',
     'notes',
+    'sortOrderIndex',
   );
 
   constructor() {
@@ -34,7 +35,7 @@ export default class TableService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(Table, criteria);
     const query = TableService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -44,7 +45,7 @@ export default class TableService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    TableService.fields.forEach((field) => {
+    TableService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
@@ -57,6 +58,7 @@ export default class TableService extends ServiceBase {
     ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
     ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
     ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
+    ServiceBase.addEqualityQuery(conditions, query, 'sortOrderIndex', 'sortOrderIndex');
 
     return query;
   };

@@ -11,7 +11,7 @@ import { createRestaurantInfo, expectRestaurant } from '../../schema/__tests__/R
 const chance = new Chance();
 const restaurantService = new RestaurantService();
 
-const getLanguages = (object) => {
+const getLanguages = object => {
   const languages = object ? object.get('name').keySeq() : List();
   const language = languages.isEmpty() ? null : languages.first();
 
@@ -35,6 +35,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
       'inheritParentRestaurantMenus',
       'pin',
       'configurations',
+      'menuSortOrderIndices',
     ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_parentRestaurant: true,
@@ -43,7 +44,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_menus: true,
   });
 
-const createCriteria = (object) => {
+const createCriteria = object => {
   const { language, languages } = getLanguages(object);
 
   return Map({
@@ -67,6 +68,7 @@ const createCriteria = (object) => {
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
       pin: object ? object.get('pin') : chance.string(),
       configurations: object ? object.get('configurations') : TestHelper.createRandomMap(),
+      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : TestHelper.createRandomList(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
@@ -81,24 +83,30 @@ const createRestaurants = async (count, useSameInfo = false, createParentRestaur
     restaurant = tempRestaurant;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalRestaurant;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalRestaurant;
 
-      if (useSameInfo) {
-        finalRestaurant = restaurant;
-      } else {
-        const { restaurant: tempRestaurant } = await createRestaurantInfo();
+          if (useSameInfo) {
+            finalRestaurant = restaurant;
+          } else {
+            const { restaurant: tempRestaurant } = await createRestaurantInfo();
 
-        finalRestaurant = tempRestaurant;
-      }
+            finalRestaurant = tempRestaurant;
+          }
 
-      return restaurantService.read(
-        await restaurantService.create(createParentRestaurant ? finalRestaurant.merge(Map({ parentRestaurantId: parentRestaurant.get('id') })) : finalRestaurant),
-        createCriteriaWthoutConditions(),
-      );
-    })
-    .toArray()));
+          return restaurantService.read(
+            await restaurantService.create(
+              createParentRestaurant ? finalRestaurant.merge(Map({ parentRestaurantId: parentRestaurant.get('id') })) : finalRestaurant,
+            ),
+            createCriteriaWthoutConditions(),
+          );
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createRestaurants;
@@ -242,13 +250,17 @@ describe('search', () => {
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => restaurantService.create(expectedRestaurant))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => restaurantService.create(expectedRestaurant))
+          .toArray(),
+      ),
+    );
     const restaurants = await restaurantService.search(createCriteria(expectedRestaurant));
 
     expect(restaurants.count).toBe(results.count);
-    restaurants.forEach((restaurant) => {
+    restaurants.forEach(restaurant => {
       expect(results.find(_ => _.localeCompare(restaurant.get('id')) === 0)).toBeDefined();
       expectRestaurant(restaurant, expectedRestaurant, {
         expectedOwnedByUser,
@@ -265,7 +277,7 @@ describe('searchAll', () => {
     const result = restaurantService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         restaurants = restaurants.push(info);
       });
 
@@ -288,15 +300,19 @@ describe('searchAll', () => {
     } = await createRestaurantInfo({
       parentRestaurantId,
     });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => restaurantService.create(expectedRestaurant))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => restaurantService.create(expectedRestaurant))
+          .toArray(),
+      ),
+    );
 
     let restaurants = List();
     const result = restaurantService.searchAll(createCriteria(expectedRestaurant));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         restaurants = restaurants.push(info);
       });
 
@@ -306,7 +322,7 @@ describe('searchAll', () => {
     }
 
     expect(restaurants.count).toBe(results.count);
-    restaurants.forEach((restaurant) => {
+    restaurants.forEach(restaurant => {
       expect(results.find(_ => _.localeCompare(restaurant.get('id')) === 0)).toBeDefined();
       expectRestaurant(restaurant, expectedRestaurant, {
         expectedOwnedByUser,

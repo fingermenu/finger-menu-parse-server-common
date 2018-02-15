@@ -7,7 +7,7 @@ import Restaurant from './Restaurant';
 import TableState from './TableState';
 
 export default class Table extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new Table();
 
     Table.updateInfoInternal(object, info);
@@ -26,13 +26,14 @@ export default class Table extends BaseObject {
     object.set('numberOfChildren', info.get('numberOfChildren'));
     BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
+    object.set('sortOrderIndex', info.get('sortOrderIndex'));
   };
 
   constructor(object) {
     super(object, 'Table');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     Table.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -45,22 +46,25 @@ export default class Table extends BaseObject {
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      name: this.getMultiLanguagesString('name'),
-      status: object.get('status'),
-      restaurant,
-      restaurantId: restaurant ? restaurant.id : undefined,
-      tableState,
-      tableStateId: tableState ? tableState.id : undefined,
-      ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
-      maintainedByUsers,
-      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-      numberOfAdults: object.get('numberOfAdults'),
-      numberOfChildren: object.get('numberOfChildren'),
-      customerName: object.get('customerName'),
-      notes: object.get('notes'),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        name: this.getMultiLanguagesString('name'),
+        status: object.get('status'),
+        restaurant,
+        restaurantId: restaurant ? restaurant.id : undefined,
+        tableState,
+        tableStateId: tableState ? tableState.id : undefined,
+        ownedByUser,
+        ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+        maintainedByUsers,
+        maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
+        numberOfAdults: object.get('numberOfAdults'),
+        numberOfChildren: object.get('numberOfChildren'),
+        customerName: object.get('customerName'),
+        notes: object.get('notes'),
+        sortOrderIndex: object.get('sortOrderIndex'),
+      }),
+    );
   };
 }

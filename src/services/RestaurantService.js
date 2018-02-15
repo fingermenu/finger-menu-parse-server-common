@@ -19,6 +19,7 @@ export default class RestaurantService extends ServiceBase {
     'inheritParentRestaurantMenus',
     'pin',
     'configurations',
+    'menuSortOrderIndices',
   );
 
   constructor() {
@@ -38,7 +39,7 @@ export default class RestaurantService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(Restaurant, criteria);
     const query = RestaurantService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -48,7 +49,7 @@ export default class RestaurantService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    RestaurantService.fields.forEach((field) => {
+    RestaurantService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
