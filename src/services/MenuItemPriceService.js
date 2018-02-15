@@ -16,6 +16,8 @@ export default class MenuItemPriceService extends ServiceBase {
     'choiceItemPrices',
     'addedByUser',
     'removedByUser',
+    'toBeServedWithMenuItemPriceSortOrderIndices',
+    'choiceItemPriceSortOrderIndices',
   );
 
   constructor() {
@@ -37,7 +39,7 @@ export default class MenuItemPriceService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(MenuItemPrice, criteria);
     const query = MenuItemPriceService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -47,7 +49,7 @@ export default class MenuItemPriceService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    MenuItemPriceService.fields.forEach((field) => {
+    MenuItemPriceService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addNumberQuery(conditions, query, 'currentPrice', 'currentPrice');

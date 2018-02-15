@@ -3,6 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { MenuItemPriceService } from '../';
 import { createMenuItemPriceInfo, expectMenuItemPrice } from '../../schema/__tests__/MenuItemPrice.test';
 
@@ -22,6 +23,8 @@ const createCriteriaWthoutConditions = () =>
       'choiceItemPrices',
       'addedByUser',
       'removedByUser',
+      'toBeServedWithMenuItemPriceSortOrderIndices',
+      'choiceItemPriceSortOrderIndices',
     ),
     include_menuItem: true,
     include_addedByUser: true,
@@ -41,6 +44,8 @@ const createCriteria = object =>
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
+      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : TestHelper.createRandomList(),
+      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : TestHelper.createRandomList(),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -54,26 +59,32 @@ const createMenuItemPrices = async (count, useSameInfo = false, createToBeServer
     menuItemPrice = tempMenuItemPrice;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalMenuItemPrice;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalMenuItemPrice;
 
-      if (useSameInfo) {
-        finalMenuItemPrice = menuItemPrice;
-      } else {
-        const { menuItemPrice: tempMenuItemPrice } = await createMenuItemPriceInfo();
+          if (useSameInfo) {
+            finalMenuItemPrice = menuItemPrice;
+          } else {
+            const { menuItemPrice: tempMenuItemPrice } = await createMenuItemPriceInfo();
 
-        finalMenuItemPrice = tempMenuItemPrice;
-      }
+            finalMenuItemPrice = tempMenuItemPrice;
+          }
 
-      return menuItemPriceService.read(
-        await menuItemPriceService.create(createToBeServerWithMenuItemPrices
-          ? finalMenuItemPrice.set('toBeServedWithMenuItemPriceIds', toBeServedWithMenuItemPrices.map(_ => _.get('id')))
-          : finalMenuItemPrice),
-        createCriteriaWthoutConditions(),
-      );
-    })
-    .toArray()));
+          return menuItemPriceService.read(
+            await menuItemPriceService.create(
+              createToBeServerWithMenuItemPrices
+                ? finalMenuItemPrice.set('toBeServedWithMenuItemPriceIds', toBeServedWithMenuItemPrices.map(_ => _.get('id')))
+                : finalMenuItemPrice,
+            ),
+            createCriteriaWthoutConditions(),
+          );
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createMenuItemPrices;
@@ -217,13 +228,17 @@ describe('search', () => {
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
+          .toArray(),
+      ),
+    );
     const menuItemPrices = await menuItemPriceService.search(createCriteria(expectedMenuItemPrice));
 
     expect(menuItemPrices.count).toBe(results.count);
-    menuItemPrices.forEach((menuItemPrice) => {
+    menuItemPrices.forEach(menuItemPrice => {
       expect(results.find(_ => _.localeCompare(menuItemPrice.get('id')) === 0)).toBeDefined();
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),
@@ -243,7 +258,7 @@ describe('searchAll', () => {
     const result = menuItemPriceService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         menuItemPrices = menuItemPrices.push(info);
       });
 
@@ -264,15 +279,19 @@ describe('searchAll', () => {
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => menuItemPriceService.create(expectedMenuItemPrice))
+          .toArray(),
+      ),
+    );
 
     let menuItemPrices = List();
     const result = menuItemPriceService.searchAll(createCriteria(expectedMenuItemPrice));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         menuItemPrices = menuItemPrices.push(info);
       });
 
@@ -282,7 +301,7 @@ describe('searchAll', () => {
     }
 
     expect(menuItemPrices.count).toBe(results.count);
-    menuItemPrices.forEach((menuItemPrice) => {
+    menuItemPrices.forEach(menuItemPrice => {
       expect(results.find(_ => _.localeCompare(menuItemPrice.get('id')) === 0)).toBeDefined();
       expectMenuItemPrice(menuItemPrice, expectedMenuItemPrice, {
         menuItemPriceId: menuItemPrice.get('id'),

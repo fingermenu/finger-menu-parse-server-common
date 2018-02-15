@@ -27,6 +27,8 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     choiceItemPriceIds: choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')),
     addedByUserId: addedByUser.id,
     removedByUserId: removedByUser.id,
+    toBeServedWithMenuItemPriceSortOrderIndices: TestHelper.createRandomList(),
+    choiceItemPriceSortOrderIndices: TestHelper.createRandomList(),
   });
 
   return {
@@ -41,9 +43,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
 
 export const createMenuItemPrice = async object => MenuItemPrice.spawn(object || (await createMenuItemPriceInfo()).menuItemPrice);
 
-export const expectMenuItemPrice = (object, expectedObject, {
-  menuItemPriceId, expectedMenuItem, expectedSize, expectedChoiceItemPrices,
-} = {}) => {
+export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, expectedMenuItem, expectedSize, expectedChoiceItemPrices } = {}) => {
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
@@ -54,6 +54,8 @@ export const expectMenuItemPrice = (object, expectedObject, {
   expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
+  expect(object.get('toBeServedWithMenuItemPriceSortOrderIndices')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceSortOrderIndices'));
+  expect(object.get('choiceItemPriceSortOrderIndices')).toEqual(expectedObject.get('choiceItemPriceSortOrderIndices'));
 
   if (menuItemPriceId) {
     expect(object.get('id')).toBe(menuItemPriceId);
