@@ -23,6 +23,7 @@ export const createMenuInfo = async () => {
     menuItemPriceIds: menuItemPrices.map(menuItemPrice => menuItemPrice.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
+    menuItemPriceSortOrderIndices: TestHelper.createRandomList(),
   });
 
   return {
@@ -45,6 +46,7 @@ export const expectMenu = (object, expectedObject, { menuId, expectedMenuItemPri
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('menuItemPriceSortOrderIndices')).toEqual(expectedObject.get('menuItemPriceSortOrderIndices'));
 
   if (menuId) {
     expect(object.get('id')).toBe(menuId);

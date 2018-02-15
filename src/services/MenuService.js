@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Menu, MenuItemPrice, Tag } from '../schema';
 
 export default class MenuService extends ServiceBase {
-  static fields = List.of('menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
+  static fields = List.of('menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers', 'menuItemPriceSortOrderIndices');
 
   constructor() {
     super(Menu, MenuService.buildSearchQuery, MenuService.buildIncludeQuery, 'menu');
@@ -24,7 +24,7 @@ export default class MenuService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(Menu, criteria);
     const query = MenuService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -34,7 +34,7 @@ export default class MenuService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    MenuService.fields.forEach((field) => {
+    MenuService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
