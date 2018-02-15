@@ -14,6 +14,10 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
+
 var _2 = require('../');
 
 var _MenuItemPrice = require('../../schema/__tests__/MenuItemPrice.test');
@@ -27,7 +31,7 @@ var menuItemPriceService = new _2.MenuItemPriceService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser'),
+    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices'),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true
@@ -46,7 +50,9 @@ var createCriteria = function createCriteria(object) {
       toBeServedWithMenuItemPriceIds: object ? object.get('toBeServedWithMenuItemPriceIds') : (0, _immutable.List)(),
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : _immutable.List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
-      removedByUserId: object ? object.get('removedByUserId') : chance.string()
+      removedByUserId: object ? object.get('removedByUserId') : chance.string(),
+      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList(),
+      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList()
     })
   }).merge(createCriteriaWthoutConditions());
 };

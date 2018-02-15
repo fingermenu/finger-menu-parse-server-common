@@ -28,7 +28,7 @@ var RestaurantService = function (_ServiceBase) {
   return RestaurantService;
 }(_parseServerCommon.ServiceBase);
 
-RestaurantService.fields = _immutable.List.of('websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations');
+RestaurantService.fields = _immutable.List.of('websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations', 'menuSortOrderIndices');
 
 RestaurantService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

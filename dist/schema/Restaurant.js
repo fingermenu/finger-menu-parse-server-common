@@ -78,6 +78,14 @@ Restaurant.updateInfoInternal = function (object, info) {
   } else if (configurations) {
     object.set('configurations', configurations.toJS());
   }
+
+  var menuSortOrderIndices = info.get('menuSortOrderIndices');
+
+  if (_commonJavascript.Common.isNull(menuSortOrderIndices)) {
+    object.set('menuSortOrderIndices', []);
+  } else if (menuSortOrderIndices) {
+    object.set('menuSortOrderIndices', menuSortOrderIndices.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -123,7 +131,8 @@ var _initialiseProps = function _initialiseProps() {
       }) : (0, _immutable.List)(),
       inheritParentRestaurantMenus: object.get('inheritParentRestaurantMenus'),
       pin: object.get('pin'),
-      configurations: _immutable2.default.fromJS(object.get('configurations'))
+      configurations: _immutable2.default.fromJS(object.get('configurations')),
+      menuSortOrderIndices: _immutable2.default.fromJS(object.get('menuSortOrderIndices'))
     }));
   };
 };

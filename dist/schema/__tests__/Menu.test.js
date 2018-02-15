@@ -72,7 +72,8 @@ var createMenuInfo = exports.createMenuInfo = function () {
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
-              })
+              }),
+              menuItemPriceSortOrderIndices: _TestHelper2.default.createRandomList()
             });
             return _context.abrupt('return', {
               menu: menu,
@@ -146,6 +147,7 @@ var expectMenu = exports.expectMenu = function expectMenu(object, expectedObject
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('menuItemPriceSortOrderIndices')).toEqual(expectedObject.get('menuItemPriceSortOrderIndices'));
 
   if (menuId) {
     expect(object.get('id')).toBe(menuId);

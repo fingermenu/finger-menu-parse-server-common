@@ -14,6 +14,10 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
+
 var _2 = require('../');
 
 var _Menu = require('../../schema/__tests__/Menu.test');
@@ -34,7 +38,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'languages_description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'languages_description', 'menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers', 'menuItemPriceSortOrderIndices').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()).concat(languages ? languages.map(function (_) {
       return _ + '_description';
@@ -61,7 +65,8 @@ var createCriteria = function createCriteria(object) {
       menuItemPriceIds: object ? object.get('menuItemPriceIds') : _immutable.List.of(chance.string(), chance.string()),
       tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string()),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
-      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string()),
+      menuItemPriceSortOrderIndices: object ? object.get('menuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

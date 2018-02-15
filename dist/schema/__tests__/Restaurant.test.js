@@ -77,7 +77,8 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               }),
               inheritParentRestaurantMenus: chance.integer(),
               pin: chance.string(),
-              configurations: _TestHelper2.default.createRandomMap()
+              configurations: _TestHelper2.default.createRandomMap(),
+              menuSortOrderIndices: _TestHelper2.default.createRandomList()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,
@@ -154,6 +155,7 @@ var expectRestaurant = exports.expectRestaurant = function expectRestaurant(obje
   expect(object.get('inheritParentRestaurantMenus')).toBe(expectedObject.get('inheritParentRestaurantMenus'));
   expect(object.get('ping')).toBe(expectedObject.get('pin'));
   expect(object.get('configurations')).toEqual(expectedObject.get('configurations'));
+  expect(object.get('menuSortOrderIndices')).toEqual(expectedObject.get('menuSortOrderIndices'));
 
   if (expectedMenus) {
     expect(object.get('menuIds')).toEqual(expectedMenus.map(function (_) {

@@ -40,7 +40,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'websiteUrl', 'address', 'phones', 'geoLocation', 'parentRestaurant', 'ownedByUser', 'maintainedByUsers', 'status', 'googleMapUrl', 'menus', 'inheritParentRestaurantMenus', 'pin', 'configurations', 'menuSortOrderIndices').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -74,7 +74,8 @@ var createCriteria = function createCriteria(object) {
       menuIds: object ? object.get('menuIds') : _immutable.List.of(chance.string(), chance.string()),
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
       pin: object ? object.get('pin') : chance.string(),
-      configurations: object ? object.get('configurations') : _TestHelper2.default.createRandomMap()
+      configurations: object ? object.get('configurations') : _TestHelper2.default.createRandomMap(),
+      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : _TestHelper2.default.createRandomList()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

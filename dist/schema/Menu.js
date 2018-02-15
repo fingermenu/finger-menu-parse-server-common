@@ -61,6 +61,14 @@ Menu.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+
+  var menuItemPriceSortOrderIndices = info.get('menuItemPriceSortOrderIndices');
+
+  if (_commonJavascript.Common.isNull(menuItemPriceSortOrderIndices)) {
+    object.set('menuItemPriceSortOrderIndices', []);
+  } else if (menuItemPriceSortOrderIndices) {
+    object.set('menuItemPriceSortOrderIndices', menuItemPriceSortOrderIndices.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -104,7 +112,8 @@ var _initialiseProps = function _initialiseProps() {
       maintainedByUsers: maintainedByUsers,
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
         return maintainedByUser.id;
-      }) : (0, _immutable.List)()
+      }) : (0, _immutable.List)(),
+      menuItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('menuItemPriceSortOrderIndices'))
     }));
   };
 };

@@ -28,7 +28,7 @@ var MenuService = function (_ServiceBase) {
   return MenuService;
 }(_parseServerCommon.ServiceBase);
 
-MenuService.fields = _immutable.List.of('menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers');
+MenuService.fields = _immutable.List.of('menuPageUrl', 'imageUrl', 'menuItemPrices', 'tags', 'ownedByUser', 'maintainedByUsers', 'menuItemPriceSortOrderIndices');
 
 MenuService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

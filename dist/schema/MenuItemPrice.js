@@ -67,6 +67,22 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
+
+  var toBeServedWithMenuItemPriceSortOrderIndices = info.get('toBeServedWithMenuItemPriceSortOrderIndices');
+
+  if (_commonJavascript.Common.isNull(toBeServedWithMenuItemPriceSortOrderIndices)) {
+    object.set('toBeServedWithMenuItemPriceSortOrderIndices', []);
+  } else if (toBeServedWithMenuItemPriceSortOrderIndices) {
+    object.set('toBeServedWithMenuItemPriceSortOrderIndices', toBeServedWithMenuItemPriceSortOrderIndices.toJS());
+  }
+
+  var choiceItemPriceSortOrderIndices = info.get('choiceItemPriceSortOrderIndices');
+
+  if (_commonJavascript.Common.isNull(choiceItemPriceSortOrderIndices)) {
+    object.set('choiceItemPriceSortOrderIndices', []);
+  } else if (choiceItemPriceSortOrderIndices) {
+    object.set('choiceItemPriceSortOrderIndices', choiceItemPriceSortOrderIndices.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -114,7 +130,9 @@ var _initialiseProps = function _initialiseProps() {
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser: removedByUser,
-      removedByUserId: removedByUser ? removedByUser.id : undefined
+      removedByUserId: removedByUser ? removedByUser.id : undefined,
+      toBeServedWithMenuItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('toBeServedWithMenuItemPriceSortOrderIndices')),
+      choiceItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('choiceItemPriceSortOrderIndices'))
     }));
   };
 };

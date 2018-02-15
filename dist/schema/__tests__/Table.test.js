@@ -72,7 +72,8 @@ var createTableInfo = exports.createTableInfo = function () {
               numberOfAdults: chance.integer(),
               numberOfChildren: chance.integer(),
               customerName: chance.string(),
-              notes: chance.string()
+              notes: chance.string(),
+              sortOrderIndex: chance.integer()
             });
             return _context.abrupt('return', {
               table: table,
@@ -149,6 +150,7 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
   expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
+  expect(object.get('sortOrderIndex')).toBe(expectedObject.get('sortOrderIndex'));
 
   if (tableId) {
     expect(object.get('id')).toBe(tableId);
