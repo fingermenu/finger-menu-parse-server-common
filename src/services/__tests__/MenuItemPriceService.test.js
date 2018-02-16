@@ -44,8 +44,8 @@ const createCriteria = object =>
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
-      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : TestHelper.createRandomList(),
-      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : TestHelper.createRandomList(),
+      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
+      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
     }),
   }).merge(createCriteriaWthoutConditions());
 

@@ -31,7 +31,7 @@ export default class MenuItemPrice extends BaseObject {
     const toBeServedWithMenuItemPriceSortOrderIndices = info.get('toBeServedWithMenuItemPriceSortOrderIndices');
 
     if (Common.isNull(toBeServedWithMenuItemPriceSortOrderIndices)) {
-      object.set('toBeServedWithMenuItemPriceSortOrderIndices', []);
+      object.set('toBeServedWithMenuItemPriceSortOrderIndices', {});
     } else if (toBeServedWithMenuItemPriceSortOrderIndices) {
       object.set('toBeServedWithMenuItemPriceSortOrderIndices', toBeServedWithMenuItemPriceSortOrderIndices.toJS());
     }
@@ -39,7 +39,7 @@ export default class MenuItemPrice extends BaseObject {
     const choiceItemPriceSortOrderIndices = info.get('choiceItemPriceSortOrderIndices');
 
     if (Common.isNull(choiceItemPriceSortOrderIndices)) {
-      object.set('choiceItemPriceSortOrderIndices', []);
+      object.set('choiceItemPriceSortOrderIndices', {});
     } else if (choiceItemPriceSortOrderIndices) {
       object.set('choiceItemPriceSortOrderIndices', choiceItemPriceSortOrderIndices.toJS());
     }

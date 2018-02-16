@@ -23,7 +23,7 @@ export const createMenuInfo = async () => {
     menuItemPriceIds: menuItemPrices.map(menuItemPrice => menuItemPrice.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
-    menuItemPriceSortOrderIndices: TestHelper.createRandomList(),
+    menuItemPriceSortOrderIndices: TestHelper.createRandomMap(),
   });
 
   return {

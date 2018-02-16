@@ -65,7 +65,7 @@ Menu.updateInfoInternal = function (object, info) {
   var menuItemPriceSortOrderIndices = info.get('menuItemPriceSortOrderIndices');
 
   if (_commonJavascript.Common.isNull(menuItemPriceSortOrderIndices)) {
-    object.set('menuItemPriceSortOrderIndices', []);
+    object.set('menuItemPriceSortOrderIndices', {});
   } else if (menuItemPriceSortOrderIndices) {
     object.set('menuItemPriceSortOrderIndices', menuItemPriceSortOrderIndices.toJS());
   }

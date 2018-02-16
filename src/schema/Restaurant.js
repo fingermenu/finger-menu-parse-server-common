@@ -48,7 +48,7 @@ export default class Restaurant extends BaseObject {
     const menuSortOrderIndices = info.get('menuSortOrderIndices');
 
     if (Common.isNull(menuSortOrderIndices)) {
-      object.set('menuSortOrderIndices', []);
+      object.set('menuSortOrderIndices', {});
     } else if (menuSortOrderIndices) {
       object.set('menuSortOrderIndices', menuSortOrderIndices.toJS());
     }

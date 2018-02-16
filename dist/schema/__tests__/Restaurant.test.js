@@ -78,7 +78,7 @@ var createRestaurantInfo = exports.createRestaurantInfo = function () {
               inheritParentRestaurantMenus: chance.integer(),
               pin: chance.string(),
               configurations: _TestHelper2.default.createRandomMap(),
-              menuSortOrderIndices: _TestHelper2.default.createRandomList()
+              menuSortOrderIndices: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               restaurant: restaurant,

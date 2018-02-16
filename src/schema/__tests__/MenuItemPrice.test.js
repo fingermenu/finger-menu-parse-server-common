@@ -27,8 +27,8 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     choiceItemPriceIds: choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')),
     addedByUserId: addedByUser.id,
     removedByUserId: removedByUser.id,
-    toBeServedWithMenuItemPriceSortOrderIndices: TestHelper.createRandomList(),
-    choiceItemPriceSortOrderIndices: TestHelper.createRandomList(),
+    toBeServedWithMenuItemPriceSortOrderIndices: TestHelper.createRandomMap(),
+    choiceItemPriceSortOrderIndices: TestHelper.createRandomMap(),
   });
 
   return {

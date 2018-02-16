@@ -66,7 +66,7 @@ var createCriteria = function createCriteria(object) {
       tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string()),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string()),
-      menuItemPriceSortOrderIndices: object ? object.get('menuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList()
+      menuItemPriceSortOrderIndices: object ? object.get('menuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomMap()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

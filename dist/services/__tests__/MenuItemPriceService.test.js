@@ -51,8 +51,8 @@ var createCriteria = function createCriteria(object) {
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : _immutable.List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
-      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList(),
-      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : _TestHelper2.default.createRandomList()
+      toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomMap(),
+      choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : _TestHelper2.default.createRandomMap()
     })
   }).merge(createCriteriaWthoutConditions());
 };

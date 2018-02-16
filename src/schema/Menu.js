@@ -28,7 +28,7 @@ export default class Menu extends BaseObject {
     const menuItemPriceSortOrderIndices = info.get('menuItemPriceSortOrderIndices');
 
     if (Common.isNull(menuItemPriceSortOrderIndices)) {
-      object.set('menuItemPriceSortOrderIndices', []);
+      object.set('menuItemPriceSortOrderIndices', {});
     } else if (menuItemPriceSortOrderIndices) {
       object.set('menuItemPriceSortOrderIndices', menuItemPriceSortOrderIndices.toJS());
     }

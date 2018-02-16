@@ -83,8 +83,8 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               }),
               addedByUserId: addedByUser.id,
               removedByUserId: removedByUser.id,
-              toBeServedWithMenuItemPriceSortOrderIndices: _TestHelper2.default.createRandomList(),
-              choiceItemPriceSortOrderIndices: _TestHelper2.default.createRandomList()
+              toBeServedWithMenuItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap(),
+              choiceItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               menuItemPrice: menuItemPrice,

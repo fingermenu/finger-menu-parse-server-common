@@ -82,7 +82,7 @@ Restaurant.updateInfoInternal = function (object, info) {
   var menuSortOrderIndices = info.get('menuSortOrderIndices');
 
   if (_commonJavascript.Common.isNull(menuSortOrderIndices)) {
-    object.set('menuSortOrderIndices', []);
+    object.set('menuSortOrderIndices', {});
   } else if (menuSortOrderIndices) {
     object.set('menuSortOrderIndices', menuSortOrderIndices.toJS());
   }

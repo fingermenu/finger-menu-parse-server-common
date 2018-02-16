@@ -68,7 +68,7 @@ const createCriteria = object => {
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
       pin: object ? object.get('pin') : chance.string(),
       configurations: object ? object.get('configurations') : TestHelper.createRandomMap(),
-      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : TestHelper.createRandomList(),
+      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : TestHelper.createRandomMap(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

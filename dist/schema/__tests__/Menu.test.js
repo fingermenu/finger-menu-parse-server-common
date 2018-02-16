@@ -73,7 +73,7 @@ var createMenuInfo = exports.createMenuInfo = function () {
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
               }),
-              menuItemPriceSortOrderIndices: _TestHelper2.default.createRandomList()
+              menuItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               menu: menu,

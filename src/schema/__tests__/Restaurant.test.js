@@ -32,7 +32,7 @@ export const createRestaurantInfo = async ({ parentRestaurantId } = {}) => {
     inheritParentRestaurantMenus: chance.integer(),
     pin: chance.string(),
     configurations: TestHelper.createRandomMap(),
-    menuSortOrderIndices: TestHelper.createRandomList(),
+    menuSortOrderIndices: TestHelper.createRandomMap(),
   });
 
   return {

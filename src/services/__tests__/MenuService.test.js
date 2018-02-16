@@ -52,7 +52,7 @@ const createCriteria = object => {
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
-      menuItemPriceSortOrderIndices: object ? object.get('menuItemPriceSortOrderIndices') : TestHelper.createRandomList(),
+      menuItemPriceSortOrderIndices: object ? object.get('menuItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

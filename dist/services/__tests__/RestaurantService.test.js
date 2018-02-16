@@ -75,7 +75,7 @@ var createCriteria = function createCriteria(object) {
       inheritParentRestaurantMenus: object ? object.get('inheritParentRestaurantMenus') : chance.bool(),
       pin: object ? object.get('pin') : chance.string(),
       configurations: object ? object.get('configurations') : _TestHelper2.default.createRandomMap(),
-      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : _TestHelper2.default.createRandomList()
+      menuSortOrderIndices: object ? object.get('menuSortOrderIndices') : _TestHelper2.default.createRandomMap()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

@@ -71,7 +71,7 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   var toBeServedWithMenuItemPriceSortOrderIndices = info.get('toBeServedWithMenuItemPriceSortOrderIndices');
 
   if (_commonJavascript.Common.isNull(toBeServedWithMenuItemPriceSortOrderIndices)) {
-    object.set('toBeServedWithMenuItemPriceSortOrderIndices', []);
+    object.set('toBeServedWithMenuItemPriceSortOrderIndices', {});
   } else if (toBeServedWithMenuItemPriceSortOrderIndices) {
     object.set('toBeServedWithMenuItemPriceSortOrderIndices', toBeServedWithMenuItemPriceSortOrderIndices.toJS());
   }
@@ -79,7 +79,7 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   var choiceItemPriceSortOrderIndices = info.get('choiceItemPriceSortOrderIndices');
 
   if (_commonJavascript.Common.isNull(choiceItemPriceSortOrderIndices)) {
-    object.set('choiceItemPriceSortOrderIndices', []);
+    object.set('choiceItemPriceSortOrderIndices', {});
   } else if (choiceItemPriceSortOrderIndices) {
     object.set('choiceItemPriceSortOrderIndices', choiceItemPriceSortOrderIndices.toJS());
   }
