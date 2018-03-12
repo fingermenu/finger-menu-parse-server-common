@@ -28,7 +28,7 @@ var TableService = function (_ServiceBase) {
   return TableService;
 }(_parseServerCommon.ServiceBase);
 
-TableService.fields = _immutable.List.of('tableState', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'sortOrderIndex');
+TableService.fields = _immutable.List.of('tableState', 'status', 'restaurant', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'sortOrderIndex', 'lastOrderCorelationId');
 
 TableService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -67,6 +67,7 @@ TableService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
   _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'sortOrderIndex', 'sortOrderIndex');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'lastOrderCorelationId', 'lastOrderCorelationId');
 
   return query;
 };

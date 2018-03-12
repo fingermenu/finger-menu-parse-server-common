@@ -64,6 +64,7 @@ Table.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
   object.set('sortOrderIndex', info.get('sortOrderIndex'));
+  object.set('lastOrderCorelationId', info.get('lastOrderCorelationId'));
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -100,7 +101,8 @@ var _initialiseProps = function _initialiseProps() {
       numberOfChildren: object.get('numberOfChildren'),
       customerName: object.get('customerName'),
       notes: object.get('notes'),
-      sortOrderIndex: object.get('sortOrderIndex')
+      sortOrderIndex: object.get('sortOrderIndex'),
+      lastOrderCorelationId: object.get('lastOrderCorelationId')
     }));
   };
 };
