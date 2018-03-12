@@ -35,6 +35,7 @@
     "import/no-unresolved": [2, {
       "commonjs": true
     }],
+    "import/no-extraneous-dependencies": ["error", {"peerDependencies": true}],
     "import/first": 2,
     "import/named": 2,
     "import/default": 2,

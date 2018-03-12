@@ -16,6 +16,7 @@ export default class OrderService extends ServiceBase {
     'totalPrice',
     'placedAt',
     'cancelledAt',
+    'corelationId',
   );
 
   constructor() {
@@ -33,7 +34,7 @@ export default class OrderService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(Order, criteria);
     const query = OrderService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -43,7 +44,7 @@ export default class OrderService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    OrderService.fields.forEach((field) => {
+    OrderService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', Restaurant);
@@ -55,6 +56,7 @@ export default class OrderService extends ServiceBase {
     ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
     ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
     ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');
+    ServiceBase.addEqualityQuery(conditions, query, 'corelationId', 'corelationId');
 
     return query;
   };

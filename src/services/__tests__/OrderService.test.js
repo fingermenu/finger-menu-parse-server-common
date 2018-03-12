@@ -23,6 +23,7 @@ const createCriteriaWthoutConditions = () =>
       'totalPrice',
       'placedAt',
       'cancelledAt',
+      'corelationId',
     ),
     include_table: true,
     include_restaurant: true,
@@ -41,6 +42,7 @@ const createCriteria = object =>
       totalPrice: object ? object.get('totalPrice') : chance.floating({ min: 0, max: 1000 }),
       placedAt: object ? object.get('placedAt') : new Date(),
       cancelledAt: object ? object.get('cancelledAt') : new Date(),
+      corelationId: object ? object.get('corelationId') : chance.string(),
     }),
   });
 
@@ -53,21 +55,25 @@ const createOrders = async (count, useSameInfo = false) => {
     order = tempOrder;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalOrder;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalOrder;
 
-      if (useSameInfo) {
-        finalOrder = order;
-      } else {
-        const { order: tempOrder } = await createOrderInfo();
+          if (useSameInfo) {
+            finalOrder = order;
+          } else {
+            const { order: tempOrder } = await createOrderInfo();
 
-        finalOrder = tempOrder;
-      }
+            finalOrder = tempOrder;
+          }
 
-      return orderService.read(await orderService.create(finalOrder), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return orderService.read(await orderService.create(finalOrder), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createOrders;
@@ -181,13 +187,17 @@ describe('search', () => {
 
   test('should return the order matches the criteria', async () => {
     const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => orderService.create(expectedOrder))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => orderService.create(expectedOrder))
+          .toArray(),
+      ),
+    );
     const orders = await orderService.search(createCriteria(expectedOrder));
 
     expect(orders.count).toBe(results.count);
-    orders.forEach((order) => {
+    orders.forEach(order => {
       expect(results.find(_ => _.localeCompare(order.get('id')) === 0)).toBeDefined();
       expectOrder(order, expectedOrder, {
         orderId: order.get('id'),
@@ -204,7 +214,7 @@ describe('searchAll', () => {
     const result = orderService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         orders = orders.push(info);
       });
 
@@ -218,15 +228,19 @@ describe('searchAll', () => {
 
   test('should return the order matches the criteria', async () => {
     const { order: expectedOrder, table: expectedTable, restaurant: expectedRestaurant } = await createOrderInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => orderService.create(expectedOrder))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => orderService.create(expectedOrder))
+          .toArray(),
+      ),
+    );
 
     let orders = List();
     const result = orderService.searchAll(createCriteria(expectedOrder));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         orders = orders.push(info);
       });
 
@@ -236,7 +250,7 @@ describe('searchAll', () => {
     }
 
     expect(orders.count).toBe(results.count);
-    orders.forEach((order) => {
+    orders.forEach(order => {
       expect(results.find(_ => _.localeCompare(order.get('id')) === 0)).toBeDefined();
       expectOrder(order, expectedOrder, {
         orderId: order.get('id'),
