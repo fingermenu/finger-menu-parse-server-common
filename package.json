@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "precommit": "lint-staged"
   },
   "author": "FingerMenu ltd<fingermenu.ltd@gmail.com>",
-  "homepage": "https://bitbucket.org/fingermenu/finger-menu-parse-server-common#readme",
+  "homepage": "https://bitbucket.org/fingermenultd/finger-menu-parse-server-common#readme",
   "perDependencies": {
     "@microbusiness/common-javascript": "^1.x",
     "@microbusiness/parse-server-common": "^1.x",
@@ -52,7 +52,7 @@
   "pre-commit": "lint:staged",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org:fingermenu/finger-menu-parse-server-common.git"
+    "url": "git+ssh://git@bitbucket.org:fingermenultd/finger-menu-parse-server-common.git"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
