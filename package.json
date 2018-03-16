@@ -1,6 +1,6 @@
 {
   "name": "@fingermenu/parse-server-common",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Finger Menu Parse Server Common",
   "main": "./dist/index.js",
   "scripts": {
@@ -22,11 +22,11 @@
     "immutable": "^4.x"
   },
   "devDependencies": {
-    "@microbusiness/common-javascript": "^1.1.14",
-    "@microbusiness/parse-server-common": "^1.1.34",
+    "@microbusiness/common-javascript": "^1.2.1",
+    "@microbusiness/parse-server-common": "^1.2.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.1",
+    "babel-jest": "^23.0.0-alpha.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -35,17 +35,16 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jest": "^21.14.0",
+    "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "flow-bin": "^0.67.1",
+    "flow-bin": "^0.68.0",
     "husky": "^0.14.3",
     "immutable": "^4.0.0-rc.9",
-    "jest": "^22.4.2",
+    "jest": "^23.0.0-alpha.0",
     "lint-staged": "^7.0.0",
     "parse": "^1.11.1",
-    "prettier": "^1.11.1",
-    "uuid": "^3.2.1"
+    "prettier": "^1.11.1"
   },
   "jest": {
     "rootDir": "./src"
