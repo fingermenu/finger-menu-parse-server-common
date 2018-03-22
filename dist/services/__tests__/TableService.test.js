@@ -34,7 +34,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'sortOrderIndex', 'lastOrderCorelationId').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'sortOrderIndex', 'lastOrderCorrelationId').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -63,7 +63,7 @@ var createCriteria = function createCriteria(object) {
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       sortOrderIndex: object ? object.get('sortOrderIndex') : chance.integer(),
-      lastOrderCorelationId: object ? object.get('lastOrderCorelationId') : chance.string()
+      lastOrderCorrelationId: object ? object.get('lastOrderCorrelationId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions(languages, language));
 };

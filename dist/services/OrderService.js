@@ -28,7 +28,7 @@ var OrderService = function (_ServiceBase) {
   return OrderService;
 }(_parseServerCommon.ServiceBase);
 
-OrderService.fields = _immutable.List.of('details', 'restaurant', 'table', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt', 'corelationId');
+OrderService.fields = _immutable.List.of('details', 'restaurant', 'table', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt', 'correlationId');
 
 OrderService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -63,7 +63,7 @@ OrderService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');
-  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'corelationId', 'corelationId');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'correlationId', 'correlationId');
 
   return query;
 };

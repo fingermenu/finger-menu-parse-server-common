@@ -70,7 +70,7 @@ Order.updateInfoInternal = function (object, info) {
   object.set('totalPrice', info.get('totalPrice'));
   object.set('placedAt', info.get('placedAt'));
   object.set('cancelledAt', info.get('cancelledAt'));
-  object.set('corelationId', info.get('corelationId'));
+  object.set('correlationId', info.get('correlationId'));
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -101,7 +101,7 @@ var _initialiseProps = function _initialiseProps() {
       totalPrice: object.get('totalPrice'),
       placedAt: object.get('placedAt'),
       cancelledAt: object.get('cancelledAt'),
-      corelationId: object.get('corelationId')
+      correlationId: object.get('correlationId')
     }));
   };
 };

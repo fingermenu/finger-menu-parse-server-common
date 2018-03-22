@@ -16,7 +16,7 @@ export default class OrderService extends ServiceBase {
     'totalPrice',
     'placedAt',
     'cancelledAt',
-    'corelationId',
+    'correlationId',
   );
 
   constructor() {
@@ -56,7 +56,7 @@ export default class OrderService extends ServiceBase {
     ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
     ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
     ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');
-    ServiceBase.addEqualityQuery(conditions, query, 'corelationId', 'corelationId');
+    ServiceBase.addEqualityQuery(conditions, query, 'correlationId', 'correlationId');
 
     return query;
   };

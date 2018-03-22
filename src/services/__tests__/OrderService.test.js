@@ -23,7 +23,7 @@ const createCriteriaWthoutConditions = () =>
       'totalPrice',
       'placedAt',
       'cancelledAt',
-      'corelationId',
+      'correlationId',
     ),
     include_table: true,
     include_restaurant: true,
@@ -42,7 +42,7 @@ const createCriteria = object =>
       totalPrice: object ? object.get('totalPrice') : chance.floating({ min: 0, max: 1000 }),
       placedAt: object ? object.get('placedAt') : new Date(),
       cancelledAt: object ? object.get('cancelledAt') : new Date(),
-      corelationId: object ? object.get('corelationId') : chance.string(),
+      correlationId: object ? object.get('correlationId') : chance.string(),
     }),
   });
 

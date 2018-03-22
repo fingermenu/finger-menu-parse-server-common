@@ -16,7 +16,7 @@ export default class TableService extends ServiceBase {
     'customerName',
     'notes',
     'sortOrderIndex',
-    'lastOrderCorelationId',
+    'lastOrderCorrelationId',
   );
 
   constructor() {
@@ -60,7 +60,7 @@ export default class TableService extends ServiceBase {
     ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
     ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'sortOrderIndex', 'sortOrderIndex');
-    ServiceBase.addEqualityQuery(conditions, query, 'lastOrderCorelationId', 'lastOrderCorelationId');
+    ServiceBase.addEqualityQuery(conditions, query, 'lastOrderCorrelationId', 'lastOrderCorrelationId');
 
     return query;
   };

@@ -27,7 +27,7 @@ export default class Table extends BaseObject {
     BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
     object.set('sortOrderIndex', info.get('sortOrderIndex'));
-    object.set('lastOrderCorelationId', info.get('lastOrderCorelationId'));
+    object.set('lastOrderCorrelationId', info.get('lastOrderCorrelationId'));
   };
 
   constructor(object) {
@@ -65,7 +65,7 @@ export default class Table extends BaseObject {
         customerName: object.get('customerName'),
         notes: object.get('notes'),
         sortOrderIndex: object.get('sortOrderIndex'),
-        lastOrderCorelationId: object.get('lastOrderCorelationId'),
+        lastOrderCorrelationId: object.get('lastOrderCorrelationId'),
       }),
     );
   };

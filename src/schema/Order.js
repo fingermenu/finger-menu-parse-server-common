@@ -33,7 +33,7 @@ export default class Order extends BaseObject {
     object.set('totalPrice', info.get('totalPrice'));
     object.set('placedAt', info.get('placedAt'));
     object.set('cancelledAt', info.get('cancelledAt'));
-    object.set('corelationId', info.get('corelationId'));
+    object.set('correlationId', info.get('correlationId'));
   };
 
   constructor(object) {
@@ -66,7 +66,7 @@ export default class Order extends BaseObject {
         totalPrice: object.get('totalPrice'),
         placedAt: object.get('placedAt'),
         cancelledAt: object.get('cancelledAt'),
-        corelationId: object.get('corelationId'),
+        correlationId: object.get('correlationId'),
       }),
     );
   };

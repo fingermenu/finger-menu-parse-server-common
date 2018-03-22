@@ -24,7 +24,7 @@ export const createOrderInfo = async () => {
     totalPrice: chance.floating({ min: 0, max: 1000 }),
     placedAt: new Date(),
     cancelledAt: new Date(),
-    corelationId: chance.string(),
+    correlationId: chance.string(),
   });
 
   return {
@@ -47,7 +47,7 @@ export const expectOrder = (object, expectedObject, { orderId, expectedTable, ex
   expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));
   expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
   expect(object.get('cancelledAt')).toBe(expectedObject.get('cancelledAt'));
-  expect(object.get('corelationId')).toBe(expectedObject.get('corelationId'));
+  expect(object.get('correlationId')).toBe(expectedObject.get('correlationId'));
 
   if (orderId) {
     expect(object.get('id')).toBe(orderId);

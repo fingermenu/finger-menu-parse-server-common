@@ -30,7 +30,7 @@ const createCriteriaWthoutConditions = (languages, language) =>
       'customerName',
       'notes',
       'sortOrderIndex',
-      'lastOrderCorelationId',
+      'lastOrderCorrelationId',
     ).concat(languages ? languages.map(_ => `${_}_name`) : List()),
     language,
     include_restaurant: true,
@@ -55,7 +55,7 @@ const createCriteria = object => {
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       sortOrderIndex: object ? object.get('sortOrderIndex') : chance.integer(),
-      lastOrderCorelationId: object ? object.get('lastOrderCorelationId') : chance.string(),
+      lastOrderCorrelationId: object ? object.get('lastOrderCorrelationId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
