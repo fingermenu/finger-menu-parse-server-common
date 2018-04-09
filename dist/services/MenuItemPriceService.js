@@ -28,7 +28,7 @@ var MenuItemPriceService = function (_ServiceBase) {
   return MenuItemPriceService;
 }(_parseServerCommon.ServiceBase);
 
-MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices');
+MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags');
 
 MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -41,6 +41,7 @@ MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tags');
 
   return query;
 };
@@ -68,6 +69,7 @@ MenuItemPriceService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', _schema.ChoiceItemPrice);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);
 
   return query;
 };

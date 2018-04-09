@@ -24,6 +24,10 @@ var _Size = require('./Size');
 
 var _Size2 = _interopRequireDefault(_Size);
 
+var _Tag = require('./Tag');
+
+var _Tag2 = _interopRequireDefault(_Tag);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83,6 +87,8 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   } else if (choiceItemPriceSortOrderIndices) {
     object.set('choiceItemPriceSortOrderIndices', choiceItemPriceSortOrderIndices.toJS());
   }
+
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -108,6 +114,10 @@ var _initialiseProps = function _initialiseProps() {
     }) : undefined;
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
+    var tagObjects = object.get('tags');
+    var tags = tagObjects ? _immutable2.default.fromJS(tagObjects).map(function (tag) {
+      return new _Tag2.default(tag).getInfo();
+    }) : undefined;
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
@@ -132,7 +142,11 @@ var _initialiseProps = function _initialiseProps() {
       removedByUser: removedByUser,
       removedByUserId: removedByUser ? removedByUser.id : undefined,
       toBeServedWithMenuItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('toBeServedWithMenuItemPriceSortOrderIndices')),
-      choiceItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('choiceItemPriceSortOrderIndices'))
+      choiceItemPriceSortOrderIndices: _immutable2.default.fromJS(object.get('choiceItemPriceSortOrderIndices')),
+      tags: tags,
+      tagIds: tags ? tags.map(function (tag) {
+        return tag.get('id');
+      }) : (0, _immutable.List)()
     }));
   };
 };

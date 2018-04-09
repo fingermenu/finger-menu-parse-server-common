@@ -27,11 +27,12 @@ var choiceItemPriceService = new _2.ChoiceItemPriceService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser'),
+    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser', 'tags'),
     include_choiceItem: true,
     include_size: true,
     include_addedByUser: true,
-    include_removedByUser: true
+    include_removedByUser: true,
+    include_tags: true
   });
 };
 
@@ -45,7 +46,8 @@ var createCriteria = function createCriteria(object) {
       choiceItemId: object ? object.get('choiceItemId') : chance.string(),
       sizeId: object ? object.get('sizeId') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
-      removedByUserId: object ? object.get('removedByUserId') : chance.string()
+      removedByUserId: object ? object.get('removedByUserId') : chance.string(),
+      tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string())
     })
   }).merge(createCriteriaWthoutConditions());
 };
@@ -244,7 +246,7 @@ describe('read', function () {
   })));
 
   test('should read the existing choice item price', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, choiceItemPriceId, choiceItemPrice;
+    var _ref10, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, expectedTags, choiceItemPriceId, choiceItemPrice;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -260,15 +262,16 @@ describe('read', function () {
             expectedSize = _ref10.size;
             expectedAddedByUser = _ref10.addedByUser;
             expectedRemovedByUser = _ref10.removedByUser;
-            _context6.next = 10;
+            expectedTags = _ref10.tags;
+            _context6.next = 11;
             return choiceItemPriceService.create(expectedChoiceItemPrice);
 
-          case 10:
+          case 11:
             choiceItemPriceId = _context6.sent;
-            _context6.next = 13;
+            _context6.next = 14;
             return choiceItemPriceService.read(choiceItemPriceId, createCriteriaWthoutConditions());
 
-          case 13:
+          case 14:
             choiceItemPrice = _context6.sent;
 
 
@@ -277,10 +280,11 @@ describe('read', function () {
               expectedChoiceItem: expectedChoiceItem,
               expectedSize: expectedSize,
               expectedAddedByUser: expectedAddedByUser,
-              expectedRemovedByUser: expectedRemovedByUser
+              expectedRemovedByUser: expectedRemovedByUser,
+              expectedTags: expectedTags
             });
 
-          case 15:
+          case 16:
           case 'end':
             return _context6.stop();
         }
@@ -379,7 +383,7 @@ describe('update', function () {
   })));
 
   test('should update the existing choice item price', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, choiceItemPriceId, choiceItemPrice;
+    var _ref15, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, expectedTags, choiceItemPriceId, choiceItemPrice;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -395,25 +399,26 @@ describe('update', function () {
             expectedSize = _ref15.size;
             expectedAddedByUser = _ref15.addedByUser;
             expectedRemovedByUser = _ref15.removedByUser;
+            expectedTags = _ref15.tags;
             _context9.t0 = choiceItemPriceService;
-            _context9.next = 11;
+            _context9.next = 12;
             return (0, _ChoiceItemPrice.createChoiceItemPriceInfo)();
 
-          case 11:
+          case 12:
             _context9.t1 = _context9.sent.choiceItemPrice;
-            _context9.next = 14;
+            _context9.next = 15;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 14:
+          case 15:
             choiceItemPriceId = _context9.sent;
-            _context9.next = 17;
+            _context9.next = 18;
             return choiceItemPriceService.update(expectedChoiceItemPrice.set('id', choiceItemPriceId));
 
-          case 17:
-            _context9.next = 19;
+          case 18:
+            _context9.next = 20;
             return choiceItemPriceService.read(choiceItemPriceId, createCriteriaWthoutConditions());
 
-          case 19:
+          case 20:
             choiceItemPrice = _context9.sent;
 
 
@@ -422,10 +427,11 @@ describe('update', function () {
               expectedChoiceItem: expectedChoiceItem,
               expectedSize: expectedSize,
               expectedAddedByUser: expectedAddedByUser,
-              expectedRemovedByUser: expectedRemovedByUser
+              expectedRemovedByUser: expectedRemovedByUser,
+              expectedTags: expectedTags
             });
 
-          case 21:
+          case 22:
           case 'end':
             return _context9.stop();
         }
@@ -533,7 +539,7 @@ describe('search', function () {
   })));
 
   test('should return the choice item price matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, results, choiceItemPrices;
+    var _ref20, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, choiceItemPrices;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -549,8 +555,9 @@ describe('search', function () {
             expectedSize = _ref20.size;
             expectedAddedByUser = _ref20.addedByUser;
             expectedRemovedByUser = _ref20.removedByUser;
+            expectedTags = _ref20.tags;
             _context14.t0 = _immutable2.default;
-            _context14.next = 11;
+            _context14.next = 12;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -566,13 +573,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 11:
+          case 12:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 15;
+            _context14.next = 16;
             return choiceItemPriceService.search(createCriteria(expectedChoiceItemPrice));
 
-          case 15:
+          case 16:
             choiceItemPrices = _context14.sent;
 
 
@@ -586,11 +593,12 @@ describe('search', function () {
                 expectedChoiceItem: expectedChoiceItem,
                 expectedSize: expectedSize,
                 expectedAddedByUser: expectedAddedByUser,
-                expectedRemovedByUser: expectedRemovedByUser
+                expectedRemovedByUser: expectedRemovedByUser,
+                expectedTags: expectedTags
               });
             });
 
-          case 18:
+          case 19:
           case 'end':
             return _context14.stop();
         }
@@ -636,7 +644,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the choice item price matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, results, choiceItemPrices, result;
+    var _ref24, expectedChoiceItemPrice, expectedChoiceItem, expectedSize, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, choiceItemPrices, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -652,8 +660,9 @@ describe('searchAll', function () {
             expectedSize = _ref24.size;
             expectedAddedByUser = _ref24.addedByUser;
             expectedRemovedByUser = _ref24.removedByUser;
+            expectedTags = _ref24.tags;
             _context17.t0 = _immutable2.default;
-            _context17.next = 11;
+            _context17.next = 12;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -669,27 +678,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 11:
+          case 12:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             choiceItemPrices = (0, _immutable.List)();
             result = choiceItemPriceService.searchAll(createCriteria(expectedChoiceItemPrice));
-            _context17.prev = 15;
+            _context17.prev = 16;
 
             result.event.subscribe(function (info) {
               choiceItemPrices = choiceItemPrices.push(info);
             });
 
-            _context17.next = 19;
+            _context17.next = 20;
             return result.promise;
 
-          case 19:
-            _context17.prev = 19;
+          case 20:
+            _context17.prev = 20;
 
             result.event.unsubscribeAll();
-            return _context17.finish(19);
+            return _context17.finish(20);
 
-          case 22:
+          case 23:
 
             expect(choiceItemPrices.count).toBe(results.count);
             choiceItemPrices.forEach(function (choiceItemPrice) {
@@ -701,16 +710,17 @@ describe('searchAll', function () {
                 expectedChoiceItem: expectedChoiceItem,
                 expectedSize: expectedSize,
                 expectedAddedByUser: expectedAddedByUser,
-                expectedRemovedByUser: expectedRemovedByUser
+                expectedRemovedByUser: expectedRemovedByUser,
+                expectedTags: expectedTags
               });
             });
 
-          case 24:
+          case 25:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[15,, 19, 22]]);
+    }, _callee17, undefined, [[16,, 20, 23]]);
   })));
 });
 

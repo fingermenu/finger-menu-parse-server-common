@@ -8,6 +8,8 @@ var _commonJavascript = require('@microbusiness/common-javascript');
 
 var _immutable = require('immutable');
 
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _ChoiceItem = require('./ChoiceItem');
@@ -17,6 +19,10 @@ var _ChoiceItem2 = _interopRequireDefault(_ChoiceItem);
 var _Size = require('./Size');
 
 var _Size2 = _interopRequireDefault(_Size);
+
+var _Tag = require('./Tag');
+
+var _Tag2 = _interopRequireDefault(_Tag);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,6 +65,7 @@ ChoiceItemPrice.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createPointer(object, info, 'size', _Size2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -76,6 +83,10 @@ var _initialiseProps = function _initialiseProps() {
     var size = object.get('size');
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
+    var tagObjects = object.get('tags');
+    var tags = tagObjects ? _immutable2.default.fromJS(tagObjects).map(function (tag) {
+      return new _Tag2.default(tag).getInfo();
+    }) : undefined;
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
@@ -90,7 +101,11 @@ var _initialiseProps = function _initialiseProps() {
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser: removedByUser,
-      removedByUserId: removedByUser ? removedByUser.id : undefined
+      removedByUserId: removedByUser ? removedByUser.id : undefined,
+      tags: tags,
+      tagIds: tags ? tags.map(function (tag) {
+        return tag.get('id');
+      }) : (0, _immutable.List)()
     }));
   };
 };

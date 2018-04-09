@@ -29,6 +29,10 @@ var _ChoiceItemPriceService = require('../../services/__tests__/ChoiceItemPriceS
 
 var _ChoiceItemPriceService2 = _interopRequireDefault(_ChoiceItemPriceService);
 
+var _TagService = require('../../services/__tests__/TagService.test');
+
+var _TagService2 = _interopRequireDefault(_TagService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -40,7 +44,7 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         toBeServedWithMenuItemPriceIds = _ref2.toBeServedWithMenuItemPriceIds;
 
-    var menuItem, size, choiceItemPrices, addedByUser, removedByUser, menuItemPrice;
+    var menuItem, size, choiceItemPrices, addedByUser, removedByUser, tags, menuItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -70,6 +74,11 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
 
           case 14:
             removedByUser = _context.sent;
+            _context.next = 17;
+            return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
+
+          case 17:
+            tags = _context.sent;
             menuItemPrice = (0, _immutable.Map)({
               currentPrice: chance.floating({ min: 0, max: 1000 }),
               wasPrice: chance.floating({ min: 0, max: 1000 }),
@@ -84,7 +93,10 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               addedByUserId: addedByUser.id,
               removedByUserId: removedByUser.id,
               toBeServedWithMenuItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap(),
-              choiceItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap()
+              choiceItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap(),
+              tagIds: tags.map(function (tag) {
+                return tag.get('id');
+              })
             });
             return _context.abrupt('return', {
               menuItemPrice: menuItemPrice,
@@ -92,10 +104,11 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               size: size,
               choiceItemPrices: choiceItemPrices,
               addedByUser: addedByUser,
-              removedByUser: removedByUser
+              removedByUser: removedByUser,
+              tags: tags
             });
 
-          case 17:
+          case 20:
           case 'end':
             return _context.stop();
         }
@@ -150,7 +163,8 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
       menuItemPriceId = _ref4.menuItemPriceId,
       expectedMenuItem = _ref4.expectedMenuItem,
       expectedSize = _ref4.expectedSize,
-      expectedChoiceItemPrices = _ref4.expectedChoiceItemPrices;
+      expectedChoiceItemPrices = _ref4.expectedChoiceItemPrices,
+      expectedTags = _ref4.expectedTags;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
@@ -179,6 +193,12 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
 
   if (expectedChoiceItemPrices) {
     expect(object.get('choiceItemPriceIds')).toEqual(expectedChoiceItemPrices.map(function (_) {
+      return _.get('id');
+    }));
+  }
+
+  if (expectedTags) {
+    expect(object.get('tagIds')).toEqual(expectedTags.map(function (_) {
       return _.get('id');
     }));
   }

@@ -1,13 +1,14 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import { Map } from 'immutable';
+import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import ChoiceItem from './ChoiceItem';
 import Size from './Size';
+import Tag from './Tag';
 
 export default class ChoiceItemPrice extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new ChoiceItemPrice();
 
     ChoiceItemPrice.updateInfoInternal(object, info);
@@ -24,13 +25,14 @@ export default class ChoiceItemPrice extends BaseObject {
     BaseObject.createPointer(object, info, 'size', Size);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
+    BaseObject.createArrayPointer(object, info, 'tag', Tag);
   };
 
   constructor(object) {
     super(object, 'ChoiceItemPrice');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     ChoiceItemPrice.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -42,21 +44,27 @@ export default class ChoiceItemPrice extends BaseObject {
     const size = object.get('size');
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
+    const tagObjects = object.get('tags');
+    const tags = tagObjects ? Immutable.fromJS(tagObjects).map(tag => new Tag(tag).getInfo()) : undefined;
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      currentPrice: object.get('currentPrice'),
-      wasPrice: object.get('wasPrice'),
-      validFrom: object.get('validFrom'),
-      validUntil: object.get('validUntil'),
-      choiceItem,
-      choiceItemId: choiceItem ? choiceItem.id : undefined,
-      size,
-      sizeId: size ? size.id : undefined,
-      addedByUser,
-      addedByUserId: addedByUser ? addedByUser.id : undefined,
-      removedByUser,
-      removedByUserId: removedByUser ? removedByUser.id : undefined,
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        currentPrice: object.get('currentPrice'),
+        wasPrice: object.get('wasPrice'),
+        validFrom: object.get('validFrom'),
+        validUntil: object.get('validUntil'),
+        choiceItem,
+        choiceItemId: choiceItem ? choiceItem.id : undefined,
+        size,
+        sizeId: size ? size.id : undefined,
+        addedByUser,
+        addedByUserId: addedByUser ? addedByUser.id : undefined,
+        removedByUser,
+        removedByUserId: removedByUser ? removedByUser.id : undefined,
+        tags,
+        tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
+      }),
+    );
   };
 }

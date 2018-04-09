@@ -6,6 +6,7 @@ import TestHelper from '../../../TestHelper';
 import { ChoiceItemPrice } from '../';
 import createChoiceItems from '../../services/__tests__/ChoiceItemService.test';
 import createSizes from '../../services/__tests__/SizeService.test';
+import createTags from '../../services/__tests__/TagService.test';
 
 const chance = new Chance();
 
@@ -14,6 +15,7 @@ export const createChoiceItemPriceInfo = async () => {
   const size = (await createSizes(1)).first();
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
+  const tags = await createTags(chance.integer({ min: 1, max: 3 }));
   const choiceItemPrice = Map({
     currentPrice: chance.floating({ min: 0, max: 1000 }),
     wasPrice: chance.floating({ min: 0, max: 1000 }),
@@ -23,6 +25,7 @@ export const createChoiceItemPriceInfo = async () => {
     sizeId: size.get('id'),
     addedByUserId: addedByUser.id,
     removedByUserId: removedByUser.id,
+    tagIds: tags.map(tag => tag.get('id')),
   });
 
   return {
@@ -31,12 +34,13 @@ export const createChoiceItemPriceInfo = async () => {
     size,
     addedByUser,
     removedByUser,
+    tags,
   };
 };
 
 export const createChoiceItemPrice = async object => ChoiceItemPrice.spawn(object || (await createChoiceItemPriceInfo()).choiceItemPrice);
 
-export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceId, expectedChoiceItem, expectedSize } = {}) => {
+export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceId, expectedChoiceItem, expectedSize, expectedTags } = {}) => {
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
@@ -56,6 +60,10 @@ export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceI
 
   if (expectedSize) {
     expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
+  }
+
+  if (expectedTags) {
+    expect(object.get('tagIds')).toEqual(expectedTags.map(_ => _.get('id')));
   }
 };
 

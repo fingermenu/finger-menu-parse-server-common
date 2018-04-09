@@ -11,11 +11,12 @@ const choiceItemPriceService = new ChoiceItemPriceService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser'),
+    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser', 'tags'),
     include_choiceItem: true,
     include_size: true,
     include_addedByUser: true,
     include_removedByUser: true,
+    include_tags: true,
   });
 
 const createCriteria = object =>
@@ -29,6 +30,7 @@ const createCriteria = object =>
       sizeId: object ? object.get('sizeId') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
+      tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -41,21 +43,25 @@ const createChoiceItemPrices = async (count, useSameInfo = false) => {
     choiceItemPrice = tempChoiceItemPrice;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalChoiceItemPrice;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalChoiceItemPrice;
 
-      if (useSameInfo) {
-        finalChoiceItemPrice = choiceItemPrice;
-      } else {
-        const { choiceItemPrice: tempChoiceItemPrice } = await createChoiceItemPriceInfo();
+          if (useSameInfo) {
+            finalChoiceItemPrice = choiceItemPrice;
+          } else {
+            const { choiceItemPrice: tempChoiceItemPrice } = await createChoiceItemPriceInfo();
 
-        finalChoiceItemPrice = tempChoiceItemPrice;
-      }
+            finalChoiceItemPrice = tempChoiceItemPrice;
+          }
 
-      return choiceItemPriceService.read(await choiceItemPriceService.create(finalChoiceItemPrice), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return choiceItemPriceService.read(await choiceItemPriceService.create(finalChoiceItemPrice), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createChoiceItemPrices;
@@ -94,6 +100,7 @@ describe('read', () => {
       size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createChoiceItemPriceInfo();
     const choiceItemPriceId = await choiceItemPriceService.create(expectedChoiceItemPrice);
     const choiceItemPrice = await choiceItemPriceService.read(choiceItemPriceId, createCriteriaWthoutConditions());
@@ -104,6 +111,7 @@ describe('read', () => {
       expectedSize,
       expectedAddedByUser,
       expectedRemovedByUser,
+      expectedTags,
     });
   });
 });
@@ -139,6 +147,7 @@ describe('update', () => {
       size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createChoiceItemPriceInfo();
     const choiceItemPriceId = await choiceItemPriceService.create((await createChoiceItemPriceInfo()).choiceItemPrice);
 
@@ -152,6 +161,7 @@ describe('update', () => {
       expectedSize,
       expectedAddedByUser,
       expectedRemovedByUser,
+      expectedTags,
     });
   });
 });
@@ -193,14 +203,19 @@ describe('search', () => {
       size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createChoiceItemPriceInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => choiceItemPriceService.create(expectedChoiceItemPrice))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => choiceItemPriceService.create(expectedChoiceItemPrice))
+          .toArray(),
+      ),
+    );
     const choiceItemPrices = await choiceItemPriceService.search(createCriteria(expectedChoiceItemPrice));
 
     expect(choiceItemPrices.count).toBe(results.count);
-    choiceItemPrices.forEach((choiceItemPrice) => {
+    choiceItemPrices.forEach(choiceItemPrice => {
       expect(results.find(_ => _.localeCompare(choiceItemPrice.get('id')) === 0)).toBeDefined();
       expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
         choiceItemPriceId: choiceItemPrice.get('id'),
@@ -208,6 +223,7 @@ describe('search', () => {
         expectedSize,
         expectedAddedByUser,
         expectedRemovedByUser,
+        expectedTags,
       });
     });
   });
@@ -219,7 +235,7 @@ describe('searchAll', () => {
     const result = choiceItemPriceService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         choiceItemPrices = choiceItemPrices.push(info);
       });
 
@@ -238,16 +254,21 @@ describe('searchAll', () => {
       size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createChoiceItemPriceInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => choiceItemPriceService.create(expectedChoiceItemPrice))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => choiceItemPriceService.create(expectedChoiceItemPrice))
+          .toArray(),
+      ),
+    );
 
     let choiceItemPrices = List();
     const result = choiceItemPriceService.searchAll(createCriteria(expectedChoiceItemPrice));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         choiceItemPrices = choiceItemPrices.push(info);
       });
 
@@ -257,7 +278,7 @@ describe('searchAll', () => {
     }
 
     expect(choiceItemPrices.count).toBe(results.count);
-    choiceItemPrices.forEach((choiceItemPrice) => {
+    choiceItemPrices.forEach(choiceItemPrice => {
       expect(results.find(_ => _.localeCompare(choiceItemPrice.get('id')) === 0)).toBeDefined();
       expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
         choiceItemPriceId: choiceItemPrice.get('id'),
@@ -265,6 +286,7 @@ describe('searchAll', () => {
         expectedSize,
         expectedAddedByUser,
         expectedRemovedByUser,
+        expectedTags,
       });
     });
   });

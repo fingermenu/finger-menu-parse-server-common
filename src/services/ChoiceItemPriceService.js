@@ -2,10 +2,10 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { ChoiceItemPrice, ChoiceItem, Size } from '../schema';
+import { ChoiceItemPrice, ChoiceItem, Size, Tag } from '../schema';
 
 export default class ChoiceItemPriceService extends ServiceBase {
-  static fields = List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser');
+  static fields = List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser', 'tags');
 
   constructor() {
     super(ChoiceItemPrice, ChoiceItemPriceService.buildSearchQuery, ChoiceItemPriceService.buildIncludeQuery, 'choice item price');
@@ -20,11 +20,12 @@ export default class ChoiceItemPriceService extends ServiceBase {
     ServiceBase.addIncludeQuery(criteria, query, 'size');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'tags');
 
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(ChoiceItemPrice, criteria);
     const query = ChoiceItemPriceService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -34,7 +35,7 @@ export default class ChoiceItemPriceService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    ChoiceItemPriceService.fields.forEach((field) => {
+    ChoiceItemPriceService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addNumberQuery(conditions, query, 'currentPrice', 'currentPrice');
@@ -45,6 +46,7 @@ export default class ChoiceItemPriceService extends ServiceBase {
     ServiceBase.addLinkQuery(conditions, query, 'size', 'size', Size);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+    ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', Tag);
 
     return query;
   };
