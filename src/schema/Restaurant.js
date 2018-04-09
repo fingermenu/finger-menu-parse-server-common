@@ -1,8 +1,8 @@
 // @flow
 
 import { Common, ImmutableEx } from '@microbusiness/common-javascript';
-import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import Immutable, { List, Map } from 'immutable';
 import Menu from './Menu';
 
 export default class Restaurant extends BaseObject {

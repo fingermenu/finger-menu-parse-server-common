@@ -1,8 +1,8 @@
 // @flow
 
 import { Common, ImmutableEx } from '@microbusiness/common-javascript';
-import Immutable, { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import Immutable, { Map } from 'immutable';
 import Restaurant from './Restaurant';
 import Table from './Table';
 

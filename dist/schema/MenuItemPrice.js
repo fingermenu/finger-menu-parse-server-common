@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _commonJavascript = require('@microbusiness/common-javascript');
 
+var _parseServerCommon = require('@microbusiness/parse-server-common');
+
 var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
-
-var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _ChoiceItemPrice = require('./ChoiceItemPrice');
 

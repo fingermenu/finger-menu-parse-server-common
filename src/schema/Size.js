@@ -1,11 +1,11 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import Immutable, { List, Map } from 'immutable';
 
 export default class Size extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new Size();
 
     Size.updateInfoInternal(object, info);
@@ -23,7 +23,7 @@ export default class Size extends BaseObject {
     super(object, 'Size');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     Size.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -34,13 +34,15 @@ export default class Size extends BaseObject {
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      name: this.getMultiLanguagesString('name'),
-      ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
-      maintainedByUsers,
-      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        name: this.getMultiLanguagesString('name'),
+        ownedByUser,
+        ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+        maintainedByUsers,
+        maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
+      }),
+    );
   };
 }

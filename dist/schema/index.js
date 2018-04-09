@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.Restaurant = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
+exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.ServingTime = exports.Restaurant = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
 
 var _ChoiceItem2 = require('./ChoiceItem');
 
@@ -37,6 +37,10 @@ var _Restaurant2 = require('./Restaurant');
 
 var _Restaurant3 = _interopRequireDefault(_Restaurant2);
 
+var _ServingTime2 = require('./ServingTime');
+
+var _ServingTime3 = _interopRequireDefault(_ServingTime2);
+
 var _Size2 = require('./Size');
 
 var _Size3 = _interopRequireDefault(_Size2);
@@ -67,6 +71,7 @@ exports.MenuItem = _MenuItem3.default;
 exports.MenuItemPrice = _MenuItemPrice3.default;
 exports.Order = _Order3.default;
 exports.Restaurant = _Restaurant3.default;
+exports.ServingTime = _ServingTime3.default;
 exports.Size = _Size3.default;
 exports.Table = _Table3.default;
 exports.TableState = _TableState3.default;

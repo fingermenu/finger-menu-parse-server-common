@@ -1,11 +1,11 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import { Map } from 'immutable';
 
 export default class Language extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new Language();
 
     Language.updateInfoInternal(object, info);
@@ -23,7 +23,7 @@ export default class Language extends BaseObject {
     super(object, 'Language');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     Language.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -32,11 +32,13 @@ export default class Language extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      key: object.get('key'),
-      name: object.get('name'),
-      imageUrl: object.get('imageUrl'),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        key: object.get('key'),
+        name: object.get('name'),
+        imageUrl: object.get('imageUrl'),
+      }),
+    );
   };
 }

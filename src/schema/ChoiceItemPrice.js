@@ -1,8 +1,8 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import Immutable, { List, Map } from 'immutable';
 import ChoiceItem from './ChoiceItem';
 import Size from './Size';
 import Tag from './Tag';

@@ -1,13 +1,13 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import { Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import { Map } from 'immutable';
 import Table from './Table';
 import TableState from './TableState';
 
 export default class TableStateChange extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new TableStateChange();
 
     TableStateChange.updateInfoInternal(object, info);
@@ -29,7 +29,7 @@ export default class TableStateChange extends BaseObject {
     super(object, 'TableStateChange');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     TableStateChange.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -41,18 +41,20 @@ export default class TableStateChange extends BaseObject {
     const table = object.get('table');
     const changedByUser = object.get('changedByUser');
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      tableState,
-      tableStateId: tableState ? tableState.id : undefined,
-      table,
-      tableId: table ? table.id : undefined,
-      changedByUser,
-      changedByUserId: changedByUser ? changedByUser.id : undefined,
-      numberOfAdults: object.get('numberOfAdults'),
-      numberOfChildren: object.get('numberOfChildren'),
-      customerName: object.get('customerName'),
-      notes: object.get('notes'),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        tableState,
+        tableStateId: tableState ? tableState.id : undefined,
+        table,
+        tableId: table ? table.id : undefined,
+        changedByUser,
+        changedByUserId: changedByUser ? changedByUser.id : undefined,
+        numberOfAdults: object.get('numberOfAdults'),
+        numberOfChildren: object.get('numberOfChildren'),
+        customerName: object.get('customerName'),
+        notes: object.get('notes'),
+      }),
+    );
   };
 }

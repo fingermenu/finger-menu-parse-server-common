@@ -1,12 +1,12 @@
 // @flow
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
-import Immutable, { List, Map } from 'immutable';
 import { BaseObject } from '@microbusiness/parse-server-common';
+import Immutable, { List, Map } from 'immutable';
 import Tag from './Tag';
 
 export default class ChoiceItem extends BaseObject {
-  static spawn = (info) => {
+  static spawn = info => {
     const object = new ChoiceItem();
 
     ChoiceItem.updateInfoInternal(object, info);
@@ -28,7 +28,7 @@ export default class ChoiceItem extends BaseObject {
     super(object, 'ChoiceItem');
   }
 
-  updateInfo = (info) => {
+  updateInfo = info => {
     ChoiceItem.updateInfoInternal(this.getObject(), info);
 
     return this;
@@ -41,18 +41,20 @@ export default class ChoiceItem extends BaseObject {
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
-    return ImmutableEx.removeUndefinedProps(Map({
-      id: this.getId(),
-      name: this.getMultiLanguagesString('name'),
-      description: this.getMultiLanguagesString('description'),
-      choiceItemPageUrl: object.get('choiceItemPageUrl'),
-      imageUrl: object.get('imageUrl'),
-      tags,
-      tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
-      ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
-      maintainedByUsers,
-      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-    }));
+    return ImmutableEx.removeUndefinedProps(
+      Map({
+        id: this.getId(),
+        name: this.getMultiLanguagesString('name'),
+        description: this.getMultiLanguagesString('description'),
+        choiceItemPageUrl: object.get('choiceItemPageUrl'),
+        imageUrl: object.get('imageUrl'),
+        tags,
+        tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
+        ownedByUser,
+        ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+        maintainedByUsers,
+        maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
+      }),
+    );
   };
 }

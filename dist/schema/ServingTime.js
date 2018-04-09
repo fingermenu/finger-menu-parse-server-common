@@ -10,7 +10,9 @@ var _parseServerCommon = require('@microbusiness/parse-server-common');
 
 var _immutable = require('immutable');
 
-var _immutable2 = _interopRequireDefault(_immutable);
+var _Tag = require('./Tag');
+
+var _Tag2 = _interopRequireDefault(_Tag);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,61 +22,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Size = function (_BaseObject) {
-  _inherits(Size, _BaseObject);
+var ServingTime = function (_BaseObject) {
+  _inherits(ServingTime, _BaseObject);
 
-  function Size(object) {
-    _classCallCheck(this, Size);
+  function ServingTime(object) {
+    _classCallCheck(this, ServingTime);
 
-    var _this = _possibleConstructorReturn(this, (Size.__proto__ || Object.getPrototypeOf(Size)).call(this, object, 'Size'));
+    var _this = _possibleConstructorReturn(this, (ServingTime.__proto__ || Object.getPrototypeOf(ServingTime)).call(this, object, 'ServingTime'));
 
     _initialiseProps.call(_this);
 
     return _this;
   }
 
-  return Size;
+  return ServingTime;
 }(_parseServerCommon.BaseObject);
 
-Size.spawn = function (info) {
-  var object = new Size();
+ServingTime.spawn = function (info) {
+  var object = new ServingTime();
 
-  Size.updateInfoInternal(object, info);
+  ServingTime.updateInfoInternal(object, info);
 
   return object;
 };
 
-Size.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
-  _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
-  _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+ServingTime.updateInfoInternal = function (object, info) {
+  _parseServerCommon.BaseObject.createPointer(object, info, 'tag', _Tag2.default);
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
+  _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
 };
 
 var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.updateInfo = function (info) {
-    Size.updateInfoInternal(_this2.getObject(), info);
+    ServingTime.updateInfoInternal(_this2.getObject(), info);
 
     return _this2;
   };
 
   this.getInfo = function () {
     var object = _this2.getObject();
-    var ownedByUser = object.get('ownedByUser');
-    var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
+    var tag = object.get('tag');
+    var addedByUser = object.get('addedByUser');
+    var removedByUser = object.get('removedByUser');
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
-      name: _this2.getMultiLanguagesString('name'),
-      ownedByUser: ownedByUser,
-      ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
-      maintainedByUsers: maintainedByUsers,
-      maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
-        return maintainedByUser.id;
-      }) : (0, _immutable.List)()
+      tag: tag,
+      tagId: tag ? tag.id : undefined,
+      addedByUser: addedByUser,
+      addedByUserId: addedByUser ? addedByUser.id : undefined,
+      removedByUser: removedByUser,
+      removedByUserId: removedByUser ? removedByUser.id : undefined
     }));
   };
 };
 
-exports.default = Size;
+exports.default = ServingTime;

@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _commonJavascript = require('@microbusiness/common-javascript');
 
-var _immutable = require('immutable');
-
 var _parseServerCommon = require('@microbusiness/parse-server-common');
+
+var _immutable = require('immutable');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
