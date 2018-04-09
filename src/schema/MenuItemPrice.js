@@ -6,6 +6,7 @@ import { BaseObject } from '@microbusiness/parse-server-common';
 import ChoiceItemPrice from './ChoiceItemPrice';
 import MenuItem from './MenuItem';
 import Size from './Size';
+import Tag from './Tag';
 
 export default class MenuItemPrice extends BaseObject {
   static spawn = info => {
@@ -43,6 +44,8 @@ export default class MenuItemPrice extends BaseObject {
     } else if (choiceItemPriceSortOrderIndices) {
       object.set('choiceItemPriceSortOrderIndices', choiceItemPriceSortOrderIndices.toJS());
     }
+
+    BaseObject.createArrayPointer(object, info, 'tag', Tag);
   };
 
   constructor(object) {
@@ -71,6 +74,8 @@ export default class MenuItemPrice extends BaseObject {
       : undefined;
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
+    const tagObjects = object.get('tags');
+    const tags = tagObjects ? Immutable.fromJS(tagObjects).map(tag => new Tag(tag).getInfo()) : undefined;
 
     return ImmutableEx.removeUndefinedProps(
       Map({
@@ -95,6 +100,8 @@ export default class MenuItemPrice extends BaseObject {
         removedByUserId: removedByUser ? removedByUser.id : undefined,
         toBeServedWithMenuItemPriceSortOrderIndices: Immutable.fromJS(object.get('toBeServedWithMenuItemPriceSortOrderIndices')),
         choiceItemPriceSortOrderIndices: Immutable.fromJS(object.get('choiceItemPriceSortOrderIndices')),
+        tags,
+        tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
       }),
     );
   };

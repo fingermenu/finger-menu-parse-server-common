@@ -2,7 +2,7 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { ChoiceItemPrice, MenuItemPrice, MenuItem, Size } from '../schema';
+import { ChoiceItemPrice, MenuItemPrice, MenuItem, Size, Tag } from '../schema';
 
 export default class MenuItemPriceService extends ServiceBase {
   static fields = List.of(
@@ -18,6 +18,7 @@ export default class MenuItemPriceService extends ServiceBase {
     'removedByUser',
     'toBeServedWithMenuItemPriceSortOrderIndices',
     'choiceItemPriceSortOrderIndices',
+    'tags',
   );
 
   constructor() {
@@ -35,6 +36,7 @@ export default class MenuItemPriceService extends ServiceBase {
     ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'tags');
 
     return query;
   };
@@ -62,6 +64,7 @@ export default class MenuItemPriceService extends ServiceBase {
     ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', ChoiceItemPrice);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+    ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', Tag);
 
     return query;
   };

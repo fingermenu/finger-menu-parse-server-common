@@ -25,10 +25,12 @@ const createCriteriaWthoutConditions = () =>
       'removedByUser',
       'toBeServedWithMenuItemPriceSortOrderIndices',
       'choiceItemPriceSortOrderIndices',
+      'tags',
     ),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true,
+    include_tags: true,
   });
 
 const createCriteria = object =>
@@ -46,6 +48,7 @@ const createCriteria = object =>
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
       toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
       choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
+      tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -124,6 +127,7 @@ describe('read', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const menuItemPriceId = await menuItemPriceService.create(expectedMenuItemPrice);
     const menuItemPrice = await menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
@@ -135,6 +139,7 @@ describe('read', () => {
       expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
+      expectedTags,
     });
   });
 });
@@ -171,6 +176,7 @@ describe('update', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const menuItemPriceId = await menuItemPriceService.create((await createMenuItemPriceInfo()).menuItemPrice);
 
@@ -185,6 +191,7 @@ describe('update', () => {
       expectedChoiceItemPrices,
       expectedAddedByUser,
       expectedRemovedByUser,
+      expectedTags,
     });
   });
 });
@@ -227,6 +234,7 @@ describe('search', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const results = Immutable.fromJS(
       await Promise.all(
@@ -247,6 +255,7 @@ describe('search', () => {
         expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,
+        expectedTags,
       });
     });
   });
@@ -278,6 +287,7 @@ describe('searchAll', () => {
       choiceItemPrices: expectedChoiceItemPrices,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
+      tags: expectedTags,
     } = await createMenuItemPriceInfo({ toBeServedWithMenuItemPriceIds: (await createMenuItemPrices(2, false, false)).map(_ => _.get('id')) });
     const results = Immutable.fromJS(
       await Promise.all(
@@ -310,6 +320,7 @@ describe('searchAll', () => {
         expectedChoiceItemPrices,
         expectedAddedByUser,
         expectedRemovedByUser,
+        expectedTags,
       });
     });
   });

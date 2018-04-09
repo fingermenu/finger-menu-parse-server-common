@@ -7,6 +7,7 @@ import { MenuItemPrice } from '../';
 import createMenuItems from '../../services/__tests__/MenuItemService.test';
 import createSizes from '../../services/__tests__/SizeService.test';
 import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceService.test';
+import createTags from '../../services/__tests__/TagService.test';
 
 const chance = new Chance();
 
@@ -16,6 +17,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
   const choiceItemPrices = await createChoiceItemPrices(chance.integer({ min: 1, max: 3 }));
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
+  const tags = await createTags(chance.integer({ min: 1, max: 3 }));
   const menuItemPrice = Map({
     currentPrice: chance.floating({ min: 0, max: 1000 }),
     wasPrice: chance.floating({ min: 0, max: 1000 }),
@@ -29,6 +31,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     removedByUserId: removedByUser.id,
     toBeServedWithMenuItemPriceSortOrderIndices: TestHelper.createRandomMap(),
     choiceItemPriceSortOrderIndices: TestHelper.createRandomMap(),
+    tagIds: tags.map(tag => tag.get('id')),
   });
 
   return {
@@ -38,12 +41,17 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     choiceItemPrices,
     addedByUser,
     removedByUser,
+    tags,
   };
 };
 
 export const createMenuItemPrice = async object => MenuItemPrice.spawn(object || (await createMenuItemPriceInfo()).menuItemPrice);
 
-export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, expectedMenuItem, expectedSize, expectedChoiceItemPrices } = {}) => {
+export const expectMenuItemPrice = (
+  object,
+  expectedObject,
+  { menuItemPriceId, expectedMenuItem, expectedSize, expectedChoiceItemPrices, expectedTags } = {},
+) => {
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
@@ -71,6 +79,10 @@ export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, e
 
   if (expectedChoiceItemPrices) {
     expect(object.get('choiceItemPriceIds')).toEqual(expectedChoiceItemPrices.map(_ => _.get('id')));
+  }
+
+  if (expectedTags) {
+    expect(object.get('tagIds')).toEqual(expectedTags.map(_ => _.get('id')));
   }
 };
 
