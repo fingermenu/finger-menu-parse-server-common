@@ -28,7 +28,7 @@ var ServingTimeService = function (_ServiceBase) {
   return ServingTimeService;
 }(_parseServerCommon.ServiceBase);
 
-ServingTimeService.fields = _immutable.List.of('tag', 'addedByUser', 'removedByUser');
+ServingTimeService.fields = _immutable.List.of('tag', 'ownedByUser', 'maintainedByUsers');
 
 ServingTimeService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -36,8 +36,8 @@ ServingTimeService.buildIncludeQuery = function (query, criteria) {
   }
 
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tag');
-  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
-  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
   return query;
 };
@@ -56,8 +56,8 @@ ServingTimeService.buildSearchQuery = function (criteria) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tag', _schema.Tag);
-  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
-  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+  _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
   return query;
 };

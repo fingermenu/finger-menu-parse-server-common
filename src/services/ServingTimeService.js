@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { ServingTime, Tag } from '../schema';
 
 export default class ServingTimeService extends ServiceBase {
-  static fields = List.of('tag', 'addedByUser', 'removedByUser');
+  static fields = List.of('tag', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(ServingTime, ServingTimeService.buildSearchQuery, ServingTimeService.buildIncludeQuery, 'serving time');
@@ -17,8 +17,8 @@ export default class ServingTimeService extends ServiceBase {
     }
 
     ServiceBase.addIncludeQuery(criteria, query, 'tag');
-    ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
-    ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
+    ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
     return query;
   };
@@ -37,8 +37,8 @@ export default class ServingTimeService extends ServiceBase {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addLinkQuery(conditions, query, 'tag', 'tag', Tag);
-    ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
-    ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
+    ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
+    ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 
     return query;
   };

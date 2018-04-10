@@ -2,7 +2,7 @@
 
 import { ImmutableEx } from '@microbusiness/common-javascript';
 import { BaseObject } from '@microbusiness/parse-server-common';
-import { Map } from 'immutable';
+import Immutable, { List, Map } from 'immutable';
 import Tag from './Tag';
 
 export default class ServingTime extends BaseObject {
@@ -16,8 +16,8 @@ export default class ServingTime extends BaseObject {
 
   static updateInfoInternal = (object, info) => {
     BaseObject.createPointer(object, info, 'tag', Tag);
-    BaseObject.createUserPointer(object, info, 'addedByUser');
-    BaseObject.createUserPointer(object, info, 'removedByUser');
+    BaseObject.createUserPointer(object, info, 'ownedByUser');
+    BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   };
 
   constructor(object) {
@@ -33,18 +33,18 @@ export default class ServingTime extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const tag = object.get('tag');
-    const addedByUser = object.get('addedByUser');
-    const removedByUser = object.get('removedByUser');
+    const ownedByUser = object.get('ownedByUser');
+    const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
         tag,
         tagId: tag ? tag.id : undefined,
-        addedByUser,
-        addedByUserId: addedByUser ? addedByUser.id : undefined,
-        removedByUser,
-        removedByUserId: removedByUser ? removedByUser.id : undefined,
+        ownedByUser,
+        ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
+        maintainedByUsers,
+        maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
       }),
     );
   };

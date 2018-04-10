@@ -11,18 +11,18 @@ const serviceTimeService = new ServingTimeService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('tag', 'addedByUser', 'removedByUser'),
+    fields: List.of('tag', 'ownedByUser', 'maintainedByUsers'),
     include_tag: true,
-    include_addedByUser: true,
-    include_removedByUser: true,
+    include_ownedByUser: true,
+    include_maintainedByUsers: true,
   });
 
 const createCriteria = object =>
   Map({
     conditions: Map({
       tagId: object ? object.get('tagId') : chance.string(),
-      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
-      removedByUserId: object ? object.get('removedByUserId') : chance.string(),
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
     }),
   }).merge(createCriteriaWthoutConditions());
 
@@ -89,8 +89,8 @@ describe('read', () => {
     const {
       serviceTime: expectedServingTime,
       tag: expectedTag,
-      addedByUser: expectedAddedByUser,
-      removedByUser: expectedRemovedByUser,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createServingTimeInfo();
     const serviceTimeId = await serviceTimeService.create(expectedServingTime);
     const serviceTime = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
@@ -98,8 +98,8 @@ describe('read', () => {
     expectServingTime(serviceTime, expectedServingTime, {
       serviceTimeId,
       expectedTag,
-      expectedAddedByUser,
-      expectedRemovedByUser,
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
     });
   });
 });
@@ -132,8 +132,8 @@ describe('update', () => {
     const {
       serviceTime: expectedServingTime,
       tag: expectedTag,
-      addedByUser: expectedAddedByUser,
-      removedByUser: expectedRemovedByUser,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createServingTimeInfo();
     const serviceTimeId = await serviceTimeService.create((await createServingTimeInfo()).serviceTime);
 
@@ -144,8 +144,8 @@ describe('update', () => {
     expectServingTime(serviceTime, expectedServingTime, {
       serviceTimeId,
       expectedTag,
-      expectedAddedByUser,
-      expectedRemovedByUser,
+      expectedOwnedByUser,
+      expectedMaintainedByUsers,
     });
   });
 });
@@ -184,8 +184,8 @@ describe('search', () => {
     const {
       serviceTime: expectedServingTime,
       tag: expectedTag,
-      addedByUser: expectedAddedByUser,
-      removedByUser: expectedRemovedByUser,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createServingTimeInfo();
     const results = Immutable.fromJS(
       await Promise.all(
@@ -202,8 +202,8 @@ describe('search', () => {
       expectServingTime(serviceTime, expectedServingTime, {
         serviceTimeId: serviceTime.get('id'),
         expectedTag,
-        expectedAddedByUser,
-        expectedRemovedByUser,
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
       });
     });
   });
@@ -231,8 +231,8 @@ describe('searchAll', () => {
     const {
       serviceTime: expectedServingTime,
       tag: expectedTag,
-      addedByUser: expectedAddedByUser,
-      removedByUser: expectedRemovedByUser,
+      ownedByUser: expectedOwnedByUser,
+      maintainedByUsers: expectedMaintainedByUsers,
     } = await createServingTimeInfo();
     const results = Immutable.fromJS(
       await Promise.all(
@@ -261,8 +261,8 @@ describe('searchAll', () => {
       expectServingTime(serviceTime, expectedServingTime, {
         serviceTimeId: serviceTime.get('id'),
         expectedTag,
-        expectedAddedByUser,
-        expectedRemovedByUser,
+        expectedOwnedByUser,
+        expectedMaintainedByUsers,
       });
     });
   });

@@ -27,10 +27,10 @@ var serviceTimeService = new _2.ServingTimeService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('tag', 'addedByUser', 'removedByUser'),
+    fields: _immutable.List.of('tag', 'ownedByUser', 'maintainedByUsers'),
     include_tag: true,
-    include_addedByUser: true,
-    include_removedByUser: true
+    include_ownedByUser: true,
+    include_maintainedByUsers: true
   });
 };
 
@@ -38,8 +38,8 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       tagId: object ? object.get('tagId') : chance.string(),
-      addedByUserId: object ? object.get('addedByUserId') : chance.string(),
-      removedByUserId: object ? object.get('removedByUserId') : chance.string()
+      ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
+      maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string())
     })
   }).merge(createCriteriaWthoutConditions());
 };
@@ -238,7 +238,7 @@ describe('read', function () {
   })));
 
   test('should read the existing serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedServingTime, expectedTag, expectedAddedByUser, expectedRemovedByUser, serviceTimeId, serviceTime;
+    var _ref10, expectedServingTime, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -251,8 +251,8 @@ describe('read', function () {
             _ref10 = _context6.sent;
             expectedServingTime = _ref10.serviceTime;
             expectedTag = _ref10.tag;
-            expectedAddedByUser = _ref10.addedByUser;
-            expectedRemovedByUser = _ref10.removedByUser;
+            expectedOwnedByUser = _ref10.ownedByUser;
+            expectedMaintainedByUsers = _ref10.maintainedByUsers;
             _context6.next = 9;
             return serviceTimeService.create(expectedServingTime);
 
@@ -268,8 +268,8 @@ describe('read', function () {
             (0, _ServingTime.expectServingTime)(serviceTime, expectedServingTime, {
               serviceTimeId: serviceTimeId,
               expectedTag: expectedTag,
-              expectedAddedByUser: expectedAddedByUser,
-              expectedRemovedByUser: expectedRemovedByUser
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers
             });
 
           case 14:
@@ -371,7 +371,7 @@ describe('update', function () {
   })));
 
   test('should update the existing serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedServingTime, expectedTag, expectedAddedByUser, expectedRemovedByUser, serviceTimeId, serviceTime;
+    var _ref15, expectedServingTime, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -384,8 +384,8 @@ describe('update', function () {
             _ref15 = _context9.sent;
             expectedServingTime = _ref15.serviceTime;
             expectedTag = _ref15.tag;
-            expectedAddedByUser = _ref15.addedByUser;
-            expectedRemovedByUser = _ref15.removedByUser;
+            expectedOwnedByUser = _ref15.ownedByUser;
+            expectedMaintainedByUsers = _ref15.maintainedByUsers;
             _context9.t0 = serviceTimeService;
             _context9.next = 10;
             return (0, _ServingTime.createServingTimeInfo)();
@@ -411,8 +411,8 @@ describe('update', function () {
             (0, _ServingTime.expectServingTime)(serviceTime, expectedServingTime, {
               serviceTimeId: serviceTimeId,
               expectedTag: expectedTag,
-              expectedAddedByUser: expectedAddedByUser,
-              expectedRemovedByUser: expectedRemovedByUser
+              expectedOwnedByUser: expectedOwnedByUser,
+              expectedMaintainedByUsers: expectedMaintainedByUsers
             });
 
           case 20:
@@ -523,7 +523,7 @@ describe('search', function () {
   })));
 
   test('should return the serving time matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedServingTime, expectedTag, expectedAddedByUser, expectedRemovedByUser, results, serviceTimes;
+    var _ref20, expectedServingTime, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, serviceTimes;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -536,8 +536,8 @@ describe('search', function () {
             _ref20 = _context14.sent;
             expectedServingTime = _ref20.serviceTime;
             expectedTag = _ref20.tag;
-            expectedAddedByUser = _ref20.addedByUser;
-            expectedRemovedByUser = _ref20.removedByUser;
+            expectedOwnedByUser = _ref20.ownedByUser;
+            expectedMaintainedByUsers = _ref20.maintainedByUsers;
             _context14.t0 = _immutable2.default;
             _context14.next = 10;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
@@ -573,8 +573,8 @@ describe('search', function () {
               (0, _ServingTime.expectServingTime)(serviceTime, expectedServingTime, {
                 serviceTimeId: serviceTime.get('id'),
                 expectedTag: expectedTag,
-                expectedAddedByUser: expectedAddedByUser,
-                expectedRemovedByUser: expectedRemovedByUser
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers
               });
             });
 
@@ -624,7 +624,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the serving time matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedServingTime, expectedTag, expectedAddedByUser, expectedRemovedByUser, results, serviceTimes, result;
+    var _ref24, expectedServingTime, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, serviceTimes, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -637,8 +637,8 @@ describe('searchAll', function () {
             _ref24 = _context17.sent;
             expectedServingTime = _ref24.serviceTime;
             expectedTag = _ref24.tag;
-            expectedAddedByUser = _ref24.addedByUser;
-            expectedRemovedByUser = _ref24.removedByUser;
+            expectedOwnedByUser = _ref24.ownedByUser;
+            expectedMaintainedByUsers = _ref24.maintainedByUsers;
             _context17.t0 = _immutable2.default;
             _context17.next = 10;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
@@ -686,8 +686,8 @@ describe('searchAll', function () {
               (0, _ServingTime.expectServingTime)(serviceTime, expectedServingTime, {
                 serviceTimeId: serviceTime.get('id'),
                 expectedTag: expectedTag,
-                expectedAddedByUser: expectedAddedByUser,
-                expectedRemovedByUser: expectedRemovedByUser
+                expectedOwnedByUser: expectedOwnedByUser,
+                expectedMaintainedByUsers: expectedMaintainedByUsers
               });
             });
 

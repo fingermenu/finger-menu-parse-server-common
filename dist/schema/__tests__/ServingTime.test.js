@@ -23,7 +23,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var createServingTimeInfo = exports.createServingTimeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var tag, addedByUser, removedByUser, servingTime;
+    var tag, ownedByUser, maintainedByUsers, servingTime;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -37,22 +37,24 @@ var createServingTimeInfo = exports.createServingTimeInfo = function () {
             return _TestHelper2.default.createUser();
 
           case 5:
-            addedByUser = _context.sent;
+            ownedByUser = _context.sent;
             _context.next = 8;
-            return _TestHelper2.default.createUser();
+            return _TestHelper2.default.createUsers();
 
           case 8:
-            removedByUser = _context.sent;
+            maintainedByUsers = _context.sent;
             servingTime = (0, _immutable.Map)({
               tagId: tag.get('id'),
-              addedByUserId: addedByUser.id,
-              removedByUserId: removedByUser.id
+              ownedByUserId: ownedByUser.id,
+              maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
+                return maintainedByUser.id;
+              })
             });
             return _context.abrupt('return', {
               servingTime: servingTime,
               tag: tag,
-              addedByUser: addedByUser,
-              removedByUser: removedByUser
+              ownedByUser: ownedByUser,
+              maintainedByUsers: maintainedByUsers
             });
 
           case 11:
@@ -111,8 +113,8 @@ var expectServingTime = exports.expectServingTime = function expectServingTime(o
       expectedTag = _ref3.expectedTag;
 
   expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
-  expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
-  expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
+  expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
+  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
   if (servingTimeId) {
     expect(object.get('id')).toBe(servingTimeId);

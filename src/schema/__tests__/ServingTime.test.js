@@ -7,19 +7,19 @@ import createTags from '../../services/__tests__/TagService.test';
 
 export const createServingTimeInfo = async () => {
   const tag = (await createTags(1)).first();
-  const addedByUser = await TestHelper.createUser();
-  const removedByUser = await TestHelper.createUser();
+  const ownedByUser = await TestHelper.createUser();
+  const maintainedByUsers = await TestHelper.createUsers();
   const servingTime = Map({
     tagId: tag.get('id'),
-    addedByUserId: addedByUser.id,
-    removedByUserId: removedByUser.id,
+    ownedByUserId: ownedByUser.id,
+    maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
     servingTime,
     tag,
-    addedByUser,
-    removedByUser,
+    ownedByUser,
+    maintainedByUsers,
   };
 };
 
@@ -27,8 +27,8 @@ export const createServingTime = async object => ServingTime.spawn(object || (aw
 
 export const expectServingTime = (object, expectedObject, { servingTimeId, expectedTag } = {}) => {
   expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
-  expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
-  expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
+  expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
+  expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
   if (servingTimeId) {
     expect(object.get('id')).toBe(servingTimeId);
