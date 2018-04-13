@@ -2,13 +2,13 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { DietaryOptions, Tag } from '../schema';
+import { DietaryOption, Tag } from '../schema';
 
-export default class DietaryOptionsService extends ServiceBase {
+export default class DietaryOptionService extends ServiceBase {
   static fields = List.of('tag', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
-    super(DietaryOptions, DietaryOptionsService.buildSearchQuery, DietaryOptionsService.buildIncludeQuery, 'serving time');
+    super(DietaryOption, DietaryOptionService.buildSearchQuery, DietaryOptionService.buildIncludeQuery, 'serving time');
   }
 
   static buildIncludeQuery = (query, criteria) => {
@@ -24,8 +24,8 @@ export default class DietaryOptionsService extends ServiceBase {
   };
 
   static buildSearchQuery = criteria => {
-    const queryWithoutIncludes = ParseWrapperService.createQuery(DietaryOptions, criteria);
-    const query = DietaryOptionsService.buildIncludeQuery(queryWithoutIncludes, criteria);
+    const queryWithoutIncludes = ParseWrapperService.createQuery(DietaryOption, criteria);
+    const query = DietaryOptionService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
     if (!criteria.has('conditions')) {
       return query;
@@ -33,7 +33,7 @@ export default class DietaryOptionsService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    DietaryOptionsService.fields.forEach(field => {
+    DietaryOptionService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addLinkQuery(conditions, query, 'tag', 'tag', Tag);

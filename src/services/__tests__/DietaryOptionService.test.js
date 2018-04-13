@@ -3,11 +3,11 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { DietaryOptionsService } from '../';
-import { createDietaryOptionsInfo, expectDietaryOptions } from '../../schema/__tests__/DietaryOptions.test';
+import { DietaryOptionService } from '../';
+import { createDietaryOptionInfo, expectDietaryOption } from '../../schema/__tests__/DietaryOption.test';
 
 const chance = new Chance();
-const serviceTimeService = new DietaryOptionsService();
+const serviceTimeService = new DietaryOptionService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
@@ -26,51 +26,51 @@ const createCriteria = object =>
     }),
   }).merge(createCriteriaWthoutConditions());
 
-const createDietaryOptionss = async (count, useSameInfo = false) => {
+const createDietaryOptions = async (count, useSameInfo = false) => {
   let serviceTime;
 
   if (useSameInfo) {
-    const { serviceTime: tempDietaryOptions } = await createDietaryOptionsInfo();
+    const { serviceTime: tempDietaryOption } = await createDietaryOptionInfo();
 
-    serviceTime = tempDietaryOptions;
+    serviceTime = tempDietaryOption;
   }
 
   return Immutable.fromJS(
     await Promise.all(
       Range(0, count)
         .map(async () => {
-          let finalDietaryOptions;
+          let finalDietaryOption;
 
           if (useSameInfo) {
-            finalDietaryOptions = serviceTime;
+            finalDietaryOption = serviceTime;
           } else {
-            const { serviceTime: tempDietaryOptions } = await createDietaryOptionsInfo();
+            const { serviceTime: tempDietaryOption } = await createDietaryOptionInfo();
 
-            finalDietaryOptions = tempDietaryOptions;
+            finalDietaryOption = tempDietaryOption;
           }
 
-          return serviceTimeService.read(await serviceTimeService.create(finalDietaryOptions), createCriteriaWthoutConditions());
+          return serviceTimeService.read(await serviceTimeService.create(finalDietaryOption), createCriteriaWthoutConditions());
         })
         .toArray(),
     ),
   );
 };
 
-export default createDietaryOptionss;
+export default createDietaryOptions;
 
 describe('create', () => {
   test('should return the created serving time Id', async () => {
-    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionsInfo()).serviceTime);
+    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
 
     expect(serviceTimeId).toBeDefined();
   });
 
   test('should create the serving time', async () => {
-    const { serviceTime } = await createDietaryOptionsInfo();
+    const { serviceTime } = await createDietaryOptionInfo();
     const serviceTimeId = await serviceTimeService.create(serviceTime);
-    const fetchedDietaryOptions = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
+    const fetchedDietaryOption = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
-    expect(fetchedDietaryOptions).toBeDefined();
+    expect(fetchedDietaryOption).toBeDefined();
   });
 });
 
@@ -87,15 +87,15 @@ describe('read', () => {
 
   test('should read the existing serving time', async () => {
     const {
-      serviceTime: expectedDietaryOptions,
+      serviceTime: expectedDietaryOption,
       tag: expectedTag,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
-    } = await createDietaryOptionsInfo();
-    const serviceTimeId = await serviceTimeService.create(expectedDietaryOptions);
+    } = await createDietaryOptionInfo();
+    const serviceTimeId = await serviceTimeService.create(expectedDietaryOption);
     const serviceTime = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
-    expectDietaryOptions(serviceTime, expectedDietaryOptions, {
+    expectDietaryOption(serviceTime, expectedDietaryOption, {
       serviceTimeId,
       expectedTag,
       expectedOwnedByUser,
@@ -110,7 +110,7 @@ describe('update', () => {
 
     try {
       const serviceTime = await serviceTimeService.read(
-        await serviceTimeService.create((await createDietaryOptionsInfo()).serviceTime),
+        await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime),
         createCriteriaWthoutConditions(),
       );
 
@@ -121,27 +121,27 @@ describe('update', () => {
   });
 
   test('should return the Id of the updated serving time', async () => {
-    const { serviceTime: expectedDietaryOptions } = await createDietaryOptionsInfo();
-    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionsInfo()).serviceTime);
-    const id = await serviceTimeService.update(expectedDietaryOptions.set('id', serviceTimeId));
+    const { serviceTime: expectedDietaryOption } = await createDietaryOptionInfo();
+    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
+    const id = await serviceTimeService.update(expectedDietaryOption.set('id', serviceTimeId));
 
     expect(id).toBe(serviceTimeId);
   });
 
   test('should update the existing serving time', async () => {
     const {
-      serviceTime: expectedDietaryOptions,
+      serviceTime: expectedDietaryOption,
       tag: expectedTag,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
-    } = await createDietaryOptionsInfo();
-    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionsInfo()).serviceTime);
+    } = await createDietaryOptionInfo();
+    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
 
-    await serviceTimeService.update(expectedDietaryOptions.set('id', serviceTimeId));
+    await serviceTimeService.update(expectedDietaryOption.set('id', serviceTimeId));
 
     const serviceTime = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
-    expectDietaryOptions(serviceTime, expectedDietaryOptions, {
+    expectDietaryOption(serviceTime, expectedDietaryOption, {
       serviceTimeId,
       expectedTag,
       expectedOwnedByUser,
@@ -162,7 +162,7 @@ describe('delete', () => {
   });
 
   test('should delete the existing serving time', async () => {
-    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionsInfo()).serviceTime);
+    const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
     await serviceTimeService.delete(serviceTimeId);
 
     try {
@@ -182,24 +182,24 @@ describe('search', () => {
 
   test('should return the serving time matches the criteria', async () => {
     const {
-      serviceTime: expectedDietaryOptions,
+      serviceTime: expectedDietaryOption,
       tag: expectedTag,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
-    } = await createDietaryOptionsInfo();
+    } = await createDietaryOptionInfo();
     const results = Immutable.fromJS(
       await Promise.all(
         Range(0, chance.integer({ min: 1, max: 10 }))
-          .map(async () => serviceTimeService.create(expectedDietaryOptions))
+          .map(async () => serviceTimeService.create(expectedDietaryOption))
           .toArray(),
       ),
     );
-    const serviceTimes = await serviceTimeService.search(createCriteria(expectedDietaryOptions));
+    const serviceTimes = await serviceTimeService.search(createCriteria(expectedDietaryOption));
 
     expect(serviceTimes.count).toBe(results.count);
     serviceTimes.forEach(serviceTime => {
       expect(results.find(_ => _.localeCompare(serviceTime.get('id')) === 0)).toBeDefined();
-      expectDietaryOptions(serviceTime, expectedDietaryOptions, {
+      expectDietaryOption(serviceTime, expectedDietaryOption, {
         serviceTimeId: serviceTime.get('id'),
         expectedTag,
         expectedOwnedByUser,
@@ -229,21 +229,21 @@ describe('searchAll', () => {
 
   test('should return the serving time matches the criteria', async () => {
     const {
-      serviceTime: expectedDietaryOptions,
+      serviceTime: expectedDietaryOption,
       tag: expectedTag,
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
-    } = await createDietaryOptionsInfo();
+    } = await createDietaryOptionInfo();
     const results = Immutable.fromJS(
       await Promise.all(
         Range(0, chance.integer({ min: 2, max: 5 }))
-          .map(async () => serviceTimeService.create(expectedDietaryOptions))
+          .map(async () => serviceTimeService.create(expectedDietaryOption))
           .toArray(),
       ),
     );
 
     let serviceTimes = List();
-    const result = serviceTimeService.searchAll(createCriteria(expectedDietaryOptions));
+    const result = serviceTimeService.searchAll(createCriteria(expectedDietaryOption));
 
     try {
       result.event.subscribe(info => {
@@ -258,7 +258,7 @@ describe('searchAll', () => {
     expect(serviceTimes.count).toBe(results.count);
     serviceTimes.forEach(serviceTime => {
       expect(results.find(_ => _.localeCompare(serviceTime.get('id')) === 0)).toBeDefined();
-      expectDietaryOptions(serviceTime, expectedDietaryOptions, {
+      expectDietaryOption(serviceTime, expectedDietaryOption, {
         serviceTimeId: serviceTime.get('id'),
         expectedTag,
         expectedOwnedByUser,
@@ -274,7 +274,7 @@ describe('exists', () => {
   });
 
   test('should return true if any serving time match provided criteria', async () => {
-    const serviceTimes = await createDietaryOptionss(chance.integer({ min: 1, max: 10 }), true);
+    const serviceTimes = await createDietaryOptions(chance.integer({ min: 1, max: 10 }), true);
 
     expect(await serviceTimeService.exists(createCriteria(serviceTimes.first()))).toBeTruthy();
   });
@@ -286,7 +286,7 @@ describe('count', () => {
   });
 
   test('should return the count of serving time match provided criteria', async () => {
-    const serviceTimes = await createDietaryOptionss(chance.integer({ min: 1, max: 10 }), true);
+    const serviceTimes = await createDietaryOptions(chance.integer({ min: 1, max: 10 }), true);
 
     expect(await serviceTimeService.count(createCriteria(serviceTimes.first()))).toBe(serviceTimes.count());
   });

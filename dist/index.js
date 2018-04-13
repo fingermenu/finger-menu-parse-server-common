@@ -18,6 +18,12 @@ Object.defineProperty(exports, 'ChoiceItemPrice', {
     return _schema.ChoiceItemPrice;
   }
 });
+Object.defineProperty(exports, 'DietaryOption', {
+  enumerable: true,
+  get: function get() {
+    return _schema.DietaryOption;
+  }
+});
 Object.defineProperty(exports, 'Language', {
   enumerable: true,
   get: function get() {
@@ -90,6 +96,12 @@ Object.defineProperty(exports, 'Tag', {
     return _schema.Tag;
   }
 });
+Object.defineProperty(exports, 'UserFeedback', {
+  enumerable: true,
+  get: function get() {
+    return _schema.UserFeedback;
+  }
+});
 
 var _services = require('./services');
 
@@ -103,6 +115,12 @@ Object.defineProperty(exports, 'ChoiceItemPriceService', {
   enumerable: true,
   get: function get() {
     return _services.ChoiceItemPriceService;
+  }
+});
+Object.defineProperty(exports, 'DietaryOptionService', {
+  enumerable: true,
+  get: function get() {
+    return _services.DietaryOptionService;
   }
 });
 Object.defineProperty(exports, 'LanguageService', {
@@ -175,5 +193,11 @@ Object.defineProperty(exports, 'TagService', {
   enumerable: true,
   get: function get() {
     return _services.TagService;
+  }
+});
+Object.defineProperty(exports, 'UserFeedbackService', {
+  enumerable: true,
+  get: function get() {
+    return _services.UserFeedbackService;
   }
 });

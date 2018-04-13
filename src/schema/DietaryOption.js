@@ -5,11 +5,11 @@ import { BaseObject } from '@microbusiness/parse-server-common';
 import Immutable, { List, Map } from 'immutable';
 import Tag from './Tag';
 
-export default class DietaryOptions extends BaseObject {
+export default class DietaryOption extends BaseObject {
   static spawn = info => {
-    const object = new DietaryOptions();
+    const object = new DietaryOption();
 
-    DietaryOptions.updateInfoInternal(object, info);
+    DietaryOption.updateInfoInternal(object, info);
 
     return object;
   };
@@ -21,11 +21,11 @@ export default class DietaryOptions extends BaseObject {
   };
 
   constructor(object) {
-    super(object, 'DietaryOptions');
+    super(object, 'DietaryOption');
   }
 
   updateInfo = info => {
-    DietaryOptions.updateInfoInternal(this.getObject(), info);
+    DietaryOption.updateInfoInternal(this.getObject(), info);
 
     return this;
   };

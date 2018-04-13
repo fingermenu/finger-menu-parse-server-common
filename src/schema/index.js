@@ -2,7 +2,7 @@
 
 export ChoiceItem from './ChoiceItem';
 export ChoiceItemPrice from './ChoiceItemPrice';
-export DietaryOptions from './DietaryOptions';
+export DietaryOption from './DietaryOption';
 export Language from './Language';
 export Menu from './Menu';
 export MenuItem from './MenuItem';
@@ -15,3 +15,4 @@ export Table from './Table';
 export TableState from './TableState';
 export TableStateChange from './TableStateChange';
 export Tag from './Tag';
+export UserFeedback from './UserFeedback';

@@ -3,7 +3,7 @@
 export {
   ChoiceItem,
   ChoiceItemPrice,
-  DietaryOptions,
+  DietaryOption,
   Language,
   Menu,
   MenuItem,
@@ -16,11 +16,12 @@ export {
   TableState,
   TableStateChange,
   Tag,
+  UserFeedback,
 } from './schema';
 export {
   ChoiceItemService,
   ChoiceItemPriceService,
-  DietaryOptionsService,
+  DietaryOptionService,
   LanguageService,
   MenuService,
   MenuItemService,
@@ -33,4 +34,5 @@ export {
   TableStateService,
   TableStateChangeService,
   TagService,
+  UserFeedbackService,
 } from './services';

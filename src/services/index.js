@@ -2,7 +2,7 @@
 
 export ChoiceItemService from './ChoiceItemService';
 export ChoiceItemPriceService from './ChoiceItemPriceService';
-export DietaryOptionsService from './DietaryOptionsService';
+export DietaryOptionService from './DietaryOptionService';
 export LanguageService from './LanguageService';
 export MenuService from './MenuService';
 export MenuItemService from './MenuItemService';
@@ -15,3 +15,4 @@ export TableService from './TableService';
 export TableStateService from './TableStateService';
 export TableStateChangeService from './TableStateChangeService';
 export TagService from './TagService';
+export UserFeedbackService from './UserFeedbackService';

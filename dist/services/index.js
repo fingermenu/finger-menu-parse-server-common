@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
+exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
 
 var _ChoiceItemService2 = require('./ChoiceItemService');
 
@@ -12,6 +12,10 @@ var _ChoiceItemService3 = _interopRequireDefault(_ChoiceItemService2);
 var _ChoiceItemPriceService2 = require('./ChoiceItemPriceService');
 
 var _ChoiceItemPriceService3 = _interopRequireDefault(_ChoiceItemPriceService2);
+
+var _DietaryOptionService2 = require('./DietaryOptionService');
+
+var _DietaryOptionService3 = _interopRequireDefault(_DietaryOptionService2);
 
 var _LanguageService2 = require('./LanguageService');
 
@@ -61,10 +65,15 @@ var _TagService2 = require('./TagService');
 
 var _TagService3 = _interopRequireDefault(_TagService2);
 
+var _UserFeedbackService2 = require('./UserFeedbackService');
+
+var _UserFeedbackService3 = _interopRequireDefault(_UserFeedbackService2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.ChoiceItemService = _ChoiceItemService3.default;
 exports.ChoiceItemPriceService = _ChoiceItemPriceService3.default;
+exports.DietaryOptionService = _DietaryOptionService3.default;
 exports.LanguageService = _LanguageService3.default;
 exports.MenuService = _MenuService3.default;
 exports.MenuItemService = _MenuItemService3.default;
@@ -77,3 +86,4 @@ exports.TableService = _TableService3.default;
 exports.TableStateService = _TableStateService3.default;
 exports.TableStateChangeService = _TableStateChangeService3.default;
 exports.TagService = _TagService3.default;
+exports.UserFeedbackService = _UserFeedbackService3.default;

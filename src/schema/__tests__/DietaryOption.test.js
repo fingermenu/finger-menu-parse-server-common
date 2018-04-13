@@ -2,36 +2,36 @@
 
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { DietaryOptions } from '../';
+import { DietaryOption } from '../';
 import createTags from '../../services/__tests__/TagService.test';
 
-export const createDietaryOptionsInfo = async () => {
+export const createDietaryOptionInfo = async () => {
   const tag = (await createTags(1)).first();
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
-  const dietaryOptions = Map({
+  const dietaryOption = Map({
     tagId: tag.get('id'),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
-    dietaryOptions,
+    dietaryOption,
     tag,
     ownedByUser,
     maintainedByUsers,
   };
 };
 
-export const createDietaryOptions = async object => DietaryOptions.spawn(object || (await createDietaryOptionsInfo()).dietaryOptions);
+export const createDietaryOption = async object => DietaryOption.spawn(object || (await createDietaryOptionInfo()).dietaryOption);
 
-export const expectDietaryOptions = (object, expectedObject, { dietaryOptionsId, expectedTag } = {}) => {
+export const expectDietaryOption = (object, expectedObject, { dietaryOptionId, expectedTag } = {}) => {
   expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
-  if (dietaryOptionsId) {
-    expect(object.get('id')).toBe(dietaryOptionsId);
+  if (dietaryOptionId) {
+    expect(object.get('id')).toBe(dietaryOptionId);
   }
 
   if (expectedTag) {
@@ -41,50 +41,50 @@ export const expectDietaryOptions = (object, expectedObject, { dietaryOptionsId,
 
 describe('constructor', () => {
   test('should set class name', async () => {
-    expect((await createDietaryOptions()).className).toBe('DietaryOptions');
+    expect((await createDietaryOption()).className).toBe('DietaryOption');
   });
 });
 
 describe('static public methods', () => {
   test('spawn should set provided info', async () => {
-    const { dietaryOptions } = await createDietaryOptionsInfo();
-    const object = await createDietaryOptions(dietaryOptions);
+    const { dietaryOption } = await createDietaryOptionInfo();
+    const object = await createDietaryOption(dietaryOption);
     const info = object.getInfo();
 
-    expectDietaryOptions(info, dietaryOptions);
+    expectDietaryOption(info, dietaryOption);
   });
 });
 
 describe('public methods', () => {
   test('getObject should return provided object', async () => {
-    const object = await createDietaryOptions();
+    const object = await createDietaryOption();
 
-    expect(new DietaryOptions(object).getObject()).toBe(object);
+    expect(new DietaryOption(object).getObject()).toBe(object);
   });
 
   test('getId should return provided object Id', async () => {
-    const object = await createDietaryOptions();
+    const object = await createDietaryOption();
 
-    expect(new DietaryOptions(object).getId()).toBe(object.id);
+    expect(new DietaryOption(object).getId()).toBe(object.id);
   });
 
   test('updateInfo should update object info', async () => {
-    const object = await createDietaryOptions();
-    const { dietaryOptions: updatedDietaryOptions } = await createDietaryOptionsInfo();
+    const object = await createDietaryOption();
+    const { dietaryOption: updatedDietaryOption } = await createDietaryOptionInfo();
 
-    object.updateInfo(updatedDietaryOptions);
+    object.updateInfo(updatedDietaryOption);
 
     const info = object.getInfo();
 
-    expectDietaryOptions(info, updatedDietaryOptions);
+    expectDietaryOption(info, updatedDietaryOption);
   });
 
   test('getInfo should return provided info', async () => {
-    const { dietaryOptions } = await createDietaryOptionsInfo();
-    const object = await createDietaryOptions(dietaryOptions);
+    const { dietaryOption } = await createDietaryOptionInfo();
+    const object = await createDietaryOption(dietaryOption);
     const info = object.getInfo();
 
     expect(info.get('id')).toBe(object.getId());
-    expectDietaryOptions(info, dietaryOptions);
+    expectDietaryOption(info, dietaryOption);
   });
 });
