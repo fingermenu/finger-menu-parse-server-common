@@ -2,6 +2,7 @@
 
 export ChoiceItemService from './ChoiceItemService';
 export ChoiceItemPriceService from './ChoiceItemPriceService';
+export DietaryOptionsService from './DietaryOptionsService';
 export LanguageService from './LanguageService';
 export MenuService from './MenuService';
 export MenuItemService from './MenuItemService';

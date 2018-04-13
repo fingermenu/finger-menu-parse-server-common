@@ -3,6 +3,7 @@
 export {
   ChoiceItem,
   ChoiceItemPrice,
+  DietaryOptions,
   Language,
   Menu,
   MenuItem,
@@ -19,6 +20,7 @@ export {
 export {
   ChoiceItemService,
   ChoiceItemPriceService,
+  DietaryOptionsService,
   LanguageService,
   MenuService,
   MenuItemService,
