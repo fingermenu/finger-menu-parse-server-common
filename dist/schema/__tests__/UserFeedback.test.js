@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.expectUserFeedback = exports.createUserFeedback = exports.createUserFeedbackInfo = undefined;
 
+var _chance = require('chance');
+
+var _chance2 = _interopRequireDefault(_chance);
+
 var _immutable = require('immutable');
 
 var _TestHelper = require('../../../TestHelper');
@@ -16,6 +20,8 @@ var _ = require('../');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var chance = new _chance2.default();
 
 var createUserFeedbackInfo = exports.createUserFeedbackInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -30,7 +36,8 @@ var createUserFeedbackInfo = exports.createUserFeedbackInfo = function () {
           case 2:
             addedByUser = _context.sent;
             servingTime = (0, _immutable.Map)({
-              feedback: _TestHelper2.default.createRandomList(),
+              questionAndAnswers: _TestHelper2.default.createRandomList(),
+              other: chance.string(),
               addedByUserId: addedByUser.id
             });
             return _context.abrupt('return', {
@@ -92,7 +99,8 @@ var expectUserFeedback = exports.expectUserFeedback = function expectUserFeedbac
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       servingTimeId = _ref3.servingTimeId;
 
-  expect(object.get('feedback')).toEqual(expectedObject.get('feedback'));
+  expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
+  expect(object.get('other')).toBe(expectedObject.get('other'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {

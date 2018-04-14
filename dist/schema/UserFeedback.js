@@ -45,9 +45,10 @@ UserFeedback.spawn = function (info) {
 };
 
 UserFeedback.updateInfoInternal = function (object, info) {
-  var feedback = info.get('feedback');
+  var questionAndAnswers = info.get('questionAndAnswers');
 
-  object.set('feedback', feedback ? feedback.toJS() : []);
+  object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'other');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
 };
 
@@ -66,7 +67,8 @@ var _initialiseProps = function _initialiseProps() {
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
-      feedback: _immutable2.default.fromJS(object.get('feedback')),
+      questionAndAnswers: _immutable2.default.fromJS(object.get('questionAndAnswers')),
+      other: object.get('other'),
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined
     }));

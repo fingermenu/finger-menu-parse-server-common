@@ -14,9 +14,10 @@ export default class UserFeedback extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    const feedback = info.get('feedback');
+    const questionAndAnswers = info.get('questionAndAnswers');
 
-    object.set('feedback', feedback ? feedback.toJS() : []);
+    object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
+    BaseObject.createStringColumn(object, info, 'other');
     BaseObject.createUserPointer(object, info, 'addedByUser');
   };
 
@@ -37,7 +38,8 @@ export default class UserFeedback extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
-        feedback: Immutable.fromJS(object.get('feedback')),
+        questionAndAnswers: Immutable.fromJS(object.get('questionAndAnswers')),
+        other: object.get('other'),
         addedByUser,
         addedByUserId: addedByUser ? addedByUser.id : undefined,
       }),

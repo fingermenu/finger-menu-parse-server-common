@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { UserFeedback } from '../schema';
 
 export default class UserFeedbackService extends ServiceBase {
-  static fields = List.of('feedback', 'addedByUser');
+  static fields = List.of('questionAndAnswers', 'other', 'addedByUser');
 
   constructor() {
     super(UserFeedback, UserFeedbackService.buildSearchQuery, UserFeedbackService.buildIncludeQuery, 'user feedback');

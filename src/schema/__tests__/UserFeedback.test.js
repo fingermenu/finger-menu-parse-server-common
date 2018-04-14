@@ -1,13 +1,17 @@
 // @flow
 
+import Chance from 'chance';
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
 import { UserFeedback } from '../';
 
+const chance = new Chance();
+
 export const createUserFeedbackInfo = async () => {
   const addedByUser = await TestHelper.createUser();
   const servingTime = Map({
-    feedback: TestHelper.createRandomList(),
+    questionAndAnswers: TestHelper.createRandomList(),
+    other: chance.string(),
     addedByUserId: addedByUser.id,
   });
 
@@ -20,7 +24,8 @@ export const createUserFeedbackInfo = async () => {
 export const createUserFeedback = async object => UserFeedback.spawn(object || (await createUserFeedbackInfo()).servingTime);
 
 export const expectUserFeedback = (object, expectedObject, { servingTimeId } = {}) => {
-  expect(object.get('feedback')).toEqual(expectedObject.get('feedback'));
+  expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
+  expect(object.get('other')).toBe(expectedObject.get('other'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {
