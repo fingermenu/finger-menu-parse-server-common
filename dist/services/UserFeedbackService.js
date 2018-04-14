@@ -28,7 +28,7 @@ var UserFeedbackService = function (_ServiceBase) {
   return UserFeedbackService;
 }(_parseServerCommon.ServiceBase);
 
-UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'other', 'addedByUser');
+UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'others', 'addedByUser');
 
 UserFeedbackService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

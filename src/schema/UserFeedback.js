@@ -17,7 +17,7 @@ export default class UserFeedback extends BaseObject {
     const questionAndAnswers = info.get('questionAndAnswers');
 
     object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
-    BaseObject.createStringColumn(object, info, 'other');
+    BaseObject.createStringColumn(object, info, 'others');
     BaseObject.createUserPointer(object, info, 'addedByUser');
   };
 
@@ -39,7 +39,7 @@ export default class UserFeedback extends BaseObject {
       Map({
         id: this.getId(),
         questionAndAnswers: Immutable.fromJS(object.get('questionAndAnswers')),
-        other: object.get('other'),
+        others: object.get('others'),
         addedByUser,
         addedByUserId: addedByUser ? addedByUser.id : undefined,
       }),

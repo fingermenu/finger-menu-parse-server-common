@@ -48,7 +48,7 @@ UserFeedback.updateInfoInternal = function (object, info) {
   var questionAndAnswers = info.get('questionAndAnswers');
 
   object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'other');
+  _parseServerCommon.BaseObject.createStringColumn(object, info, 'others');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
 };
 
@@ -68,7 +68,7 @@ var _initialiseProps = function _initialiseProps() {
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
       questionAndAnswers: _immutable2.default.fromJS(object.get('questionAndAnswers')),
-      other: object.get('other'),
+      others: object.get('others'),
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined
     }));

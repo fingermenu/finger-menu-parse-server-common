@@ -11,7 +11,7 @@ export const createUserFeedbackInfo = async () => {
   const addedByUser = await TestHelper.createUser();
   const servingTime = Map({
     questionAndAnswers: TestHelper.createRandomList(),
-    other: chance.string(),
+    others: chance.string(),
     addedByUserId: addedByUser.id,
   });
 
@@ -25,7 +25,7 @@ export const createUserFeedback = async object => UserFeedback.spawn(object || (
 
 export const expectUserFeedback = (object, expectedObject, { servingTimeId } = {}) => {
   expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
-  expect(object.get('other')).toBe(expectedObject.get('other'));
+  expect(object.get('others')).toBe(expectedObject.get('others'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {

@@ -31,7 +31,7 @@ var serviceTimeService = new _2.UserFeedbackService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('questionAndAnswers', 'other', 'addedByUser'),
+    fields: _immutable.List.of('questionAndAnswers', 'others', 'addedByUser'),
     include_addedByUser: true
   });
 };
@@ -40,7 +40,7 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       questionAndAnswers: object ? object.get('questionAndAnswers') : _TestHelper2.default.createRandomList(),
-      other: object ? object.get('other') : chance.string(),
+      others: object ? object.get('others') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
