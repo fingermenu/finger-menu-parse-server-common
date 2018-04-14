@@ -38,6 +38,7 @@ var createUserFeedbackInfo = exports.createUserFeedbackInfo = function () {
             servingTime = (0, _immutable.Map)({
               questionAndAnswers: _TestHelper2.default.createRandomList(),
               others: chance.string(),
+              submittedAt: new Date(),
               addedByUserId: addedByUser.id
             });
             return _context.abrupt('return', {
@@ -101,6 +102,7 @@ var expectUserFeedback = exports.expectUserFeedback = function expectUserFeedbac
 
   expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
   expect(object.get('others')).toBe(expectedObject.get('others'));
+  expect(object.get('submittedAt')).toBe(expectedObject.get('submittedAt'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {

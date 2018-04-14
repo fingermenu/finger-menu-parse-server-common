@@ -18,6 +18,7 @@ export default class UserFeedback extends BaseObject {
 
     object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
     BaseObject.createStringColumn(object, info, 'others');
+    object.set('submittedAt', info.get('submittedAt'));
     BaseObject.createUserPointer(object, info, 'addedByUser');
   };
 
@@ -40,6 +41,7 @@ export default class UserFeedback extends BaseObject {
         id: this.getId(),
         questionAndAnswers: Immutable.fromJS(object.get('questionAndAnswers')),
         others: object.get('others'),
+        submittedAt: object.get('submittedAt'),
         addedByUser,
         addedByUserId: addedByUser ? addedByUser.id : undefined,
       }),

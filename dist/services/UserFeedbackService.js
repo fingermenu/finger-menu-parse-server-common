@@ -28,7 +28,7 @@ var UserFeedbackService = function (_ServiceBase) {
   return UserFeedbackService;
 }(_parseServerCommon.ServiceBase);
 
-UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'others', 'addedByUser');
+UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser');
 
 UserFeedbackService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -53,6 +53,8 @@ UserFeedbackService.buildSearchQuery = function (criteria) {
   UserFeedbackService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
+  _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'others', 'othersLowerCase');
+  _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'submittedAt', 'submittedAt');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
 
   return query;

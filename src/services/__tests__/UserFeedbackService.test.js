@@ -12,7 +12,7 @@ const serviceTimeService = new UserFeedbackService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('questionAndAnswers', 'others', 'addedByUser'),
+    fields: List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser'),
     include_addedByUser: true,
   });
 
@@ -21,6 +21,7 @@ const createCriteria = object =>
     conditions: Map({
       questionAndAnswers: object ? object.get('questionAndAnswers') : TestHelper.createRandomList(),
       others: object ? object.get('others') : chance.string(),
+      submittedAt: object ? object.get('submittedAt') : new Date(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());

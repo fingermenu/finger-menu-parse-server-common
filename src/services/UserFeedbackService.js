@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { UserFeedback } from '../schema';
 
 export default class UserFeedbackService extends ServiceBase {
-  static fields = List.of('questionAndAnswers', 'others', 'addedByUser');
+  static fields = List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser');
 
   constructor() {
     super(UserFeedback, UserFeedbackService.buildSearchQuery, UserFeedbackService.buildIncludeQuery, 'user feedback');
@@ -34,6 +34,8 @@ export default class UserFeedbackService extends ServiceBase {
     UserFeedbackService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
+    ServiceBase.addStringQuery(conditions, query, 'others', 'othersLowerCase');
+    ServiceBase.addDateTimeQuery(conditions, query, 'submittedAt', 'submittedAt');
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
 
     return query;

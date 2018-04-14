@@ -49,6 +49,7 @@ UserFeedback.updateInfoInternal = function (object, info) {
 
   object.set('questionAndAnswers', questionAndAnswers ? questionAndAnswers.toJS() : []);
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'others');
+  object.set('submittedAt', info.get('submittedAt'));
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
 };
 
@@ -69,6 +70,7 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       questionAndAnswers: _immutable2.default.fromJS(object.get('questionAndAnswers')),
       others: object.get('others'),
+      submittedAt: object.get('submittedAt'),
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined
     }));
