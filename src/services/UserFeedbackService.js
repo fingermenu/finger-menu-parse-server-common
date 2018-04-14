@@ -2,10 +2,10 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { UserFeedback } from '../schema';
+import { Restaurant, UserFeedback } from '../schema';
 
 export default class UserFeedbackService extends ServiceBase {
-  static fields = List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser');
+  static fields = List.of('questionAndAnswers', 'others', 'submittedAt', 'restaurant', 'addedByUser');
 
   constructor() {
     super(UserFeedback, UserFeedbackService.buildSearchQuery, UserFeedbackService.buildIncludeQuery, 'user feedback');
@@ -16,6 +16,7 @@ export default class UserFeedbackService extends ServiceBase {
       return query;
     }
 
+    ServiceBase.addIncludeQuery(criteria, query, 'restaurant');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
 
     return query;
@@ -36,6 +37,7 @@ export default class UserFeedbackService extends ServiceBase {
     });
     ServiceBase.addStringQuery(conditions, query, 'others', 'othersLowerCase');
     ServiceBase.addDateTimeQuery(conditions, query, 'submittedAt', 'submittedAt');
+    ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', Restaurant);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
 
     return query;

@@ -12,7 +12,8 @@ const serviceTimeService = new UserFeedbackService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser'),
+    fields: List.of('questionAndAnswers', 'others', 'submittedAt', 'restaurant', 'addedByUser'),
+    include_restaurant: true,
     include_addedByUser: true,
   });
 
@@ -22,6 +23,7 @@ const createCriteria = object =>
       questionAndAnswers: object ? object.get('questionAndAnswers') : TestHelper.createRandomList(),
       others: object ? object.get('others') : chance.string(),
       submittedAt: object ? object.get('submittedAt') : new Date(),
+      restaurantId: object ? object.get('restaurantId') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
     }),
   }).merge(createCriteriaWthoutConditions());
@@ -86,12 +88,13 @@ describe('read', () => {
   });
 
   test('should read the existing user feedback', async () => {
-    const { serviceTime: expectedUserFeedback, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
+    const { serviceTime: expectedUserFeedback, restaurant: expectedRestaurant, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
     const serviceTimeId = await serviceTimeService.create(expectedUserFeedback);
     const serviceTime = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
     expectUserFeedback(serviceTime, expectedUserFeedback, {
       serviceTimeId,
+      expectedRestaurant,
       expectedAddedByUser,
     });
   });
@@ -122,7 +125,7 @@ describe('update', () => {
   });
 
   test('should update the existing user feedback', async () => {
-    const { serviceTime: expectedUserFeedback, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
+    const { serviceTime: expectedUserFeedback, restaurant: expectedRestaurant, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
     const serviceTimeId = await serviceTimeService.create((await createUserFeedbackInfo()).serviceTime);
 
     await serviceTimeService.update(expectedUserFeedback.set('id', serviceTimeId));
@@ -131,6 +134,7 @@ describe('update', () => {
 
     expectUserFeedback(serviceTime, expectedUserFeedback, {
       serviceTimeId,
+      expectedRestaurant,
       expectedAddedByUser,
     });
   });
@@ -167,7 +171,7 @@ describe('search', () => {
   });
 
   test('should return the user feedback matches the criteria', async () => {
-    const { serviceTime: expectedUserFeedback, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
+    const { serviceTime: expectedUserFeedback, restaurant: expectedRestaurant, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
     const results = Immutable.fromJS(
       await Promise.all(
         Range(0, chance.integer({ min: 1, max: 10 }))
@@ -182,6 +186,7 @@ describe('search', () => {
       expect(results.find(_ => _.localeCompare(serviceTime.get('id')) === 0)).toBeDefined();
       expectUserFeedback(serviceTime, expectedUserFeedback, {
         serviceTimeId: serviceTime.get('id'),
+        expectedRestaurant,
         expectedAddedByUser,
       });
     });
@@ -207,7 +212,7 @@ describe('searchAll', () => {
   });
 
   test('should return the user feedback matches the criteria', async () => {
-    const { serviceTime: expectedUserFeedback, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
+    const { serviceTime: expectedUserFeedback, restaurant: expectedRestaurant, addedByUser: expectedAddedByUser } = await createUserFeedbackInfo();
     const results = Immutable.fromJS(
       await Promise.all(
         Range(0, chance.integer({ min: 2, max: 5 }))
@@ -234,6 +239,7 @@ describe('searchAll', () => {
       expect(results.find(_ => _.localeCompare(serviceTime.get('id')) === 0)).toBeDefined();
       expectUserFeedback(serviceTime, expectedUserFeedback, {
         serviceTimeId: serviceTime.get('id'),
+        expectedRestaurant,
         expectedAddedByUser,
       });
     });

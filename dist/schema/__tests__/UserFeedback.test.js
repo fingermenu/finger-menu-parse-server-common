@@ -17,6 +17,10 @@ var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
 
+var _RestaurantService = require('../../services/__tests__/RestaurantService.test');
+
+var _RestaurantService2 = _interopRequireDefault(_RestaurantService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -25,28 +29,35 @@ var chance = new _chance2.default();
 
 var createUserFeedbackInfo = exports.createUserFeedbackInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var addedByUser, servingTime;
+    var restaurant, addedByUser, servingTime;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _TestHelper2.default.createUser();
+            return (0, _RestaurantService2.default)(1);
 
           case 2:
+            restaurant = _context.sent.first();
+            _context.next = 5;
+            return _TestHelper2.default.createUser();
+
+          case 5:
             addedByUser = _context.sent;
             servingTime = (0, _immutable.Map)({
               questionAndAnswers: _TestHelper2.default.createRandomList(),
               others: chance.string(),
               submittedAt: new Date(),
+              restaurantId: restaurant.get('id'),
               addedByUserId: addedByUser.id
             });
             return _context.abrupt('return', {
               servingTime: servingTime,
+              restaurant: restaurant,
               addedByUser: addedByUser
             });
 
-          case 5:
+          case 8:
           case 'end':
             return _context.stop();
         }
@@ -98,15 +109,21 @@ var createUserFeedback = exports.createUserFeedback = function () {
 
 var expectUserFeedback = exports.expectUserFeedback = function expectUserFeedback(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      servingTimeId = _ref3.servingTimeId;
+      servingTimeId = _ref3.servingTimeId,
+      expectedRestaurant = _ref3.expectedRestaurant;
 
   expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
   expect(object.get('others')).toBe(expectedObject.get('others'));
   expect(object.get('submittedAt')).toBe(expectedObject.get('submittedAt'));
+  expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {
     expect(object.get('id')).toBe(servingTimeId);
+  }
+
+  if (expectedRestaurant) {
+    expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
   }
 };
 

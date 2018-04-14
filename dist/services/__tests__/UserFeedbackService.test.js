@@ -31,7 +31,8 @@ var serviceTimeService = new _2.UserFeedbackService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser'),
+    fields: _immutable.List.of('questionAndAnswers', 'others', 'submittedAt', 'restaurant', 'addedByUser'),
+    include_restaurant: true,
     include_addedByUser: true
   });
 };
@@ -42,6 +43,7 @@ var createCriteria = function createCriteria(object) {
       questionAndAnswers: object ? object.get('questionAndAnswers') : _TestHelper2.default.createRandomList(),
       others: object ? object.get('others') : chance.string(),
       submittedAt: object ? object.get('submittedAt') : new Date(),
+      restaurantId: object ? object.get('restaurantId') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string()
     })
   }).merge(createCriteriaWthoutConditions());
@@ -241,7 +243,7 @@ describe('read', function () {
   })));
 
   test('should read the existing user feedback', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedUserFeedback, expectedAddedByUser, serviceTimeId, serviceTime;
+    var _ref10, expectedUserFeedback, expectedRestaurant, expectedAddedByUser, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -253,25 +255,27 @@ describe('read', function () {
           case 2:
             _ref10 = _context6.sent;
             expectedUserFeedback = _ref10.serviceTime;
+            expectedRestaurant = _ref10.restaurant;
             expectedAddedByUser = _ref10.addedByUser;
-            _context6.next = 7;
+            _context6.next = 8;
             return serviceTimeService.create(expectedUserFeedback);
 
-          case 7:
+          case 8:
             serviceTimeId = _context6.sent;
-            _context6.next = 10;
+            _context6.next = 11;
             return serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
-          case 10:
+          case 11:
             serviceTime = _context6.sent;
 
 
             (0, _UserFeedback.expectUserFeedback)(serviceTime, expectedUserFeedback, {
               serviceTimeId: serviceTimeId,
+              expectedRestaurant: expectedRestaurant,
               expectedAddedByUser: expectedAddedByUser
             });
 
-          case 12:
+          case 13:
           case 'end':
             return _context6.stop();
         }
@@ -370,7 +374,7 @@ describe('update', function () {
   })));
 
   test('should update the existing user feedback', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedUserFeedback, expectedAddedByUser, serviceTimeId, serviceTime;
+    var _ref15, expectedUserFeedback, expectedRestaurant, expectedAddedByUser, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -382,35 +386,37 @@ describe('update', function () {
           case 2:
             _ref15 = _context9.sent;
             expectedUserFeedback = _ref15.serviceTime;
+            expectedRestaurant = _ref15.restaurant;
             expectedAddedByUser = _ref15.addedByUser;
             _context9.t0 = serviceTimeService;
-            _context9.next = 8;
+            _context9.next = 9;
             return (0, _UserFeedback.createUserFeedbackInfo)();
 
-          case 8:
+          case 9:
             _context9.t1 = _context9.sent.serviceTime;
-            _context9.next = 11;
+            _context9.next = 12;
             return _context9.t0.create.call(_context9.t0, _context9.t1);
 
-          case 11:
+          case 12:
             serviceTimeId = _context9.sent;
-            _context9.next = 14;
+            _context9.next = 15;
             return serviceTimeService.update(expectedUserFeedback.set('id', serviceTimeId));
 
-          case 14:
-            _context9.next = 16;
+          case 15:
+            _context9.next = 17;
             return serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
 
-          case 16:
+          case 17:
             serviceTime = _context9.sent;
 
 
             (0, _UserFeedback.expectUserFeedback)(serviceTime, expectedUserFeedback, {
               serviceTimeId: serviceTimeId,
+              expectedRestaurant: expectedRestaurant,
               expectedAddedByUser: expectedAddedByUser
             });
 
-          case 18:
+          case 19:
           case 'end':
             return _context9.stop();
         }
@@ -518,7 +524,7 @@ describe('search', function () {
   })));
 
   test('should return the user feedback matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedUserFeedback, expectedAddedByUser, results, serviceTimes;
+    var _ref20, expectedUserFeedback, expectedRestaurant, expectedAddedByUser, results, serviceTimes;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -530,9 +536,10 @@ describe('search', function () {
           case 2:
             _ref20 = _context14.sent;
             expectedUserFeedback = _ref20.serviceTime;
+            expectedRestaurant = _ref20.restaurant;
             expectedAddedByUser = _ref20.addedByUser;
             _context14.t0 = _immutable2.default;
-            _context14.next = 8;
+            _context14.next = 9;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -548,13 +555,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 8:
+          case 9:
             _context14.t1 = _context14.sent;
             results = _context14.t0.fromJS.call(_context14.t0, _context14.t1);
-            _context14.next = 12;
+            _context14.next = 13;
             return serviceTimeService.search(createCriteria(expectedUserFeedback));
 
-          case 12:
+          case 13:
             serviceTimes = _context14.sent;
 
 
@@ -565,11 +572,12 @@ describe('search', function () {
               })).toBeDefined();
               (0, _UserFeedback.expectUserFeedback)(serviceTime, expectedUserFeedback, {
                 serviceTimeId: serviceTime.get('id'),
+                expectedRestaurant: expectedRestaurant,
                 expectedAddedByUser: expectedAddedByUser
               });
             });
 
-          case 15:
+          case 16:
           case 'end':
             return _context14.stop();
         }
@@ -615,7 +623,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the user feedback matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedUserFeedback, expectedAddedByUser, results, serviceTimes, result;
+    var _ref24, expectedUserFeedback, expectedRestaurant, expectedAddedByUser, results, serviceTimes, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -627,9 +635,10 @@ describe('searchAll', function () {
           case 2:
             _ref24 = _context17.sent;
             expectedUserFeedback = _ref24.serviceTime;
+            expectedRestaurant = _ref24.restaurant;
             expectedAddedByUser = _ref24.addedByUser;
             _context17.t0 = _immutable2.default;
-            _context17.next = 8;
+            _context17.next = 9;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -645,27 +654,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 8:
+          case 9:
             _context17.t1 = _context17.sent;
             results = _context17.t0.fromJS.call(_context17.t0, _context17.t1);
             serviceTimes = (0, _immutable.List)();
             result = serviceTimeService.searchAll(createCriteria(expectedUserFeedback));
-            _context17.prev = 12;
+            _context17.prev = 13;
 
             result.event.subscribe(function (info) {
               serviceTimes = serviceTimes.push(info);
             });
 
-            _context17.next = 16;
+            _context17.next = 17;
             return result.promise;
 
-          case 16:
-            _context17.prev = 16;
+          case 17:
+            _context17.prev = 17;
 
             result.event.unsubscribeAll();
-            return _context17.finish(16);
+            return _context17.finish(17);
 
-          case 19:
+          case 20:
 
             expect(serviceTimes.count).toBe(results.count);
             serviceTimes.forEach(function (serviceTime) {
@@ -674,16 +683,17 @@ describe('searchAll', function () {
               })).toBeDefined();
               (0, _UserFeedback.expectUserFeedback)(serviceTime, expectedUserFeedback, {
                 serviceTimeId: serviceTime.get('id'),
+                expectedRestaurant: expectedRestaurant,
                 expectedAddedByUser: expectedAddedByUser
               });
             });
 
-          case 21:
+          case 22:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[12,, 16, 19]]);
+    }, _callee17, undefined, [[13,, 17, 20]]);
   })));
 });
 

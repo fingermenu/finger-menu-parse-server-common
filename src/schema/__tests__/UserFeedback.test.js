@@ -4,34 +4,43 @@ import Chance from 'chance';
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
 import { UserFeedback } from '../';
+import createRestaurants from '../../services/__tests__/RestaurantService.test';
 
 const chance = new Chance();
 
 export const createUserFeedbackInfo = async () => {
+  const restaurant = (await createRestaurants(1)).first();
   const addedByUser = await TestHelper.createUser();
   const servingTime = Map({
     questionAndAnswers: TestHelper.createRandomList(),
     others: chance.string(),
     submittedAt: new Date(),
+    restaurantId: restaurant.get('id'),
     addedByUserId: addedByUser.id,
   });
 
   return {
     servingTime,
+    restaurant,
     addedByUser,
   };
 };
 
 export const createUserFeedback = async object => UserFeedback.spawn(object || (await createUserFeedbackInfo()).servingTime);
 
-export const expectUserFeedback = (object, expectedObject, { servingTimeId } = {}) => {
+export const expectUserFeedback = (object, expectedObject, { servingTimeId, expectedRestaurant } = {}) => {
   expect(object.get('questionAndAnswers')).toEqual(expectedObject.get('questionAndAnswers'));
   expect(object.get('others')).toBe(expectedObject.get('others'));
   expect(object.get('submittedAt')).toBe(expectedObject.get('submittedAt'));
+  expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
 
   if (servingTimeId) {
     expect(object.get('id')).toBe(servingTimeId);
+  }
+
+  if (expectedRestaurant) {
+    expect(object.get('restaurantId')).toEqual(expectedRestaurant.get('id'));
   }
 };
 

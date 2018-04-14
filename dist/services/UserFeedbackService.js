@@ -28,13 +28,14 @@ var UserFeedbackService = function (_ServiceBase) {
   return UserFeedbackService;
 }(_parseServerCommon.ServiceBase);
 
-UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'others', 'submittedAt', 'addedByUser');
+UserFeedbackService.fields = _immutable.List.of('questionAndAnswers', 'others', 'submittedAt', 'restaurant', 'addedByUser');
 
 UserFeedbackService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'restaurant');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
 
   return query;
@@ -55,6 +56,7 @@ UserFeedbackService.buildSearchQuery = function (criteria) {
   });
   _parseServerCommon.ServiceBase.addStringQuery(conditions, query, 'others', 'othersLowerCase');
   _parseServerCommon.ServiceBase.addDateTimeQuery(conditions, query, 'submittedAt', 'submittedAt');
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'restaurant', 'restaurant', _schema.Restaurant);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
 
   return query;
