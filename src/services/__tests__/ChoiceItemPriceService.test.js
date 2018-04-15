@@ -11,9 +11,8 @@ const choiceItemPriceService = new ChoiceItemPriceService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'size', 'addedByUser', 'removedByUser', 'tags'),
+    fields: List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'choiceItem', 'addedByUser', 'removedByUser', 'tags'),
     include_choiceItem: true,
-    include_size: true,
     include_addedByUser: true,
     include_removedByUser: true,
     include_tags: true,
@@ -27,7 +26,6 @@ const createCriteria = object =>
       validFrom: object ? object.get('validFrom') : new Date(),
       validUntil: object ? object.get('validUntil') : new Date(),
       choiceItemId: object ? object.get('choiceItemId') : chance.string(),
-      sizeId: object ? object.get('sizeId') : chance.string(),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
@@ -97,7 +95,6 @@ describe('read', () => {
     const {
       choiceItemPrice: expectedChoiceItemPrice,
       choiceItem: expectedChoiceItem,
-      size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
       tags: expectedTags,
@@ -108,7 +105,6 @@ describe('read', () => {
     expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
       choiceItemPriceId,
       expectedChoiceItem,
-      expectedSize,
       expectedAddedByUser,
       expectedRemovedByUser,
       expectedTags,
@@ -144,7 +140,6 @@ describe('update', () => {
     const {
       choiceItemPrice: expectedChoiceItemPrice,
       choiceItem: expectedChoiceItem,
-      size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
       tags: expectedTags,
@@ -158,7 +153,6 @@ describe('update', () => {
     expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
       choiceItemPriceId,
       expectedChoiceItem,
-      expectedSize,
       expectedAddedByUser,
       expectedRemovedByUser,
       expectedTags,
@@ -200,7 +194,6 @@ describe('search', () => {
     const {
       choiceItemPrice: expectedChoiceItemPrice,
       choiceItem: expectedChoiceItem,
-      size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
       tags: expectedTags,
@@ -220,7 +213,6 @@ describe('search', () => {
       expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
         choiceItemPriceId: choiceItemPrice.get('id'),
         expectedChoiceItem,
-        expectedSize,
         expectedAddedByUser,
         expectedRemovedByUser,
         expectedTags,
@@ -251,7 +243,6 @@ describe('searchAll', () => {
     const {
       choiceItemPrice: expectedChoiceItemPrice,
       choiceItem: expectedChoiceItem,
-      size: expectedSize,
       addedByUser: expectedAddedByUser,
       removedByUser: expectedRemovedByUser,
       tags: expectedTags,
@@ -283,7 +274,6 @@ describe('searchAll', () => {
       expectChoiceItemPrice(choiceItemPrice, expectedChoiceItemPrice, {
         choiceItemPriceId: choiceItemPrice.get('id'),
         expectedChoiceItem,
-        expectedSize,
         expectedAddedByUser,
         expectedRemovedByUser,
         expectedTags,

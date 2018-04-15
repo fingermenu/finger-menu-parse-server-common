@@ -1,21 +1,23 @@
 // @flow
 
 import { Map } from 'immutable';
-import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
 import { Size } from '../';
+import createTags from '../../services/__tests__/TagService.test';
 
 export const createSizeInfo = async () => {
+  const tag = (await createTags(1)).first();
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
   const size = Map({
-    name: TestHelper.createRandomMultiLanguagesString(),
+    tagId: tag.get('id'),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
     size,
+    tag,
     ownedByUser,
     maintainedByUsers,
   };
@@ -23,13 +25,17 @@ export const createSizeInfo = async () => {
 
 export const createSize = async object => Size.spawn(object || (await createSizeInfo()).size);
 
-export const expectSize = (object, expectedObject, { sizeId } = {}) => {
-  expect(object.get('name')).toEqual(expectedObject.get('name'));
+export const expectSize = (object, expectedObject, { sizeId, expectedTag } = {}) => {
+  expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
   if (sizeId) {
     expect(object.get('id')).toBe(sizeId);
+  }
+
+  if (expectedTag) {
+    expect(object.get('tagId')).toEqual(expectedTag.get('id'));
   }
 };
 

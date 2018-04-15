@@ -20,10 +20,6 @@ var _MenuItem = require('./MenuItem');
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-var _Size = require('./Size');
-
-var _Size2 = _interopRequireDefault(_Size);
-
 var _Tag = require('./Tag');
 
 var _Tag2 = _interopRequireDefault(_Tag);
@@ -66,7 +62,6 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
-  _parseServerCommon.BaseObject.createPointer(object, info, 'size', _Size2.default);
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
@@ -103,7 +98,6 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
     var menuItem = object.get('menuItem');
-    var size = object.get('size');
     var toBeServedWithMenuItemPriceObjects = object.get('toBeServedWithMenuItemPrices');
     var toBeServedWithMenuItemPrices = toBeServedWithMenuItemPriceObjects ? _immutable2.default.fromJS(toBeServedWithMenuItemPriceObjects).map(function (toBeServedWithMenuItemPrice) {
       return new MenuItemPrice(toBeServedWithMenuItemPrice).getInfo();
@@ -127,8 +121,6 @@ var _initialiseProps = function _initialiseProps() {
       validUntil: object.get('validUntil'),
       menuItem: menuItem,
       menuItemId: menuItem ? menuItem.id : undefined,
-      size: size,
-      sizeId: size ? size.id : undefined,
       toBeServedWithMenuItemPrices: toBeServedWithMenuItemPrices,
       toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPrices ? toBeServedWithMenuItemPrices.map(function (toBeServedWithMenuItemPrice) {
         return toBeServedWithMenuItemPrice.get('id');

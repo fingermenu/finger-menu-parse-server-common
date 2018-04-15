@@ -21,10 +21,6 @@ var _ChoiceItemService = require('../../services/__tests__/ChoiceItemService.tes
 
 var _ChoiceItemService2 = _interopRequireDefault(_ChoiceItemService);
 
-var _SizeService = require('../../services/__tests__/SizeService.test');
-
-var _SizeService2 = _interopRequireDefault(_SizeService);
-
 var _TagService = require('../../services/__tests__/TagService.test');
 
 var _TagService2 = _interopRequireDefault(_TagService);
@@ -37,7 +33,7 @@ var chance = new _chance2.default();
 
 var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var choiceItem, size, addedByUser, removedByUser, tags, choiceItemPrice;
+    var choiceItem, addedByUser, removedByUser, tags, choiceItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -48,24 +44,19 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
           case 2:
             choiceItem = _context.sent.first();
             _context.next = 5;
-            return (0, _SizeService2.default)(1);
+            return _TestHelper2.default.createUser();
 
           case 5:
-            size = _context.sent.first();
+            addedByUser = _context.sent;
             _context.next = 8;
             return _TestHelper2.default.createUser();
 
           case 8:
-            addedByUser = _context.sent;
-            _context.next = 11;
-            return _TestHelper2.default.createUser();
-
-          case 11:
             removedByUser = _context.sent;
-            _context.next = 14;
+            _context.next = 11;
             return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
 
-          case 14:
+          case 11:
             tags = _context.sent;
             choiceItemPrice = (0, _immutable.Map)({
               currentPrice: chance.floating({ min: 0, max: 1000 }),
@@ -73,7 +64,6 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
               validFrom: new Date(),
               validUntil: new Date(),
               choiceItemId: choiceItem.get('id'),
-              sizeId: size.get('id'),
               addedByUserId: addedByUser.id,
               removedByUserId: removedByUser.id,
               tagIds: tags.map(function (tag) {
@@ -83,13 +73,12 @@ var createChoiceItemPriceInfo = exports.createChoiceItemPriceInfo = function () 
             return _context.abrupt('return', {
               choiceItemPrice: choiceItemPrice,
               choiceItem: choiceItem,
-              size: size,
               addedByUser: addedByUser,
               removedByUser: removedByUser,
               tags: tags
             });
 
-          case 17:
+          case 14:
           case 'end':
             return _context.stop();
         }
@@ -143,7 +132,6 @@ var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoic
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
       choiceItemPriceId = _ref3.choiceItemPriceId,
       expectedChoiceItem = _ref3.expectedChoiceItem,
-      expectedSize = _ref3.expectedSize,
       expectedTags = _ref3.expectedTags;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
@@ -151,7 +139,6 @@ var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoic
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('choiceItemId')).toBe(expectedObject.get('choiceItemId'));
-  expect(object.get('sizeId')).toBe(expectedObject.get('sizeId'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
 
@@ -161,10 +148,6 @@ var expectChoiceItemPrice = exports.expectChoiceItemPrice = function expectChoic
 
   if (expectedChoiceItem) {
     expect(object.get('choiceItemId')).toEqual(expectedChoiceItem.get('id'));
-  }
-
-  if (expectedSize) {
-    expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
   }
 
   if (expectedTags) {

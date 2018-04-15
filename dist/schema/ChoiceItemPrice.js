@@ -16,10 +16,6 @@ var _ChoiceItem = require('./ChoiceItem');
 
 var _ChoiceItem2 = _interopRequireDefault(_ChoiceItem);
 
-var _Size = require('./Size');
-
-var _Size2 = _interopRequireDefault(_Size);
-
 var _Tag = require('./Tag');
 
 var _Tag2 = _interopRequireDefault(_Tag);
@@ -62,7 +58,6 @@ ChoiceItemPrice.updateInfoInternal = function (object, info) {
   object.set('validFrom', info.get('validFrom'));
   object.set('validUntil', info.get('validUntil'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'choiceItem', _ChoiceItem2.default);
-  _parseServerCommon.BaseObject.createPointer(object, info, 'size', _Size2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
@@ -80,7 +75,6 @@ var _initialiseProps = function _initialiseProps() {
   this.getInfo = function () {
     var object = _this2.getObject();
     var choiceItem = object.get('choiceItem');
-    var size = object.get('size');
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
     var tagObjects = object.get('tags');
@@ -96,8 +90,6 @@ var _initialiseProps = function _initialiseProps() {
       validUntil: object.get('validUntil'),
       choiceItem: choiceItem,
       choiceItemId: choiceItem ? choiceItem.id : undefined,
-      size: size,
-      sizeId: size ? size.id : undefined,
       addedByUser: addedByUser,
       addedByUserId: addedByUser ? addedByUser.id : undefined,
       removedByUser: removedByUser,

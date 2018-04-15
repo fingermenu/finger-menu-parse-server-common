@@ -31,7 +31,7 @@ var menuItemPriceService = new _2.MenuItemPriceService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'size', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags'),
+    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags'),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true,
@@ -47,7 +47,6 @@ var createCriteria = function createCriteria(object) {
       validFrom: object ? object.get('validFrom') : new Date(),
       validUntil: object ? object.get('validUntil') : new Date(),
       menuItemId: object ? object.get('menuItemId') : chance.string(),
-      sizeId: object ? object.get('sizeId') : chance.string(),
       toBeServedWithMenuItemPriceIds: object ? object.get('toBeServedWithMenuItemPriceIds') : (0, _immutable.List)(),
       choiceItemPriceIds: object ? object.get('choiceItemPriceIds') : _immutable.List.of(chance.string(), chance.string()),
       addedByUserId: object ? object.get('addedByUserId') : chance.string(),
@@ -274,7 +273,7 @@ describe('read', function () {
   })));
 
   test('should read the existing menu item price', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref10, expectedMenuItemPrice, expectedMenuItem, expectedSize, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, menuItemPriceId, menuItemPrice;
+    var _ref10, expectedMenuItemPrice, expectedMenuItem, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, menuItemPriceId, menuItemPrice;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -300,34 +299,32 @@ describe('read', function () {
             _ref10 = _context6.sent;
             expectedMenuItemPrice = _ref10.menuItemPrice;
             expectedMenuItem = _ref10.menuItem;
-            expectedSize = _ref10.size;
             expectedChoiceItemPrices = _ref10.choiceItemPrices;
             expectedAddedByUser = _ref10.addedByUser;
             expectedRemovedByUser = _ref10.removedByUser;
             expectedTags = _ref10.tags;
-            _context6.next = 18;
+            _context6.next = 17;
             return menuItemPriceService.create(expectedMenuItemPrice);
 
-          case 18:
+          case 17:
             menuItemPriceId = _context6.sent;
-            _context6.next = 21;
+            _context6.next = 20;
             return menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
 
-          case 21:
+          case 20:
             menuItemPrice = _context6.sent;
 
 
             (0, _MenuItemPrice.expectMenuItemPrice)(menuItemPrice, expectedMenuItemPrice, {
               menuItemPriceId: menuItemPriceId,
               expectedMenuItem: expectedMenuItem,
-              expectedSize: expectedSize,
               expectedChoiceItemPrices: expectedChoiceItemPrices,
               expectedAddedByUser: expectedAddedByUser,
               expectedRemovedByUser: expectedRemovedByUser,
               expectedTags: expectedTags
             });
 
-          case 23:
+          case 22:
           case 'end':
             return _context6.stop();
         }
@@ -426,7 +423,7 @@ describe('update', function () {
   })));
 
   test('should update the existing menu item price', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-    var _ref15, expectedMenuItemPrice, expectedMenuItem, expectedSize, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, menuItemPriceId, menuItemPrice;
+    var _ref15, expectedMenuItemPrice, expectedMenuItem, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, menuItemPriceId, menuItemPrice;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
@@ -452,44 +449,42 @@ describe('update', function () {
             _ref15 = _context9.sent;
             expectedMenuItemPrice = _ref15.menuItemPrice;
             expectedMenuItem = _ref15.menuItem;
-            expectedSize = _ref15.size;
             expectedChoiceItemPrices = _ref15.choiceItemPrices;
             expectedAddedByUser = _ref15.addedByUser;
             expectedRemovedByUser = _ref15.removedByUser;
             expectedTags = _ref15.tags;
             _context9.t4 = menuItemPriceService;
-            _context9.next = 19;
+            _context9.next = 18;
             return (0, _MenuItemPrice.createMenuItemPriceInfo)();
 
-          case 19:
+          case 18:
             _context9.t5 = _context9.sent.menuItemPrice;
-            _context9.next = 22;
+            _context9.next = 21;
             return _context9.t4.create.call(_context9.t4, _context9.t5);
 
-          case 22:
+          case 21:
             menuItemPriceId = _context9.sent;
-            _context9.next = 25;
+            _context9.next = 24;
             return menuItemPriceService.update(expectedMenuItemPrice.set('id', menuItemPriceId));
 
-          case 25:
-            _context9.next = 27;
+          case 24:
+            _context9.next = 26;
             return menuItemPriceService.read(menuItemPriceId, createCriteriaWthoutConditions());
 
-          case 27:
+          case 26:
             menuItemPrice = _context9.sent;
 
 
             (0, _MenuItemPrice.expectMenuItemPrice)(menuItemPrice, expectedMenuItemPrice, {
               menuItemPriceId: menuItemPriceId,
               expectedMenuItem: expectedMenuItem,
-              expectedSize: expectedSize,
               expectedChoiceItemPrices: expectedChoiceItemPrices,
               expectedAddedByUser: expectedAddedByUser,
               expectedRemovedByUser: expectedRemovedByUser,
               expectedTags: expectedTags
             });
 
-          case 29:
+          case 28:
           case 'end':
             return _context9.stop();
         }
@@ -597,7 +592,7 @@ describe('search', function () {
   })));
 
   test('should return the menu item price matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
-    var _ref20, expectedMenuItemPrice, expectedMenuItem, expectedSize, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, menuItemPrices;
+    var _ref20, expectedMenuItemPrice, expectedMenuItem, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, menuItemPrices;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
       while (1) {
@@ -623,13 +618,12 @@ describe('search', function () {
             _ref20 = _context14.sent;
             expectedMenuItemPrice = _ref20.menuItemPrice;
             expectedMenuItem = _ref20.menuItem;
-            expectedSize = _ref20.size;
             expectedChoiceItemPrices = _ref20.choiceItemPrices;
             expectedAddedByUser = _ref20.addedByUser;
             expectedRemovedByUser = _ref20.removedByUser;
             expectedTags = _ref20.tags;
             _context14.t4 = _immutable2.default;
-            _context14.next = 19;
+            _context14.next = 18;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 1, max: 10 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
                 while (1) {
@@ -645,13 +639,13 @@ describe('search', function () {
               }, _callee13, undefined);
             }))).toArray());
 
-          case 19:
+          case 18:
             _context14.t5 = _context14.sent;
             results = _context14.t4.fromJS.call(_context14.t4, _context14.t5);
-            _context14.next = 23;
+            _context14.next = 22;
             return menuItemPriceService.search(createCriteria(expectedMenuItemPrice));
 
-          case 23:
+          case 22:
             menuItemPrices = _context14.sent;
 
 
@@ -663,7 +657,6 @@ describe('search', function () {
               (0, _MenuItemPrice.expectMenuItemPrice)(menuItemPrice, expectedMenuItemPrice, {
                 menuItemPriceId: menuItemPrice.get('id'),
                 expectedMenuItem: expectedMenuItem,
-                expectedSize: expectedSize,
                 expectedChoiceItemPrices: expectedChoiceItemPrices,
                 expectedAddedByUser: expectedAddedByUser,
                 expectedRemovedByUser: expectedRemovedByUser,
@@ -671,7 +664,7 @@ describe('search', function () {
               });
             });
 
-          case 26:
+          case 25:
           case 'end':
             return _context14.stop();
         }
@@ -717,7 +710,7 @@ describe('searchAll', function () {
   })));
 
   test('should return the menu item price matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
-    var _ref24, expectedMenuItemPrice, expectedMenuItem, expectedSize, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, menuItemPrices, result;
+    var _ref24, expectedMenuItemPrice, expectedMenuItem, expectedChoiceItemPrices, expectedAddedByUser, expectedRemovedByUser, expectedTags, results, menuItemPrices, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
       while (1) {
@@ -743,13 +736,12 @@ describe('searchAll', function () {
             _ref24 = _context17.sent;
             expectedMenuItemPrice = _ref24.menuItemPrice;
             expectedMenuItem = _ref24.menuItem;
-            expectedSize = _ref24.size;
             expectedChoiceItemPrices = _ref24.choiceItemPrices;
             expectedAddedByUser = _ref24.addedByUser;
             expectedRemovedByUser = _ref24.removedByUser;
             expectedTags = _ref24.tags;
             _context17.t4 = _immutable2.default;
-            _context17.next = 19;
+            _context17.next = 18;
             return Promise.all((0, _immutable.Range)(0, chance.integer({ min: 2, max: 5 })).map(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16() {
               return regeneratorRuntime.wrap(function _callee16$(_context16) {
                 while (1) {
@@ -765,27 +757,27 @@ describe('searchAll', function () {
               }, _callee16, undefined);
             }))).toArray());
 
-          case 19:
+          case 18:
             _context17.t5 = _context17.sent;
             results = _context17.t4.fromJS.call(_context17.t4, _context17.t5);
             menuItemPrices = (0, _immutable.List)();
             result = menuItemPriceService.searchAll(createCriteria(expectedMenuItemPrice));
-            _context17.prev = 23;
+            _context17.prev = 22;
 
             result.event.subscribe(function (info) {
               menuItemPrices = menuItemPrices.push(info);
             });
 
-            _context17.next = 27;
+            _context17.next = 26;
             return result.promise;
 
-          case 27:
-            _context17.prev = 27;
+          case 26:
+            _context17.prev = 26;
 
             result.event.unsubscribeAll();
-            return _context17.finish(27);
+            return _context17.finish(26);
 
-          case 30:
+          case 29:
 
             expect(menuItemPrices.count).toBe(results.count);
             menuItemPrices.forEach(function (menuItemPrice) {
@@ -795,7 +787,6 @@ describe('searchAll', function () {
               (0, _MenuItemPrice.expectMenuItemPrice)(menuItemPrice, expectedMenuItemPrice, {
                 menuItemPriceId: menuItemPrice.get('id'),
                 expectedMenuItem: expectedMenuItem,
-                expectedSize: expectedSize,
                 expectedChoiceItemPrices: expectedChoiceItemPrices,
                 expectedAddedByUser: expectedAddedByUser,
                 expectedRemovedByUser: expectedRemovedByUser,
@@ -803,12 +794,12 @@ describe('searchAll', function () {
               });
             });
 
-          case 32:
+          case 31:
           case 'end':
             return _context17.stop();
         }
       }
-    }, _callee17, undefined, [[23,, 27, 30]]);
+    }, _callee17, undefined, [[22,, 26, 29]]);
   })));
 });
 

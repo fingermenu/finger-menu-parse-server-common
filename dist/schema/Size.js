@@ -12,6 +12,10 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
+var _Tag = require('./Tag');
+
+var _Tag2 = _interopRequireDefault(_Tag);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45,7 +49,7 @@ Size.spawn = function (info) {
 };
 
 Size.updateInfoInternal = function (object, info) {
-  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+  _parseServerCommon.BaseObject.createPointer(object, info, 'tag', _Tag2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
@@ -61,12 +65,14 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getInfo = function () {
     var object = _this2.getObject();
+    var tag = object.get('tag');
     var ownedByUser = object.get('ownedByUser');
     var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
-      name: _this2.getMultiLanguagesString('name'),
+      tag: tag,
+      tagId: tag ? tag.id : undefined,
       ownedByUser: ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers: maintainedByUsers,

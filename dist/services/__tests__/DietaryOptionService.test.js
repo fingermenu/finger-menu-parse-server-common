@@ -142,7 +142,7 @@ exports.default = createDietaryOptions;
 
 
 describe('create', function () {
-  test('should return the created serving time Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  test('should return the created dietary option Id', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
     var serviceTimeId;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -171,7 +171,7 @@ describe('create', function () {
     }, _callee3, undefined);
   })));
 
-  test('should create the serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+  test('should create the dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     var _ref7, serviceTime, serviceTimeId, fetchedDietaryOption;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -208,7 +208,7 @@ describe('create', function () {
 });
 
 describe('read', function () {
-  test('should reject if the provided serving time Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+  test('should reject if the provided dietary option Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
     var serviceTimeId;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
@@ -227,7 +227,7 @@ describe('read', function () {
             _context5.prev = 6;
             _context5.t0 = _context5['catch'](1);
 
-            expect(_context5.t0.message).toBe('No serving time found with Id: ' + serviceTimeId);
+            expect(_context5.t0.message).toBe('No dietary option found with Id: ' + serviceTimeId);
 
           case 9:
           case 'end':
@@ -237,7 +237,7 @@ describe('read', function () {
     }, _callee5, undefined, [[1, 6]]);
   })));
 
-  test('should read the existing serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+  test('should read the existing dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
     var _ref10, expectedDietaryOption, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
@@ -282,7 +282,7 @@ describe('read', function () {
 });
 
 describe('update', function () {
-  test('should reject if the provided serving time Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+  test('should reject if the provided dietary option Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
     var serviceTimeId, serviceTime;
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
@@ -319,7 +319,7 @@ describe('update', function () {
             _context7.prev = 18;
             _context7.t5 = _context7['catch'](1);
 
-            expect(_context7.t5.message).toBe('No serving time found with Id: ' + serviceTimeId);
+            expect(_context7.t5.message).toBe('No dietary option found with Id: ' + serviceTimeId);
 
           case 21:
           case 'end':
@@ -329,7 +329,7 @@ describe('update', function () {
     }, _callee7, undefined, [[1, 18]]);
   })));
 
-  test('should return the Id of the updated serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+  test('should return the Id of the updated dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
     var _ref13, expectedDietaryOption, serviceTimeId, id;
 
     return regeneratorRuntime.wrap(function _callee8$(_context8) {
@@ -370,7 +370,7 @@ describe('update', function () {
     }, _callee8, undefined);
   })));
 
-  test('should update the existing serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
+  test('should update the existing dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
     var _ref15, expectedDietaryOption, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, serviceTimeId, serviceTime;
 
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
@@ -425,7 +425,7 @@ describe('update', function () {
 });
 
 describe('delete', function () {
-  test('should reject if the provided serving time Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+  test('should reject if the provided dietary option Id does not exist', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
     var serviceTimeId;
     return regeneratorRuntime.wrap(function _callee10$(_context10) {
       while (1) {
@@ -444,7 +444,7 @@ describe('delete', function () {
             _context10.prev = 6;
             _context10.t0 = _context10['catch'](1);
 
-            expect(_context10.t0.message).toBe('No serving time found with Id: ' + serviceTimeId);
+            expect(_context10.t0.message).toBe('No dietary option found with Id: ' + serviceTimeId);
 
           case 9:
           case 'end':
@@ -454,7 +454,7 @@ describe('delete', function () {
     }, _callee10, undefined, [[1, 6]]);
   })));
 
-  test('should delete the existing serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
+  test('should delete the existing dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
     var serviceTimeId;
     return regeneratorRuntime.wrap(function _callee11$(_context11) {
       while (1) {
@@ -487,7 +487,7 @@ describe('delete', function () {
             _context11.prev = 14;
             _context11.t2 = _context11['catch'](9);
 
-            expect(_context11.t2.message).toBe('No serving time found with Id: ' + serviceTimeId);
+            expect(_context11.t2.message).toBe('No dietary option found with Id: ' + serviceTimeId);
 
           case 17:
           case 'end':
@@ -499,7 +499,7 @@ describe('delete', function () {
 });
 
 describe('search', function () {
-  test('should return no serving time if provided criteria matches no serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
+  test('should return no dietary option if provided criteria matches no dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
     var serviceTimes;
     return regeneratorRuntime.wrap(function _callee12$(_context12) {
       while (1) {
@@ -522,7 +522,7 @@ describe('search', function () {
     }, _callee12, undefined);
   })));
 
-  test('should return the serving time matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
+  test('should return the dietary option matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
     var _ref20, expectedDietaryOption, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, serviceTimes;
 
     return regeneratorRuntime.wrap(function _callee14$(_context14) {
@@ -588,7 +588,7 @@ describe('search', function () {
 });
 
 describe('searchAll', function () {
-  test('should return no serving time if provided criteria matches no serving time', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
+  test('should return no dietary option if provided criteria matches no dietary option', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
     var serviceTimes, result;
     return regeneratorRuntime.wrap(function _callee15$(_context15) {
       while (1) {
@@ -623,7 +623,7 @@ describe('searchAll', function () {
     }, _callee15, undefined, [[2,, 6, 9]]);
   })));
 
-  test('should return the serving time matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
+  test('should return the dietary option matches the criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
     var _ref24, expectedDietaryOption, expectedTag, expectedOwnedByUser, expectedMaintainedByUsers, results, serviceTimes, result;
 
     return regeneratorRuntime.wrap(function _callee17$(_context17) {
@@ -701,7 +701,7 @@ describe('searchAll', function () {
 });
 
 describe('exists', function () {
-  test('should return false if no serving time match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
+  test('should return false if no dietary option match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18() {
     return regeneratorRuntime.wrap(function _callee18$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
@@ -722,7 +722,7 @@ describe('exists', function () {
     }, _callee18, undefined);
   })));
 
-  test('should return true if any serving time match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
+  test('should return true if any dietary option match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
     var serviceTimes;
     return regeneratorRuntime.wrap(function _callee19$(_context19) {
       while (1) {
@@ -751,7 +751,7 @@ describe('exists', function () {
 });
 
 describe('count', function () {
-  test('should return 0 if no serving time match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
+  test('should return 0 if no dietary option match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
     return regeneratorRuntime.wrap(function _callee20$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
@@ -772,7 +772,7 @@ describe('count', function () {
     }, _callee20, undefined);
   })));
 
-  test('should return the count of serving time match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
+  test('should return the count of dietary option match provided criteria', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
     var serviceTimes;
     return regeneratorRuntime.wrap(function _callee21$(_context21) {
       while (1) {

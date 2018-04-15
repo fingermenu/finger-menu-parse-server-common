@@ -7,13 +7,15 @@ exports.expectSize = exports.createSize = exports.createSizeInfo = undefined;
 
 var _immutable = require('immutable');
 
-require('../../../bootstrap');
-
 var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
 var _ = require('../');
+
+var _TagService = require('../../services/__tests__/TagService.test');
+
+var _TagService2 = _interopRequireDefault(_TagService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21,23 +23,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var createSizeInfo = exports.createSizeInfo = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var ownedByUser, maintainedByUsers, size;
+    var tag, ownedByUser, maintainedByUsers, size;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _TestHelper2.default.createUser();
+            return (0, _TagService2.default)(1);
 
           case 2:
-            ownedByUser = _context.sent;
+            tag = _context.sent.first();
             _context.next = 5;
-            return _TestHelper2.default.createUsers();
+            return _TestHelper2.default.createUser();
 
           case 5:
+            ownedByUser = _context.sent;
+            _context.next = 8;
+            return _TestHelper2.default.createUsers();
+
+          case 8:
             maintainedByUsers = _context.sent;
             size = (0, _immutable.Map)({
-              name: _TestHelper2.default.createRandomMultiLanguagesString(),
+              tagId: tag.get('id'),
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
@@ -45,11 +52,12 @@ var createSizeInfo = exports.createSizeInfo = function () {
             });
             return _context.abrupt('return', {
               size: size,
+              tag: tag,
               ownedByUser: ownedByUser,
               maintainedByUsers: maintainedByUsers
             });
 
-          case 8:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -101,14 +109,19 @@ var createSize = exports.createSize = function () {
 
 var expectSize = exports.expectSize = function expectSize(object, expectedObject) {
   var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      sizeId = _ref3.sizeId;
+      sizeId = _ref3.sizeId,
+      expectedTag = _ref3.expectedTag;
 
-  expect(object.get('name')).toEqual(expectedObject.get('name'));
+  expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
   if (sizeId) {
     expect(object.get('id')).toBe(sizeId);
+  }
+
+  if (expectedTag) {
+    expect(object.get('tagId')).toEqual(expectedTag.get('id'));
   }
 };
 

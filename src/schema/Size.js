@@ -3,6 +3,7 @@
 import { ImmutableEx } from '@microbusiness/common-javascript';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Immutable, { List, Map } from 'immutable';
+import Tag from './Tag';
 
 export default class Size extends BaseObject {
   static spawn = info => {
@@ -14,7 +15,7 @@ export default class Size extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
-    BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
+    BaseObject.createPointer(object, info, 'tag', Tag);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
   };
@@ -31,13 +32,15 @@ export default class Size extends BaseObject {
 
   getInfo = () => {
     const object = this.getObject();
+    const tag = object.get('tag');
     const ownedByUser = object.get('ownedByUser');
     const maintainedByUsers = Immutable.fromJS(object.get('maintainedByUsers'));
 
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
-        name: this.getMultiLanguagesString('name'),
+        tag,
+        tagId: tag ? tag.id : undefined,
         ownedByUser,
         ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
         maintainedByUsers,

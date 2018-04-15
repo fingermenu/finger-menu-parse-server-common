@@ -4,7 +4,6 @@ import { ImmutableEx } from '@microbusiness/common-javascript';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Immutable, { List, Map } from 'immutable';
 import ChoiceItem from './ChoiceItem';
-import Size from './Size';
 import Tag from './Tag';
 
 export default class ChoiceItemPrice extends BaseObject {
@@ -22,7 +21,6 @@ export default class ChoiceItemPrice extends BaseObject {
     object.set('validFrom', info.get('validFrom'));
     object.set('validUntil', info.get('validUntil'));
     BaseObject.createPointer(object, info, 'choiceItem', ChoiceItem);
-    BaseObject.createPointer(object, info, 'size', Size);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
@@ -41,7 +39,6 @@ export default class ChoiceItemPrice extends BaseObject {
   getInfo = () => {
     const object = this.getObject();
     const choiceItem = object.get('choiceItem');
-    const size = object.get('size');
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
     const tagObjects = object.get('tags');
@@ -56,8 +53,6 @@ export default class ChoiceItemPrice extends BaseObject {
         validUntil: object.get('validUntil'),
         choiceItem,
         choiceItemId: choiceItem ? choiceItem.id : undefined,
-        size,
-        sizeId: size ? size.id : undefined,
         addedByUser,
         addedByUserId: addedByUser ? addedByUser.id : undefined,
         removedByUser,

@@ -5,14 +5,12 @@ import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
 import { ChoiceItemPrice } from '../';
 import createChoiceItems from '../../services/__tests__/ChoiceItemService.test';
-import createSizes from '../../services/__tests__/SizeService.test';
 import createTags from '../../services/__tests__/TagService.test';
 
 const chance = new Chance();
 
 export const createChoiceItemPriceInfo = async () => {
   const choiceItem = (await createChoiceItems(1)).first();
-  const size = (await createSizes(1)).first();
   const addedByUser = await TestHelper.createUser();
   const removedByUser = await TestHelper.createUser();
   const tags = await createTags(chance.integer({ min: 1, max: 3 }));
@@ -22,7 +20,6 @@ export const createChoiceItemPriceInfo = async () => {
     validFrom: new Date(),
     validUntil: new Date(),
     choiceItemId: choiceItem.get('id'),
-    sizeId: size.get('id'),
     addedByUserId: addedByUser.id,
     removedByUserId: removedByUser.id,
     tagIds: tags.map(tag => tag.get('id')),
@@ -31,7 +28,6 @@ export const createChoiceItemPriceInfo = async () => {
   return {
     choiceItemPrice,
     choiceItem,
-    size,
     addedByUser,
     removedByUser,
     tags,
@@ -40,13 +36,12 @@ export const createChoiceItemPriceInfo = async () => {
 
 export const createChoiceItemPrice = async object => ChoiceItemPrice.spawn(object || (await createChoiceItemPriceInfo()).choiceItemPrice);
 
-export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceId, expectedChoiceItem, expectedSize, expectedTags } = {}) => {
+export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceId, expectedChoiceItem, expectedTags } = {}) => {
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
   expect(object.get('wasPrice')).toBe(expectedObject.get('wasPrice'));
   expect(object.get('validFrom')).toEqual(expectedObject.get('validFrom'));
   expect(object.get('validUntil')).toEqual(expectedObject.get('validUntil'));
   expect(object.get('choiceItemId')).toBe(expectedObject.get('choiceItemId'));
-  expect(object.get('sizeId')).toBe(expectedObject.get('sizeId'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
 
@@ -56,10 +51,6 @@ export const expectChoiceItemPrice = (object, expectedObject, { choiceItemPriceI
 
   if (expectedChoiceItem) {
     expect(object.get('choiceItemId')).toEqual(expectedChoiceItem.get('id'));
-  }
-
-  if (expectedSize) {
-    expect(object.get('sizeId')).toEqual(expectedSize.get('id'));
   }
 
   if (expectedTags) {

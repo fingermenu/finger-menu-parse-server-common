@@ -59,13 +59,13 @@ const createDietaryOptions = async (count, useSameInfo = false) => {
 export default createDietaryOptions;
 
 describe('create', () => {
-  test('should return the created serving time Id', async () => {
+  test('should return the created dietary option Id', async () => {
     const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
 
     expect(serviceTimeId).toBeDefined();
   });
 
-  test('should create the serving time', async () => {
+  test('should create the dietary option', async () => {
     const { serviceTime } = await createDietaryOptionInfo();
     const serviceTimeId = await serviceTimeService.create(serviceTime);
     const fetchedDietaryOption = await serviceTimeService.read(serviceTimeId, createCriteriaWthoutConditions());
@@ -75,17 +75,17 @@ describe('create', () => {
 });
 
 describe('read', () => {
-  test('should reject if the provided serving time Id does not exist', async () => {
+  test('should reject if the provided dietary option Id does not exist', async () => {
     const serviceTimeId = chance.string();
 
     try {
       await serviceTimeService.read(serviceTimeId);
     } catch (ex) {
-      expect(ex.message).toBe(`No serving time found with Id: ${serviceTimeId}`);
+      expect(ex.message).toBe(`No dietary option found with Id: ${serviceTimeId}`);
     }
   });
 
-  test('should read the existing serving time', async () => {
+  test('should read the existing dietary option', async () => {
     const {
       serviceTime: expectedDietaryOption,
       tag: expectedTag,
@@ -105,7 +105,7 @@ describe('read', () => {
 });
 
 describe('update', () => {
-  test('should reject if the provided serving time Id does not exist', async () => {
+  test('should reject if the provided dietary option Id does not exist', async () => {
     const serviceTimeId = chance.string();
 
     try {
@@ -116,11 +116,11 @@ describe('update', () => {
 
       await serviceTimeService.update(serviceTime.set('id', serviceTimeId));
     } catch (ex) {
-      expect(ex.message).toBe(`No serving time found with Id: ${serviceTimeId}`);
+      expect(ex.message).toBe(`No dietary option found with Id: ${serviceTimeId}`);
     }
   });
 
-  test('should return the Id of the updated serving time', async () => {
+  test('should return the Id of the updated dietary option', async () => {
     const { serviceTime: expectedDietaryOption } = await createDietaryOptionInfo();
     const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
     const id = await serviceTimeService.update(expectedDietaryOption.set('id', serviceTimeId));
@@ -128,7 +128,7 @@ describe('update', () => {
     expect(id).toBe(serviceTimeId);
   });
 
-  test('should update the existing serving time', async () => {
+  test('should update the existing dietary option', async () => {
     const {
       serviceTime: expectedDietaryOption,
       tag: expectedTag,
@@ -151,36 +151,36 @@ describe('update', () => {
 });
 
 describe('delete', () => {
-  test('should reject if the provided serving time Id does not exist', async () => {
+  test('should reject if the provided dietary option Id does not exist', async () => {
     const serviceTimeId = chance.string();
 
     try {
       await serviceTimeService.delete(serviceTimeId);
     } catch (ex) {
-      expect(ex.message).toBe(`No serving time found with Id: ${serviceTimeId}`);
+      expect(ex.message).toBe(`No dietary option found with Id: ${serviceTimeId}`);
     }
   });
 
-  test('should delete the existing serving time', async () => {
+  test('should delete the existing dietary option', async () => {
     const serviceTimeId = await serviceTimeService.create((await createDietaryOptionInfo()).serviceTime);
     await serviceTimeService.delete(serviceTimeId);
 
     try {
       await serviceTimeService.delete(serviceTimeId);
     } catch (ex) {
-      expect(ex.message).toBe(`No serving time found with Id: ${serviceTimeId}`);
+      expect(ex.message).toBe(`No dietary option found with Id: ${serviceTimeId}`);
     }
   });
 });
 
 describe('search', () => {
-  test('should return no serving time if provided criteria matches no serving time', async () => {
+  test('should return no dietary option if provided criteria matches no dietary option', async () => {
     const serviceTimes = await serviceTimeService.search(createCriteria());
 
     expect(serviceTimes.count()).toBe(0);
   });
 
-  test('should return the serving time matches the criteria', async () => {
+  test('should return the dietary option matches the criteria', async () => {
     const {
       serviceTime: expectedDietaryOption,
       tag: expectedTag,
@@ -210,7 +210,7 @@ describe('search', () => {
 });
 
 describe('searchAll', () => {
-  test('should return no serving time if provided criteria matches no serving time', async () => {
+  test('should return no dietary option if provided criteria matches no dietary option', async () => {
     let serviceTimes = List();
     const result = serviceTimeService.searchAll(createCriteria());
 
@@ -227,7 +227,7 @@ describe('searchAll', () => {
     expect(serviceTimes.count()).toBe(0);
   });
 
-  test('should return the serving time matches the criteria', async () => {
+  test('should return the dietary option matches the criteria', async () => {
     const {
       serviceTime: expectedDietaryOption,
       tag: expectedTag,
@@ -269,11 +269,11 @@ describe('searchAll', () => {
 });
 
 describe('exists', () => {
-  test('should return false if no serving time match provided criteria', async () => {
+  test('should return false if no dietary option match provided criteria', async () => {
     expect(await serviceTimeService.exists(createCriteria())).toBeFalsy();
   });
 
-  test('should return true if any serving time match provided criteria', async () => {
+  test('should return true if any dietary option match provided criteria', async () => {
     const serviceTimes = await createDietaryOptions(chance.integer({ min: 1, max: 10 }), true);
 
     expect(await serviceTimeService.exists(createCriteria(serviceTimes.first()))).toBeTruthy();
@@ -281,11 +281,11 @@ describe('exists', () => {
 });
 
 describe('count', () => {
-  test('should return 0 if no serving time match provided criteria', async () => {
+  test('should return 0 if no dietary option match provided criteria', async () => {
     expect(await serviceTimeService.count(createCriteria())).toBe(0);
   });
 
-  test('should return the count of serving time match provided criteria', async () => {
+  test('should return the count of dietary option match provided criteria', async () => {
     const serviceTimes = await createDietaryOptions(chance.integer({ min: 1, max: 10 }), true);
 
     expect(await serviceTimeService.count(createCriteria(serviceTimes.first()))).toBe(serviceTimes.count());

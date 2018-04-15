@@ -28,13 +28,14 @@ var SizeService = function (_ServiceBase) {
   return SizeService;
 }(_parseServerCommon.ServiceBase);
 
-SizeService.fields = _immutable.List.of('ownedByUser', 'maintainedByUsers');
+SizeService.fields = _immutable.List.of('tag', 'ownedByUser', 'maintainedByUsers');
 
 SizeService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
     return query;
   }
 
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tag');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'ownedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'maintainedByUsers');
 
@@ -54,7 +55,7 @@ SizeService.buildSearchQuery = function (criteria) {
   SizeService.fields.forEach(function (field) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
-  _parseServerCommon.ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tag', _schema.Tag);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
 

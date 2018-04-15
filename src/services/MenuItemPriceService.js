@@ -2,7 +2,7 @@
 
 import { List } from 'immutable';
 import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-common';
-import { ChoiceItemPrice, MenuItemPrice, MenuItem, Size, Tag } from '../schema';
+import { ChoiceItemPrice, MenuItemPrice, MenuItem, Tag } from '../schema';
 
 export default class MenuItemPriceService extends ServiceBase {
   static fields = List.of(
@@ -11,7 +11,6 @@ export default class MenuItemPriceService extends ServiceBase {
     'validFrom',
     'validUntil',
     'menuItem',
-    'size',
     'toBeServedWithMenuItemPrices',
     'choiceItemPrices',
     'addedByUser',
@@ -32,7 +31,6 @@ export default class MenuItemPriceService extends ServiceBase {
 
     ServiceBase.addIncludeQuery(criteria, query, 'toBeServedWithMenuItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'menuItem');
-    ServiceBase.addIncludeQuery(criteria, query, 'size');
     ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
     ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
     ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
@@ -59,7 +57,6 @@ export default class MenuItemPriceService extends ServiceBase {
     ServiceBase.addDateTimeQuery(conditions, query, 'validFrom', 'validFrom');
     ServiceBase.addDateTimeQuery(conditions, query, 'validUntil', 'validUntil');
     ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItem', MenuItem);
-    ServiceBase.addLinkQuery(conditions, query, 'size', 'size', Size);
     ServiceBase.addLinkQuery(conditions, query, 'toBeServedWithMenuItemPrice', 'toBeServedWithMenuItemPrices', MenuItemPrice);
     ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', ChoiceItemPrice);
     ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
