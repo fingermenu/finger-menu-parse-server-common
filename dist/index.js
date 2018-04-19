@@ -24,6 +24,12 @@ Object.defineProperty(exports, 'DietaryOption', {
     return _schema.DietaryOption;
   }
 });
+Object.defineProperty(exports, 'DishType', {
+  enumerable: true,
+  get: function get() {
+    return _schema.DishType;
+  }
+});
 Object.defineProperty(exports, 'Language', {
   enumerable: true,
   get: function get() {
@@ -121,6 +127,12 @@ Object.defineProperty(exports, 'DietaryOptionService', {
   enumerable: true,
   get: function get() {
     return _services.DietaryOptionService;
+  }
+});
+Object.defineProperty(exports, 'DishTypeService', {
+  enumerable: true,
+  get: function get() {
+    return _services.DishTypeService;
   }
 });
 Object.defineProperty(exports, 'LanguageService', {

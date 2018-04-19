@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
+exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DishTypeService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
 
 var _ChoiceItemService2 = require('./ChoiceItemService');
 
@@ -16,6 +16,10 @@ var _ChoiceItemPriceService3 = _interopRequireDefault(_ChoiceItemPriceService2);
 var _DietaryOptionService2 = require('./DietaryOptionService');
 
 var _DietaryOptionService3 = _interopRequireDefault(_DietaryOptionService2);
+
+var _DishTypeService2 = require('./DishTypeService');
+
+var _DishTypeService3 = _interopRequireDefault(_DishTypeService2);
 
 var _LanguageService2 = require('./LanguageService');
 
@@ -74,6 +78,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.ChoiceItemService = _ChoiceItemService3.default;
 exports.ChoiceItemPriceService = _ChoiceItemPriceService3.default;
 exports.DietaryOptionService = _DietaryOptionService3.default;
+exports.DishTypeService = _DishTypeService3.default;
 exports.LanguageService = _LanguageService3.default;
 exports.MenuService = _MenuService3.default;
 exports.MenuItemService = _MenuItemService3.default;
