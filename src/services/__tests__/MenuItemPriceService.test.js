@@ -25,6 +25,7 @@ const createCriteriaWthoutConditions = () =>
       'toBeServedWithMenuItemPriceSortOrderIndices',
       'choiceItemPriceSortOrderIndices',
       'tags',
+      'rules',
     ),
     include_menuItem: true,
     include_addedByUser: true,
@@ -47,6 +48,7 @@ const createCriteria = object =>
       toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
       choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : TestHelper.createRandomMap(),
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
+      rules: object ? object.get('rules') : TestHelper.createRandomMap(),
     }),
   }).merge(createCriteriaWthoutConditions());
 

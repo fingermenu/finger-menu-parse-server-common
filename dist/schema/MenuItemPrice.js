@@ -84,6 +84,14 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   }
 
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
+
+  var rules = info.get('rules');
+
+  if (_commonJavascript.Common.isNull(rules)) {
+    object.set('rules', {});
+  } else if (rules) {
+    object.set('rules', rules.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -138,7 +146,8 @@ var _initialiseProps = function _initialiseProps() {
       tags: tags,
       tagIds: tags ? tags.map(function (tag) {
         return tag.get('id');
-      }) : (0, _immutable.List)()
+      }) : (0, _immutable.List)(),
+      rules: _immutable2.default.fromJS(object.get('rules'))
     }));
   };
 };

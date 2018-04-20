@@ -44,6 +44,14 @@ export default class MenuItemPrice extends BaseObject {
     }
 
     BaseObject.createArrayPointer(object, info, 'tag', Tag);
+
+    const rules = info.get('rules');
+
+    if (Common.isNull(rules)) {
+      object.set('rules', {});
+    } else if (rules) {
+      object.set('rules', rules.toJS());
+    }
   };
 
   constructor(object) {
@@ -97,6 +105,7 @@ export default class MenuItemPrice extends BaseObject {
         choiceItemPriceSortOrderIndices: Immutable.fromJS(object.get('choiceItemPriceSortOrderIndices')),
         tags,
         tagIds: tags ? tags.map(tag => tag.get('id')) : List(),
+        rules: Immutable.fromJS(object.get('rules')),
       }),
     );
   };

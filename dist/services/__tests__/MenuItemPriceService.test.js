@@ -31,7 +31,7 @@ var menuItemPriceService = new _2.MenuItemPriceService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags'),
+    fields: _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags', 'rules'),
     include_menuItem: true,
     include_addedByUser: true,
     include_removedByUser: true,
@@ -53,7 +53,8 @@ var createCriteria = function createCriteria(object) {
       removedByUserId: object ? object.get('removedByUserId') : chance.string(),
       toBeServedWithMenuItemPriceSortOrderIndices: object ? object.get('toBeServedWithMenuItemPriceSortOrderIndices') : _TestHelper2.default.createRandomMap(),
       choiceItemPriceSortOrderIndices: object ? object.get('choiceItemPriceSortOrderIndices') : _TestHelper2.default.createRandomMap(),
-      tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string())
+      tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string()),
+      rules: object ? object.get('rules') : _TestHelper2.default.createRandomMap()
     })
   }).merge(createCriteriaWthoutConditions());
 };

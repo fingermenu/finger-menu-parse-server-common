@@ -18,6 +18,7 @@ export default class MenuItemPriceService extends ServiceBase {
     'toBeServedWithMenuItemPriceSortOrderIndices',
     'choiceItemPriceSortOrderIndices',
     'tags',
+    'rules',
   );
 
   constructor() {

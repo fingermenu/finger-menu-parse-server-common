@@ -86,7 +86,8 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               choiceItemPriceSortOrderIndices: _TestHelper2.default.createRandomMap(),
               tagIds: tags.map(function (tag) {
                 return tag.get('id');
-              })
+              }),
+              rules: _TestHelper2.default.createRandomMap()
             });
             return _context.abrupt('return', {
               menuItemPrice: menuItemPrice,
@@ -165,6 +166,7 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
   expect(object.get('toBeServedWithMenuItemPriceSortOrderIndices')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceSortOrderIndices'));
   expect(object.get('choiceItemPriceSortOrderIndices')).toEqual(expectedObject.get('choiceItemPriceSortOrderIndices'));
+  expect(object.get('rules')).toEqual(expectedObject.get('rules'));
 
   if (menuItemPriceId) {
     expect(object.get('id')).toBe(menuItemPriceId);

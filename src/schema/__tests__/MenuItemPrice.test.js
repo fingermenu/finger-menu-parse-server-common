@@ -29,6 +29,7 @@ export const createMenuItemPriceInfo = async ({ toBeServedWithMenuItemPriceIds }
     toBeServedWithMenuItemPriceSortOrderIndices: TestHelper.createRandomMap(),
     choiceItemPriceSortOrderIndices: TestHelper.createRandomMap(),
     tagIds: tags.map(tag => tag.get('id')),
+    rules: TestHelper.createRandomMap(),
   });
 
   return {
@@ -55,6 +56,7 @@ export const expectMenuItemPrice = (object, expectedObject, { menuItemPriceId, e
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
   expect(object.get('toBeServedWithMenuItemPriceSortOrderIndices')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceSortOrderIndices'));
   expect(object.get('choiceItemPriceSortOrderIndices')).toEqual(expectedObject.get('choiceItemPriceSortOrderIndices'));
+  expect(object.get('rules')).toEqual(expectedObject.get('rules'));
 
   if (menuItemPriceId) {
     expect(object.get('id')).toBe(menuItemPriceId);
