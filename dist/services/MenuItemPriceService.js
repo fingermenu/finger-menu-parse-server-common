@@ -28,7 +28,7 @@ var MenuItemPriceService = function (_ServiceBase) {
   return MenuItemPriceService;
 }(_parseServerCommon.ServiceBase);
 
-MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags', 'rules');
+MenuItemPriceService.fields = _immutable.List.of('currentPrice', 'wasPrice', 'validFrom', 'validUntil', 'menuItem', 'toBeServedWithMenuItemPrices', 'choiceItemPrices', 'defaultChoiceItemPrices', 'addedByUser', 'removedByUser', 'toBeServedWithMenuItemPriceSortOrderIndices', 'choiceItemPriceSortOrderIndices', 'tags', 'rules');
 
 MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -38,6 +38,7 @@ MenuItemPriceService.buildIncludeQuery = function (query, criteria) {
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'toBeServedWithMenuItemPrices');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'menuItem');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'choiceItemPrices');
+  _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'defaultChoiceItemPrices');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'addedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'removedByUser');
   _parseServerCommon.ServiceBase.addIncludeQuery(criteria, query, 'tags');
@@ -65,6 +66,7 @@ MenuItemPriceService.buildSearchQuery = function (criteria) {
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'menuItem', 'menuItem', _schema.MenuItem);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'toBeServedWithMenuItemPrice', 'toBeServedWithMenuItemPrices', _schema.MenuItemPrice);
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'choiceItemPrice', 'choiceItemPrices', _schema.ChoiceItemPrice);
+  _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'defaultChoiceItemPrice', 'defaultChoiceItemPrices', _schema.ChoiceItemPrice);
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'addedByUser', 'addedByUser');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'removedByUser', 'removedByUser');
   _parseServerCommon.ServiceBase.addLinkQuery(conditions, query, 'tag', 'tags', _schema.Tag);

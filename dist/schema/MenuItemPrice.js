@@ -64,6 +64,7 @@ MenuItemPrice.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createPointer(object, info, 'menuItem', _MenuItem2.default);
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'choiceItemPrice', _ChoiceItemPrice2.default);
+  _parseServerCommon.BaseObject.createArrayPointer(object, info, 'defaultChoiceItemPrice', _ChoiceItemPrice2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'addedByUser');
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'removedByUser');
 
@@ -114,6 +115,10 @@ var _initialiseProps = function _initialiseProps() {
     var choiceItemPrices = choiceItemPriceObjects ? _immutable2.default.fromJS(choiceItemPriceObjects).map(function (choiceItemPrice) {
       return new _ChoiceItemPrice2.default(choiceItemPrice).getInfo();
     }) : undefined;
+    var defaultChoiceItemPriceObjects = object.get('defaultChoiceItemPrices');
+    var defaultChoiceItemPrices = defaultChoiceItemPriceObjects ? _immutable2.default.fromJS(defaultChoiceItemPriceObjects).map(function (choiceItemPrice) {
+      return new _ChoiceItemPrice2.default(choiceItemPrice).getInfo();
+    }) : undefined;
     var addedByUser = object.get('addedByUser');
     var removedByUser = object.get('removedByUser');
     var tagObjects = object.get('tags');
@@ -135,6 +140,10 @@ var _initialiseProps = function _initialiseProps() {
       }) : (0, _immutable.List)(),
       choiceItemPrices: choiceItemPrices,
       choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(function (choiceItemPrice) {
+        return choiceItemPrice.get('id');
+      }) : (0, _immutable.List)(),
+      defaultChoiceItemPrices: defaultChoiceItemPrices,
+      defaultChoiceItemPriceIds: defaultChoiceItemPrices ? defaultChoiceItemPrices.map(function (choiceItemPrice) {
         return choiceItemPrice.get('id');
       }) : (0, _immutable.List)(),
       addedByUser: addedByUser,

@@ -40,7 +40,7 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
     var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         toBeServedWithMenuItemPriceIds = _ref2.toBeServedWithMenuItemPriceIds;
 
-    var menuItem, choiceItemPrices, addedByUser, removedByUser, tags, menuItemPrice;
+    var menuItem, choiceItemPrices, defaultChoiceItemPrices, addedByUser, removedByUser, tags, menuItemPrice;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -56,19 +56,24 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
           case 5:
             choiceItemPrices = _context.sent;
             _context.next = 8;
-            return _TestHelper2.default.createUser();
+            return (0, _ChoiceItemPriceService2.default)(chance.integer({ min: 1, max: 3 }));
 
           case 8:
-            addedByUser = _context.sent;
+            defaultChoiceItemPrices = _context.sent;
             _context.next = 11;
             return _TestHelper2.default.createUser();
 
           case 11:
-            removedByUser = _context.sent;
+            addedByUser = _context.sent;
             _context.next = 14;
-            return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
+            return _TestHelper2.default.createUser();
 
           case 14:
+            removedByUser = _context.sent;
+            _context.next = 17;
+            return (0, _TagService2.default)(chance.integer({ min: 1, max: 3 }));
+
+          case 17:
             tags = _context.sent;
             menuItemPrice = (0, _immutable.Map)({
               currentPrice: chance.floating({ min: 0, max: 1000 }),
@@ -78,6 +83,9 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               menuItemId: menuItem.get('id'),
               toBeServedWithMenuItemPriceIds: toBeServedWithMenuItemPriceIds || (0, _immutable.List)(),
               choiceItemPriceIds: choiceItemPrices.map(function (choiceItemPrice) {
+                return choiceItemPrice.get('id');
+              }),
+              defaultChoiceItemPriceIds: defaultChoiceItemPrices.map(function (choiceItemPrice) {
                 return choiceItemPrice.get('id');
               }),
               addedByUserId: addedByUser.id,
@@ -93,12 +101,13 @@ var createMenuItemPriceInfo = exports.createMenuItemPriceInfo = function () {
               menuItemPrice: menuItemPrice,
               menuItem: menuItem,
               choiceItemPrices: choiceItemPrices,
+              defaultChoiceItemPrices: defaultChoiceItemPrices,
               addedByUser: addedByUser,
               removedByUser: removedByUser,
               tags: tags
             });
 
-          case 17:
+          case 20:
           case 'end':
             return _context.stop();
         }
@@ -153,6 +162,7 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
       menuItemPriceId = _ref4.menuItemPriceId,
       expectedMenuItem = _ref4.expectedMenuItem,
       expectedChoiceItemPrices = _ref4.expectedChoiceItemPrices,
+      expectedDefaultChoiceItemPrices = _ref4.expectedDefaultChoiceItemPrices,
       expectedTags = _ref4.expectedTags;
 
   expect(object.get('currentPrice')).toBe(expectedObject.get('currentPrice'));
@@ -162,6 +172,7 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
   expect(object.get('menuItemId')).toBe(expectedObject.get('menuItemId'));
   expect(object.get('toBeServedWithMenuItemPriceIds')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceIds'));
   expect(object.get('choiceItemPriceIds')).toEqual(expectedObject.get('choiceItemPriceIds'));
+  expect(object.get('defaultChoiceItemPriceIds')).toEqual(expectedObject.get('defaultChoiceItemPriceIds'));
   expect(object.get('addedByUserId')).toBe(expectedObject.get('addedByUserId'));
   expect(object.get('removedByUserId')).toBe(expectedObject.get('removedByUserId'));
   expect(object.get('toBeServedWithMenuItemPriceSortOrderIndices')).toEqual(expectedObject.get('toBeServedWithMenuItemPriceSortOrderIndices'));
@@ -178,6 +189,12 @@ var expectMenuItemPrice = exports.expectMenuItemPrice = function expectMenuItemP
 
   if (expectedChoiceItemPrices) {
     expect(object.get('choiceItemPriceIds')).toEqual(expectedChoiceItemPrices.map(function (_) {
+      return _.get('id');
+    }));
+  }
+
+  if (expectedDefaultChoiceItemPrices) {
+    expect(object.get('defaultChoiceItemPriceIds')).toEqual(expectedDefaultChoiceItemPrices.map(function (_) {
       return _.get('id');
     }));
   }

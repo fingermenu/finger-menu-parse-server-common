@@ -24,6 +24,7 @@ export default class MenuItemPrice extends BaseObject {
     BaseObject.createPointer(object, info, 'menuItem', MenuItem);
     BaseObject.createArrayPointer(object, info, 'toBeServedWithMenuItemPrice', MenuItemPrice);
     BaseObject.createArrayPointer(object, info, 'choiceItemPrice', ChoiceItemPrice);
+    BaseObject.createArrayPointer(object, info, 'defaultChoiceItemPrice', ChoiceItemPrice);
     BaseObject.createUserPointer(object, info, 'addedByUser');
     BaseObject.createUserPointer(object, info, 'removedByUser');
 
@@ -77,6 +78,10 @@ export default class MenuItemPrice extends BaseObject {
     const choiceItemPrices = choiceItemPriceObjects
       ? Immutable.fromJS(choiceItemPriceObjects).map(choiceItemPrice => new ChoiceItemPrice(choiceItemPrice).getInfo())
       : undefined;
+    const defaultChoiceItemPriceObjects = object.get('defaultChoiceItemPrices');
+    const defaultChoiceItemPrices = defaultChoiceItemPriceObjects
+      ? Immutable.fromJS(defaultChoiceItemPriceObjects).map(choiceItemPrice => new ChoiceItemPrice(choiceItemPrice).getInfo())
+      : undefined;
     const addedByUser = object.get('addedByUser');
     const removedByUser = object.get('removedByUser');
     const tagObjects = object.get('tags');
@@ -97,6 +102,8 @@ export default class MenuItemPrice extends BaseObject {
           : List(),
         choiceItemPrices,
         choiceItemPriceIds: choiceItemPrices ? choiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')) : List(),
+        defaultChoiceItemPrices,
+        defaultChoiceItemPriceIds: defaultChoiceItemPrices ? defaultChoiceItemPrices.map(choiceItemPrice => choiceItemPrice.get('id')) : List(),
         addedByUser,
         addedByUserId: addedByUser ? addedByUser.id : undefined,
         removedByUser,
