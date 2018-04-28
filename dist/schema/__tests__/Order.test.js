@@ -58,7 +58,6 @@ var createOrderInfo = exports.createOrderInfo = function () {
               numberOfChildren: chance.integer(),
               customerName: chance.string(),
               notes: chance.string(),
-              totalPrice: chance.floating({ min: 0, max: 1000 }),
               placedAt: new Date(),
               cancelledAt: new Date(),
               correlationId: chance.string()
@@ -132,7 +131,6 @@ var expectOrder = exports.expectOrder = function expectOrder(object, expectedObj
   expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
   expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
-  expect(object.get('totalPrice')).toBe(expectedObject.get('totalPrice'));
   expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
   expect(object.get('cancelledAt')).toBe(expectedObject.get('cancelledAt'));
   expect(object.get('correlationId')).toBe(expectedObject.get('correlationId'));

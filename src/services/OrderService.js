@@ -13,7 +13,6 @@ export default class OrderService extends ServiceBase {
     'numberOfChildren',
     'customerName',
     'notes',
-    'totalPrice',
     'placedAt',
     'cancelledAt',
     'correlationId',
@@ -53,7 +52,6 @@ export default class OrderService extends ServiceBase {
     ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
     ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
     ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
-    ServiceBase.addNumberQuery(conditions, query, 'totalPrice', 'totalPrice');
     ServiceBase.addDateTimeQuery(conditions, query, 'placedAt', 'placedAt');
     ServiceBase.addDateTimeQuery(conditions, query, 'cancelledAt', 'cancelledAt');
     ServiceBase.addEqualityQuery(conditions, query, 'correlationId', 'correlationId');

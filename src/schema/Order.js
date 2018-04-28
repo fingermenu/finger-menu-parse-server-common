@@ -30,7 +30,6 @@ export default class Order extends BaseObject {
     object.set('numberOfChildren', info.get('numberOfChildren'));
     BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
-    object.set('totalPrice', info.get('totalPrice'));
     object.set('placedAt', info.get('placedAt'));
     object.set('cancelledAt', info.get('cancelledAt'));
     object.set('correlationId', info.get('correlationId'));
@@ -63,7 +62,6 @@ export default class Order extends BaseObject {
         numberOfChildren: object.get('numberOfChildren'),
         customerName: object.get('customerName'),
         notes: object.get('notes'),
-        totalPrice: object.get('totalPrice'),
         placedAt: object.get('placedAt'),
         cancelledAt: object.get('cancelledAt'),
         correlationId: object.get('correlationId'),

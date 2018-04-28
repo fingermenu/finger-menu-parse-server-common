@@ -31,7 +31,7 @@ var orderService = new _2.OrderService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('details', 'restaurant', 'table', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'totalPrice', 'placedAt', 'cancelledAt', 'correlationId'),
+    fields: _immutable.List.of('details', 'restaurant', 'table', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'placedAt', 'cancelledAt', 'correlationId'),
     include_table: true,
     include_restaurant: true
   });
@@ -47,7 +47,6 @@ var createCriteria = function createCriteria(object) {
       numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
       customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
-      totalPrice: object ? object.get('totalPrice') : chance.floating({ min: 0, max: 1000 }),
       placedAt: object ? object.get('placedAt') : new Date(),
       cancelledAt: object ? object.get('cancelledAt') : new Date(),
       correlationId: object ? object.get('correlationId') : chance.string()
