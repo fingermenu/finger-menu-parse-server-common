@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DishTypeService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
+exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.PackageBundleService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DishTypeService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
 
 var _ChoiceItemService2 = require('./ChoiceItemService');
 
@@ -40,6 +40,10 @@ var _MenuItemPriceService3 = _interopRequireDefault(_MenuItemPriceService2);
 var _OrderService2 = require('./OrderService');
 
 var _OrderService3 = _interopRequireDefault(_OrderService2);
+
+var _PackageBundleService2 = require('./PackageBundleService');
+
+var _PackageBundleService3 = _interopRequireDefault(_PackageBundleService2);
 
 var _RestaurantService2 = require('./RestaurantService');
 
@@ -84,6 +88,7 @@ exports.MenuService = _MenuService3.default;
 exports.MenuItemService = _MenuItemService3.default;
 exports.MenuItemPriceService = _MenuItemPriceService3.default;
 exports.OrderService = _OrderService3.default;
+exports.PackageBundleService = _PackageBundleService3.default;
 exports.RestaurantService = _RestaurantService3.default;
 exports.ServingTimeService = _ServingTimeService3.default;
 exports.SizeService = _SizeService3.default;

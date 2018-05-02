@@ -60,6 +60,12 @@ Object.defineProperty(exports, 'Order', {
     return _schema.Order;
   }
 });
+Object.defineProperty(exports, 'PackageBundle', {
+  enumerable: true,
+  get: function get() {
+    return _schema.PackageBundle;
+  }
+});
 Object.defineProperty(exports, 'Restaurant', {
   enumerable: true,
   get: function get() {
@@ -163,6 +169,12 @@ Object.defineProperty(exports, 'OrderService', {
   enumerable: true,
   get: function get() {
     return _services.OrderService;
+  }
+});
+Object.defineProperty(exports, 'PackageBundleService', {
+  enumerable: true,
+  get: function get() {
+    return _services.PackageBundleService;
   }
 });
 Object.defineProperty(exports, 'RestaurantService', {

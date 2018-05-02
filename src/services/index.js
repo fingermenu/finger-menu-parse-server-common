@@ -9,6 +9,7 @@ export MenuService from './MenuService';
 export MenuItemService from './MenuItemService';
 export MenuItemPriceService from './MenuItemPriceService';
 export OrderService from './OrderService';
+export PackageBundleService from './PackageBundleService';
 export RestaurantService from './RestaurantService';
 export ServingTimeService from './ServingTimeService';
 export SizeService from './SizeService';
