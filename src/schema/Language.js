@@ -35,6 +35,8 @@ export default class Language extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         key: object.get('key'),
         name: object.get('name'),
         imageUrl: object.get('imageUrl'),

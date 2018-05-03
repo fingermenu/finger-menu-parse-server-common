@@ -44,6 +44,8 @@ export default class ChoiceItem extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         name: this.getMultiLanguagesString('name'),
         description: this.getMultiLanguagesString('description'),
         choiceItemPageUrl: object.get('choiceItemPageUrl'),

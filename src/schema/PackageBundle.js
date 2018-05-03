@@ -37,6 +37,8 @@ export default class PackageBundle extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         url: object.get('url'),
         checksum: object.get('checksum'),
         restaurant,

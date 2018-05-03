@@ -90,6 +90,8 @@ export default class MenuItemPrice extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         currentPrice: object.get('currentPrice'),
         wasPrice: object.get('wasPrice'),
         validFrom: object.get('validFrom'),

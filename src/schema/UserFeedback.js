@@ -42,6 +42,8 @@ export default class UserFeedback extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         questionAndAnswers: Immutable.fromJS(object.get('questionAndAnswers')),
         others: object.get('others'),
         submittedAt: object.get('submittedAt'),

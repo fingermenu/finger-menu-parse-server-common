@@ -76,6 +76,8 @@ export default class Restaurant extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         name: this.getMultiLanguagesString('name'),
         websiteUrl: object.get('websiteUrl'),
         address: object.get('address'),

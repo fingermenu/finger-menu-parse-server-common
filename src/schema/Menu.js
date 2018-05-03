@@ -58,6 +58,8 @@ export default class Menu extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         name: this.getMultiLanguagesString('name'),
         description: this.getMultiLanguagesString('description'),
         menuPageUrl: object.get('menuPageUrl'),

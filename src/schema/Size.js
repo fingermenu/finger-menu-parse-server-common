@@ -39,6 +39,8 @@ export default class Size extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         tag,
         tagId: tag ? tag.id : undefined,
         ownedByUser,

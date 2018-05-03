@@ -53,6 +53,8 @@ export default class Order extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         details: Immutable.fromJS(object.get('details')),
         restaurant,
         restaurantId: restaurant ? restaurant.id : undefined,

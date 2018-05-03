@@ -67,6 +67,8 @@ var _initialiseProps = function _initialiseProps() {
 
     return _commonJavascript.ImmutableEx.removeUndefinedProps((0, _immutable.Map)({
       id: _this2.getId(),
+      createdAt: object.get('createdAt'),
+      updatedAt: object.get('updatedAt'),
       url: object.get('url'),
       checksum: object.get('checksum'),
       restaurant: restaurant,

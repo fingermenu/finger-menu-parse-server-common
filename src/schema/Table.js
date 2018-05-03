@@ -50,6 +50,8 @@ export default class Table extends BaseObject {
     return ImmutableEx.removeUndefinedProps(
       Map({
         id: this.getId(),
+        createdAt: object.get('createdAt'),
+        updatedAt: object.get('updatedAt'),
         name: this.getMultiLanguagesString('name'),
         status: object.get('status'),
         restaurant,
