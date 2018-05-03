@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { Tag } from '../schema';
 
 export default class TagService extends ServiceBase {
-  static fields = List.of('level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
+  static fields = List.of('level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers');
 
   constructor() {
     super(Tag, TagService.buildSearchQuery, TagService.buildIncludeQuery, 'tag');
@@ -23,7 +23,7 @@ export default class TagService extends ServiceBase {
     return query;
   };
 
-  static buildSearchQuery = (criteria) => {
+  static buildSearchQuery = criteria => {
     const queryWithoutIncludes = ParseWrapperService.createQuery(Tag, criteria);
     const query = TagService.buildIncludeQuery(queryWithoutIncludes, criteria);
 
@@ -33,7 +33,7 @@ export default class TagService extends ServiceBase {
 
     const conditions = criteria.get('conditions');
 
-    TagService.fields.forEach((field) => {
+    TagService.fields.forEach(field => {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addMultiLanguagesStringQuery(conditions, query, 'name', 'nameLowerCase', criteria.get('language'));

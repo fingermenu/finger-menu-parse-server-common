@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserFeedback = exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.ServingTime = exports.Restaurant = exports.PackageBundle = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.DishType = exports.DietaryOption = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
+exports.UserFeedback = exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.ServingTime = exports.Restaurant = exports.RequestLog = exports.PackageBundle = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.DishType = exports.DietaryOption = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
 
 var _ChoiceItem2 = require('./ChoiceItem');
 
@@ -44,6 +44,10 @@ var _Order3 = _interopRequireDefault(_Order2);
 var _PackageBundle2 = require('./PackageBundle');
 
 var _PackageBundle3 = _interopRequireDefault(_PackageBundle2);
+
+var _RequestLog2 = require('./RequestLog');
+
+var _RequestLog3 = _interopRequireDefault(_RequestLog2);
 
 var _Restaurant2 = require('./Restaurant');
 
@@ -89,6 +93,7 @@ exports.MenuItem = _MenuItem3.default;
 exports.MenuItemPrice = _MenuItemPrice3.default;
 exports.Order = _Order3.default;
 exports.PackageBundle = _PackageBundle3.default;
+exports.RequestLog = _RequestLog3.default;
 exports.Restaurant = _Restaurant3.default;
 exports.ServingTime = _ServingTime3.default;
 exports.Size = _Size3.default;

@@ -28,7 +28,7 @@ var TagService = function (_ServiceBase) {
   return TagService;
 }(_parseServerCommon.ServiceBase);
 
-TagService.fields = _immutable.List.of('level', 'forDisplay', 'parentTag', 'ownedbyuser', 'maintainedbyusers');
+TagService.fields = _immutable.List.of('level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers');
 
 TagService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {

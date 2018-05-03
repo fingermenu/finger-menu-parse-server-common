@@ -66,6 +66,12 @@ Object.defineProperty(exports, 'PackageBundle', {
     return _schema.PackageBundle;
   }
 });
+Object.defineProperty(exports, 'RequestLog', {
+  enumerable: true,
+  get: function get() {
+    return _schema.RequestLog;
+  }
+});
 Object.defineProperty(exports, 'Restaurant', {
   enumerable: true,
   get: function get() {
@@ -175,6 +181,12 @@ Object.defineProperty(exports, 'PackageBundleService', {
   enumerable: true,
   get: function get() {
     return _services.PackageBundleService;
+  }
+});
+Object.defineProperty(exports, 'RequestLogService', {
+  enumerable: true,
+  get: function get() {
+    return _services.RequestLogService;
   }
 });
 Object.defineProperty(exports, 'RestaurantService', {

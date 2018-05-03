@@ -10,6 +10,7 @@ export MenuItem from './MenuItem';
 export MenuItemPrice from './MenuItemPrice';
 export Order from './Order';
 export PackageBundle from './PackageBundle';
+export RequestLog from './RequestLog';
 export Restaurant from './Restaurant';
 export ServingTime from './ServingTime';
 export Size from './Size';
