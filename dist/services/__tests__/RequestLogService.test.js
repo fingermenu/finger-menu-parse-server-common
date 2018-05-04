@@ -27,7 +27,7 @@ var requestLogService = new _2.RequestLogService();
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions() {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('appVersion', 'user'),
+    fields: _immutable.List.of('appVersion', 'requestType', 'user'),
     include_user: true
   });
 };
@@ -36,6 +36,7 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       appVersion: object ? object.get('appVersion') : chance.string(),
+      requestType: object ? object.get('requestType') : chance.string(),
       userId: object ? object.get('userId') : chance.string()
     })
   });

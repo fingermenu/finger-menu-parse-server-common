@@ -5,7 +5,7 @@ import { ParseWrapperService, ServiceBase } from '@microbusiness/parse-server-co
 import { RequestLog } from '../schema';
 
 export default class RequestLogService extends ServiceBase {
-  static fields = List.of('appVersion', 'user');
+  static fields = List.of('appVersion', 'requestType', 'user');
 
   constructor() {
     super(RequestLog, RequestLogService.buildSearchQuery, RequestLogService.buildIncludeQuery, 'request log');
@@ -35,6 +35,7 @@ export default class RequestLogService extends ServiceBase {
       ServiceBase.addExistenceQuery(conditions, query, field);
     });
     ServiceBase.addEqualityQuery(conditions, query, 'appVersion', 'appVersion');
+    ServiceBase.addEqualityQuery(conditions, query, 'requestType', 'requestType');
     ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 
     return query;

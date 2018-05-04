@@ -15,6 +15,7 @@ export default class RequestLog extends BaseObject {
 
   static updateInfoInternal = (object, info) => {
     object.set('appVersion', info.get('appVersion'));
+    object.set('requestType', info.get('requestType'));
     BaseObject.createUserPointer(object, info, 'user');
   };
 
@@ -38,6 +39,7 @@ export default class RequestLog extends BaseObject {
         createdAt: object.get('createdAt'),
         updatedAt: object.get('updatedAt'),
         appVersion: object.get('appVersion'),
+        requestType: object.get('requestType'),
         user,
         userId: user ? user.id : undefined,
       }),

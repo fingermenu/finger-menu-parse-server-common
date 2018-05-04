@@ -42,6 +42,7 @@ RequestLog.spawn = function (info) {
 
 RequestLog.updateInfoInternal = function (object, info) {
   object.set('appVersion', info.get('appVersion'));
+  object.set('requestType', info.get('requestType'));
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'user');
 };
 
@@ -63,6 +64,7 @@ var _initialiseProps = function _initialiseProps() {
       createdAt: object.get('createdAt'),
       updatedAt: object.get('updatedAt'),
       appVersion: object.get('appVersion'),
+      requestType: object.get('requestType'),
       user: user,
       userId: user ? user.id : undefined
     }));

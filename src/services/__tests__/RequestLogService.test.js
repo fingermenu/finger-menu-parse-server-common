@@ -11,7 +11,7 @@ const requestLogService = new RequestLogService();
 
 const createCriteriaWthoutConditions = () =>
   Map({
-    fields: List.of('appVersion', 'user'),
+    fields: List.of('appVersion', 'requestType', 'user'),
     include_user: true,
   });
 
@@ -19,6 +19,7 @@ const createCriteria = object =>
   Map({
     conditions: Map({
       appVersion: object ? object.get('appVersion') : chance.string(),
+      requestType: object ? object.get('requestType') : chance.string(),
       userId: object ? object.get('userId') : chance.string(),
     }),
   });

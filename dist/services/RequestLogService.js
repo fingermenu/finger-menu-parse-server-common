@@ -28,7 +28,7 @@ var RequestLogService = function (_ServiceBase) {
   return RequestLogService;
 }(_parseServerCommon.ServiceBase);
 
-RequestLogService.fields = _immutable.List.of('appVersion', 'user');
+RequestLogService.fields = _immutable.List.of('appVersion', 'requestType', 'user');
 
 RequestLogService.buildIncludeQuery = function (query, criteria) {
   if (!criteria) {
@@ -54,6 +54,7 @@ RequestLogService.buildSearchQuery = function (criteria) {
     _parseServerCommon.ServiceBase.addExistenceQuery(conditions, query, field);
   });
   _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'appVersion', 'appVersion');
+  _parseServerCommon.ServiceBase.addEqualityQuery(conditions, query, 'requestType', 'requestType');
   _parseServerCommon.ServiceBase.addUserLinkQuery(conditions, query, 'user', 'user');
 
   return query;

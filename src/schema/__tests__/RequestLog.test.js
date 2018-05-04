@@ -11,6 +11,7 @@ export const createRequestLogInfo = async () => {
   const user = await TestHelper.createUser();
   const requestLog = Map({
     appVersion: chance.string(),
+    requestType: chance.string(),
     userId: user.id,
   });
 
@@ -24,6 +25,7 @@ export const createRequestLog = async object => RequestLog.spawn(object || (awai
 
 export const expectRequestLog = (object, expectedObject, { requestLogId } = {}) => {
   expect(object.get('appVersion')).toBe(expectedObject.get('appVersion'));
+  expect(object.get('requestType')).toBe(expectedObject.get('requestType'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 
   if (requestLogId) {

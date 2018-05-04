@@ -37,6 +37,7 @@ var createRequestLogInfo = exports.createRequestLogInfo = function () {
             user = _context.sent;
             requestLog = (0, _immutable.Map)({
               appVersion: chance.string(),
+              requestType: chance.string(),
               userId: user.id
             });
             return _context.abrupt('return', {
@@ -99,6 +100,7 @@ var expectRequestLog = exports.expectRequestLog = function expectRequestLog(obje
       requestLogId = _ref3.requestLogId;
 
   expect(object.get('appVersion')).toBe(expectedObject.get('appVersion'));
+  expect(object.get('requestType')).toBe(expectedObject.get('requestType'));
   expect(object.get('userId')).toBe(expectedObject.get('userId'));
 
   if (requestLogId) {
