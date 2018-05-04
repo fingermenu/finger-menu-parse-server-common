@@ -61,6 +61,7 @@ var createTableInfo = exports.createTableInfo = function () {
           case 11:
             maintainedByUsers = _context.sent;
             table = (0, _immutable.Map)({
+              customers: _TestHelper2.default.createRandomList(),
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
               status: chance.string(),
               restaurantId: restaurant.get('id'),
@@ -69,9 +70,6 @@ var createTableInfo = exports.createTableInfo = function () {
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
               }),
-              numberOfAdults: chance.integer(),
-              numberOfChildren: chance.integer(),
-              customerName: chance.string(),
               notes: chance.string(),
               sortOrderIndex: chance.integer(),
               lastOrderCorrelationId: chance.string()
@@ -140,6 +138,7 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
       expectedRestaurant = _ref3.expectedRestaurant,
       expectedTableState = _ref3.expectedTableState;
 
+  expect(object.get('details')).toEqual(expectedObject.get('details'));
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('state')).toBe(expectedObject.get('state'));
   expect(object.get('status')).toBe(expectedObject.get('status'));
@@ -147,9 +146,6 @@ var expectTable = exports.expectTable = function expectTable(object, expectedObj
   expect(object.get('tableStateId')).toBe(expectedObject.get('tableStateId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
-  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
-  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
-  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
   expect(object.get('sortOrderIndex')).toBe(expectedObject.get('sortOrderIndex'));
   expect(object.get('lastOrderCorrelationId')).toBe(expectedObject.get('lastOrderCorrelationId'));

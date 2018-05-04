@@ -52,11 +52,9 @@ var createOrderInfo = exports.createOrderInfo = function () {
             table = _context.sent.first();
             order = (0, _immutable.Map)({
               details: _TestHelper2.default.createRandomList(),
+              customers: _TestHelper2.default.createRandomList(),
               restaurantId: restaurant.get('id'),
               tableId: table.get('id'),
-              numberOfAdults: chance.integer(),
-              numberOfChildren: chance.integer(),
-              customerName: chance.string(),
               notes: chance.string(),
               placedAt: new Date(),
               cancelledAt: new Date(),
@@ -125,11 +123,9 @@ var expectOrder = exports.expectOrder = function expectOrder(object, expectedObj
       expectedRestaurant = _ref3.expectedRestaurant;
 
   expect(object.get('details')).toEqual(expectedObject.get('details'));
+  expect(object.get('customers')).toEqual(expectedObject.get('customers'));
   expect(object.get('restaurantId')).toBe(expectedObject.get('restaurantId'));
   expect(object.get('tableId')).toBe(expectedObject.get('tableId'));
-  expect(object.get('numberOfAdults')).toBe(expectedObject.get('numberOfAdults'));
-  expect(object.get('numberOfChildren')).toBe(expectedObject.get('numberOfChildren'));
-  expect(object.get('customerName')).toBe(expectedObject.get('customerName'));
   expect(object.get('notes')).toBe(expectedObject.get('notes'));
   expect(object.get('placedAt')).toBe(expectedObject.get('placedAt'));
   expect(object.get('cancelledAt')).toBe(expectedObject.get('cancelledAt'));

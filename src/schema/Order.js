@@ -24,11 +24,16 @@ export default class Order extends BaseObject {
       object.set('details', details.toJS());
     }
 
+    const customers = info.get('customers');
+
+    if (Common.isNull(customers)) {
+      object.set('customers', []);
+    } else if (customers) {
+      object.set('customers', customers.toJS());
+    }
+
     BaseObject.createPointer(object, info, 'table', Table);
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
-    object.set('numberOfAdults', info.get('numberOfAdults'));
-    object.set('numberOfChildren', info.get('numberOfChildren'));
-    BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
     object.set('placedAt', info.get('placedAt'));
     object.set('cancelledAt', info.get('cancelledAt'));
@@ -56,13 +61,11 @@ export default class Order extends BaseObject {
         createdAt: object.get('createdAt'),
         updatedAt: object.get('updatedAt'),
         details: Immutable.fromJS(object.get('details')),
+        customers: Immutable.fromJS(object.get('customers')),
         restaurant,
         restaurantId: restaurant ? restaurant.id : undefined,
         table,
         tableId: table ? table.id : undefined,
-        numberOfAdults: object.get('numberOfAdults'),
-        numberOfChildren: object.get('numberOfChildren'),
-        customerName: object.get('customerName'),
         notes: object.get('notes'),
         placedAt: object.get('placedAt'),
         cancelledAt: object.get('cancelledAt'),

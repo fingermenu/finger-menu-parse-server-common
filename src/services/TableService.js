@@ -11,9 +11,7 @@ export default class TableService extends ServiceBase {
     'restaurant',
     'ownedByUser',
     'maintainedByUsers',
-    'numberOfAdults',
-    'numberOfChildren',
-    'customerName',
+    'customers',
     'notes',
     'sortOrderIndex',
     'lastOrderCorrelationId',
@@ -55,9 +53,6 @@ export default class TableService extends ServiceBase {
     ServiceBase.addLinkQuery(conditions, query, 'tableState', 'tableState', TableState);
     ServiceBase.addUserLinkQuery(conditions, query, 'ownedByUser', 'ownedByUser');
     ServiceBase.addUserLinkQuery(conditions, query, 'maintainedByUser', 'maintainedByUsers');
-    ServiceBase.addEqualityQuery(conditions, query, 'numberOfAdults', 'numberOfAdults');
-    ServiceBase.addEqualityQuery(conditions, query, 'numberOfChildren', 'numberOfChildren');
-    ServiceBase.addStringQuery(conditions, query, 'customerName', 'customerNameLowerCase');
     ServiceBase.addStringQuery(conditions, query, 'notes', 'notesLowerCase');
     ServiceBase.addEqualityQuery(conditions, query, 'sortOrderIndex', 'sortOrderIndex');
     ServiceBase.addEqualityQuery(conditions, query, 'lastOrderCorrelationId', 'lastOrderCorrelationId');

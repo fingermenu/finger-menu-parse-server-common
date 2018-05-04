@@ -1,6 +1,6 @@
 // @flow
 
-import { ImmutableEx } from '@microbusiness/common-javascript';
+import { Common, ImmutableEx } from '@microbusiness/common-javascript';
 import { BaseObject } from '@microbusiness/parse-server-common';
 import Immutable, { List, Map } from 'immutable';
 import Restaurant from './Restaurant';
@@ -16,15 +16,20 @@ export default class Table extends BaseObject {
   };
 
   static updateInfoInternal = (object, info) => {
+    const customers = info.get('customers');
+
+    if (Common.isNull(customers)) {
+      object.set('customers', []);
+    } else if (customers) {
+      object.set('customers', customers.toJS());
+    }
+
     BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
     object.set('status', info.get('status'));
     BaseObject.createPointer(object, info, 'restaurant', Restaurant);
     BaseObject.createPointer(object, info, 'tableState', TableState);
     BaseObject.createUserPointer(object, info, 'ownedByUser');
     BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
-    object.set('numberOfAdults', info.get('numberOfAdults'));
-    object.set('numberOfChildren', info.get('numberOfChildren'));
-    BaseObject.createStringColumn(object, info, 'customerName');
     BaseObject.createStringColumn(object, info, 'notes');
     object.set('sortOrderIndex', info.get('sortOrderIndex'));
     object.set('lastOrderCorrelationId', info.get('lastOrderCorrelationId'));
@@ -52,6 +57,7 @@ export default class Table extends BaseObject {
         id: this.getId(),
         createdAt: object.get('createdAt'),
         updatedAt: object.get('updatedAt'),
+        customers: Immutable.fromJS(object.get('customers')),
         name: this.getMultiLanguagesString('name'),
         status: object.get('status'),
         restaurant,
@@ -62,9 +68,6 @@ export default class Table extends BaseObject {
         ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
         maintainedByUsers,
         maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(maintainedByUser => maintainedByUser.id) : List(),
-        numberOfAdults: object.get('numberOfAdults'),
-        numberOfChildren: object.get('numberOfChildren'),
-        customerName: object.get('customerName'),
         notes: object.get('notes'),
         sortOrderIndex: object.get('sortOrderIndex'),
         lastOrderCorrelationId: object.get('lastOrderCorrelationId'),

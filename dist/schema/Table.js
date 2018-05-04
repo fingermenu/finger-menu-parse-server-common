@@ -53,15 +53,20 @@ Table.spawn = function (info) {
 };
 
 Table.updateInfoInternal = function (object, info) {
+  var customers = info.get('customers');
+
+  if (_commonJavascript.Common.isNull(customers)) {
+    object.set('customers', []);
+  } else if (customers) {
+    object.set('customers', customers.toJS());
+  }
+
   _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
   object.set('status', info.get('status'));
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'tableState', _TableState2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
-  object.set('numberOfAdults', info.get('numberOfAdults'));
-  object.set('numberOfChildren', info.get('numberOfChildren'));
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
   object.set('sortOrderIndex', info.get('sortOrderIndex'));
   object.set('lastOrderCorrelationId', info.get('lastOrderCorrelationId'));
@@ -87,6 +92,7 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       createdAt: object.get('createdAt'),
       updatedAt: object.get('updatedAt'),
+      customers: _immutable2.default.fromJS(object.get('customers')),
       name: _this2.getMultiLanguagesString('name'),
       status: object.get('status'),
       restaurant: restaurant,
@@ -99,9 +105,6 @@ var _initialiseProps = function _initialiseProps() {
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
         return maintainedByUser.id;
       }) : (0, _immutable.List)(),
-      numberOfAdults: object.get('numberOfAdults'),
-      numberOfChildren: object.get('numberOfChildren'),
-      customerName: object.get('customerName'),
       notes: object.get('notes'),
       sortOrderIndex: object.get('sortOrderIndex'),
       lastOrderCorrelationId: object.get('lastOrderCorrelationId')

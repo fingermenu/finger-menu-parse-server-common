@@ -61,11 +61,16 @@ Order.updateInfoInternal = function (object, info) {
     object.set('details', details.toJS());
   }
 
+  var customers = info.get('customers');
+
+  if (_commonJavascript.Common.isNull(customers)) {
+    object.set('customers', []);
+  } else if (customers) {
+    object.set('customers', customers.toJS());
+  }
+
   _parseServerCommon.BaseObject.createPointer(object, info, 'table', _Table2.default);
   _parseServerCommon.BaseObject.createPointer(object, info, 'restaurant', _Restaurant2.default);
-  object.set('numberOfAdults', info.get('numberOfAdults'));
-  object.set('numberOfChildren', info.get('numberOfChildren'));
-  _parseServerCommon.BaseObject.createStringColumn(object, info, 'customerName');
   _parseServerCommon.BaseObject.createStringColumn(object, info, 'notes');
   object.set('placedAt', info.get('placedAt'));
   object.set('cancelledAt', info.get('cancelledAt'));
@@ -91,13 +96,11 @@ var _initialiseProps = function _initialiseProps() {
       createdAt: object.get('createdAt'),
       updatedAt: object.get('updatedAt'),
       details: _immutable2.default.fromJS(object.get('details')),
+      customers: _immutable2.default.fromJS(object.get('customers')),
       restaurant: restaurant,
       restaurantId: restaurant ? restaurant.id : undefined,
       table: table,
       tableId: table ? table.id : undefined,
-      numberOfAdults: object.get('numberOfAdults'),
-      numberOfChildren: object.get('numberOfChildren'),
-      customerName: object.get('customerName'),
       notes: object.get('notes'),
       placedAt: object.get('placedAt'),
       cancelledAt: object.get('cancelledAt'),

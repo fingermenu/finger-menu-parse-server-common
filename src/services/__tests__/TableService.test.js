@@ -3,6 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { TableService } from '../';
 import { createTableInfo, expectTable } from '../../schema/__tests__/Table.test';
 
@@ -19,15 +20,13 @@ const getLanguages = object => {
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
     fields: List.of(
+      'customers',
       'languages_name',
       'status',
       'restaurant',
       'tableState',
       'ownedByUser',
       'maintainedByUsers',
-      'numberOfAdults',
-      'numberOfChildren',
-      'customerName',
       'notes',
       'sortOrderIndex',
       'lastOrderCorrelationId',
@@ -44,15 +43,13 @@ const createCriteria = object => {
 
   return Map({
     conditions: Map({
+      customers: object ? object.get('customers') : TestHelper.createRandomList(),
       name: language ? object.get('name').get(language) : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
-      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
-      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
-      customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       sortOrderIndex: object ? object.get('sortOrderIndex') : chance.integer(),
       lastOrderCorrelationId: object ? object.get('lastOrderCorrelationId') : chance.string(),

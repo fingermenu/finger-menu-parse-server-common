@@ -14,6 +14,10 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
+var _TestHelper = require('../../../TestHelper');
+
+var _TestHelper2 = _interopRequireDefault(_TestHelper);
+
 var _2 = require('../');
 
 var _Table = require('../../schema/__tests__/Table.test');
@@ -34,7 +38,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers', 'numberOfAdults', 'numberOfChildren', 'customerName', 'notes', 'sortOrderIndex', 'lastOrderCorrelationId').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('customers', 'languages_name', 'status', 'restaurant', 'tableState', 'ownedByUser', 'maintainedByUsers', 'notes', 'sortOrderIndex', 'lastOrderCorrelationId').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()),
     language: language,
@@ -52,15 +56,13 @@ var createCriteria = function createCriteria(object) {
 
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
+      customers: object ? object.get('customers') : _TestHelper2.default.createRandomList(),
       name: language ? object.get('name').get(language) : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableStateId: object ? object.get('tableStateId') : chance.string(),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : _immutable.List.of(chance.string(), chance.string()),
-      numberOfAdults: object ? object.get('numberOfAdults') : chance.integer(),
-      numberOfChildren: object ? object.get('numberOfChildren') : chance.integer(),
-      customerName: object ? object.get('customerName') : chance.string(),
       notes: object ? object.get('notes') : chance.string(),
       sortOrderIndex: object ? object.get('sortOrderIndex') : chance.integer(),
       lastOrderCorrelationId: object ? object.get('lastOrderCorrelationId') : chance.string()
