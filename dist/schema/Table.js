@@ -92,7 +92,7 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       createdAt: object.get('createdAt'),
       updatedAt: object.get('updatedAt'),
-      customers: _immutable2.default.fromJS(object.get('customers')),
+      customers: object.get('customers') ? _immutable2.default.fromJS(object.get('customers')) : (0, _immutable.List)(),
       name: _this2.getMultiLanguagesString('name'),
       status: object.get('status'),
       restaurant: restaurant,

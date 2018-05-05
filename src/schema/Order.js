@@ -2,7 +2,7 @@
 
 import { Common, ImmutableEx } from '@microbusiness/common-javascript';
 import { BaseObject } from '@microbusiness/parse-server-common';
-import Immutable, { Map } from 'immutable';
+import Immutable, { List, Map } from 'immutable';
 import Restaurant from './Restaurant';
 import Table from './Table';
 
@@ -60,8 +60,8 @@ export default class Order extends BaseObject {
         id: this.getId(),
         createdAt: object.get('createdAt'),
         updatedAt: object.get('updatedAt'),
-        details: Immutable.fromJS(object.get('details')),
-        customers: Immutable.fromJS(object.get('customers')),
+        details: object.get('details') ? Immutable.fromJS(object.get('details')) : List(),
+        customers: object.get('customers') ? Immutable.fromJS(object.get('customers')) : List(),
         restaurant,
         restaurantId: restaurant ? restaurant.id : undefined,
         table,

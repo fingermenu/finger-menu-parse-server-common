@@ -57,7 +57,7 @@ export default class Table extends BaseObject {
         id: this.getId(),
         createdAt: object.get('createdAt'),
         updatedAt: object.get('updatedAt'),
-        customers: Immutable.fromJS(object.get('customers')),
+        customers: object.get('customers') ? Immutable.fromJS(object.get('customers')) : List(),
         name: this.getMultiLanguagesString('name'),
         status: object.get('status'),
         restaurant,
