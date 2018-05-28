@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { RequestLogService } from '../';
+import { RequestLogService } from '..';
 import { createRequestLogInfo, expectRequestLog } from '../../schema/__tests__/RequestLog.test';
 
 const chance = new Chance();

@@ -11,7 +11,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _ = require('../');
+var _ = require('..');
 
 var _TagService = require('../../services/__tests__/TagService.test');
 

@@ -13,7 +13,7 @@ var _immutable = require('immutable');
 
 require('../../../bootstrap');
 
-var _ = require('../');
+var _ = require('..');
 
 var _RestaurantService = require('../../services/__tests__/RestaurantService.test');
 

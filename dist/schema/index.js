@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserFeedback = exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.ServingTime = exports.Restaurant = exports.RequestLog = exports.PackageBundle = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.DishType = exports.DietaryOption = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
+exports.UserFeedback = exports.Tag = exports.TableStateChange = exports.TableState = exports.Table = exports.Size = exports.ServingTime = exports.Restaurant = exports.RequestLog = exports.PackageBundle = exports.Order = exports.MenuItemPrice = exports.MenuItem = exports.Menu = exports.Language = exports.DishType = exports.DietaryOption = exports.DepartmentCategory = exports.ChoiceItemPrice = exports.ChoiceItem = undefined;
 
 var _ChoiceItem2 = require('./ChoiceItem');
 
@@ -12,6 +12,10 @@ var _ChoiceItem3 = _interopRequireDefault(_ChoiceItem2);
 var _ChoiceItemPrice2 = require('./ChoiceItemPrice');
 
 var _ChoiceItemPrice3 = _interopRequireDefault(_ChoiceItemPrice2);
+
+var _DepartmentCategory2 = require('./DepartmentCategory');
+
+var _DepartmentCategory3 = _interopRequireDefault(_DepartmentCategory2);
 
 var _DietaryOption2 = require('./DietaryOption');
 
@@ -85,6 +89,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.ChoiceItem = _ChoiceItem3.default;
 exports.ChoiceItemPrice = _ChoiceItemPrice3.default;
+exports.DepartmentCategory = _DepartmentCategory3.default;
 exports.DietaryOption = _DietaryOption3.default;
 exports.DishType = _DishType3.default;
 exports.Language = _Language3.default;

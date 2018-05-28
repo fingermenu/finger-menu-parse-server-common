@@ -3,13 +3,13 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { ChoiceItemService } from '../';
+import { ChoiceItemService } from '..';
 import { createChoiceItemInfo, expectChoiceItem } from '../../schema/__tests__/ChoiceItem.test';
 
 const chance = new Chance();
 const choiceItemService = new ChoiceItemService();
 
-const getLanguages = (object) => {
+const getLanguages = object => {
   const languages = object ? object.get('name').keySeq() : List();
   const language = languages.isEmpty() ? null : languages.first();
 
@@ -27,13 +27,11 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (object) => {
+const createCriteria = object => {
   const { language, languages } = getLanguages(object);
 
   return Map({
     conditions: Map({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
       choiceItemPageUrl: object ? object.get('choiceItemPageUrl') : chance.string(),
       imageUrl: object ? object.get('imageUrl') : chance.string(),
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
@@ -52,21 +50,25 @@ const createChoiceItems = async (count, useSameInfo = false) => {
     choiceItem = tempChoiceItem;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalChoiceItem;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalChoiceItem;
 
-      if (useSameInfo) {
-        finalChoiceItem = choiceItem;
-      } else {
-        const { choiceItem: tempChoiceItem } = await createChoiceItemInfo();
+          if (useSameInfo) {
+            finalChoiceItem = choiceItem;
+          } else {
+            const { choiceItem: tempChoiceItem } = await createChoiceItemInfo();
 
-        finalChoiceItem = tempChoiceItem;
-      }
+            finalChoiceItem = tempChoiceItem;
+          }
 
-      return choiceItemService.read(await choiceItemService.create(finalChoiceItem), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return choiceItemService.read(await choiceItemService.create(finalChoiceItem), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createChoiceItems;
@@ -200,13 +202,17 @@ describe('search', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createChoiceItemInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => choiceItemService.create(expectedChoiceItem))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => choiceItemService.create(expectedChoiceItem))
+          .toArray(),
+      ),
+    );
     const choiceItems = await choiceItemService.search(createCriteria(expectedChoiceItem));
 
     expect(choiceItems.count).toBe(results.count);
-    choiceItems.forEach((choiceItem) => {
+    choiceItems.forEach(choiceItem => {
       expect(results.find(_ => _.localeCompare(choiceItem.get('id')) === 0)).toBeDefined();
       expectChoiceItem(choiceItem, expectedChoiceItem, {
         choiceItemId: choiceItem.get('id'),
@@ -224,7 +230,7 @@ describe('searchAll', () => {
     const result = choiceItemService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         choiceItems = choiceItems.push(info);
       });
 
@@ -243,15 +249,19 @@ describe('searchAll', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createChoiceItemInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => choiceItemService.create(expectedChoiceItem))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => choiceItemService.create(expectedChoiceItem))
+          .toArray(),
+      ),
+    );
 
     let choiceItems = List();
     const result = choiceItemService.searchAll(createCriteria(expectedChoiceItem));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         choiceItems = choiceItems.push(info);
       });
 
@@ -261,7 +271,7 @@ describe('searchAll', () => {
     }
 
     expect(choiceItems.count).toBe(results.count);
-    choiceItems.forEach((choiceItem) => {
+    choiceItems.forEach(choiceItem => {
       expect(results.find(_ => _.localeCompare(choiceItem.get('id')) === 0)).toBeDefined();
       expectChoiceItem(choiceItem, expectedChoiceItem, {
         choiceItemId: choiceItem.get('id'),

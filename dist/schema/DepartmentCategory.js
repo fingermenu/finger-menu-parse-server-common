@@ -12,6 +12,10 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
+var _Tag = require('./Tag');
+
+var _Tag2 = _interopRequireDefault(_Tag);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20,37 +24,32 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Tag = function (_BaseObject) {
-  _inherits(Tag, _BaseObject);
+var DepartmentCategory = function (_BaseObject) {
+  _inherits(DepartmentCategory, _BaseObject);
 
-  function Tag(object) {
-    _classCallCheck(this, Tag);
+  function DepartmentCategory(object) {
+    _classCallCheck(this, DepartmentCategory);
 
-    var _this = _possibleConstructorReturn(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).call(this, object, 'Tag'));
+    var _this = _possibleConstructorReturn(this, (DepartmentCategory.__proto__ || Object.getPrototypeOf(DepartmentCategory)).call(this, object, 'DepartmentCategory'));
 
     _initialiseProps.call(_this);
 
     return _this;
   }
 
-  return Tag;
+  return DepartmentCategory;
 }(_parseServerCommon.BaseObject);
 
-Tag.spawn = function (info) {
-  var object = new Tag();
+DepartmentCategory.spawn = function (info) {
+  var object = new DepartmentCategory();
 
-  Tag.updateInfoInternal(object, info);
+  DepartmentCategory.updateInfoInternal(object, info);
 
   return object;
 };
 
-Tag.updateInfoInternal = function (object, info) {
-  object.set('key', info.get('key'));
-  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'name');
-  _parseServerCommon.BaseObject.createMultiLanguagesStringColumn(object, info, 'description');
-  object.set('level', info.get('level'));
-  object.set('forDisplay', info.get('forDisplay'));
-  _parseServerCommon.BaseObject.createPointer(object, info, 'parentTag', Tag);
+DepartmentCategory.updateInfoInternal = function (object, info) {
+  _parseServerCommon.BaseObject.createPointer(object, info, 'tag', _Tag2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
 };
@@ -59,15 +58,14 @@ var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.updateInfo = function (info) {
-    Tag.updateInfoInternal(_this2.getObject(), info);
+    DepartmentCategory.updateInfoInternal(_this2.getObject(), info);
 
     return _this2;
   };
 
   this.getInfo = function () {
     var object = _this2.getObject();
-    var parentTagObject = object.get('parentTag');
-    var parentTag = parentTagObject ? new Tag(parentTagObject) : undefined;
+    var tag = object.get('tag');
     var ownedByUser = object.get('ownedByUser');
     var maintainedByUsers = _immutable2.default.fromJS(object.get('maintainedByUsers'));
 
@@ -75,13 +73,8 @@ var _initialiseProps = function _initialiseProps() {
       id: _this2.getId(),
       createdAt: object.get('createdAt'),
       updatedAt: object.get('updatedAt'),
-      key: object.get('key'),
-      name: _this2.getMultiLanguagesString('name'),
-      description: _this2.getMultiLanguagesString('description'),
-      level: object.get('level'),
-      forDisplay: object.get('forDisplay'),
-      parentTag: parentTag ? parentTag.getInfo() : undefined,
-      parentTagId: parentTag ? parentTag.getId() : undefined,
+      tag: tag,
+      tagId: tag ? tag.id : undefined,
       ownedByUser: ownedByUser,
       ownedByUserId: ownedByUser ? ownedByUser.id : undefined,
       maintainedByUsers: maintainedByUsers,
@@ -92,4 +85,4 @@ var _initialiseProps = function _initialiseProps() {
   };
 };
 
-exports.default = Tag;
+exports.default = DepartmentCategory;

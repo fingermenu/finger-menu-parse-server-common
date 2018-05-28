@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { SizeService } from '../';
+import { SizeService } from '..';
 import { createSizeInfo, expectSize } from '../../schema/__tests__/Size.test';
 
 const chance = new Chance();

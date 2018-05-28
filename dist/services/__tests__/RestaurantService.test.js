@@ -20,7 +20,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _Restaurant = require('../../schema/__tests__/Restaurant.test');
 
@@ -58,7 +58,6 @@ var createCriteria = function createCriteria(object) {
 
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: language ? object.get('name').get(language) : chance.string(),
       websiteUrl: object ? object.get('websiteUrl') : chance.string(),
       address: object ? object.get('address') : chance.string(),
       phones: object ? object.get('phones') : (0, _immutable.Map)({ business: chance.string() }),

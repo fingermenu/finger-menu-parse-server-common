@@ -2,7 +2,7 @@
 
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { DietaryOption } from '../';
+import { DietaryOption } from '..';
 import createTags from '../../services/__tests__/TagService.test';
 
 export const createDietaryOptionInfo = async () => {

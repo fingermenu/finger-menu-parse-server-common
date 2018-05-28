@@ -14,7 +14,7 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _ChoiceItem = require('../../schema/__tests__/ChoiceItem.test');
 
@@ -53,8 +53,6 @@ var createCriteria = function createCriteria(object) {
 
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
       choiceItemPageUrl: object ? object.get('choiceItemPageUrl') : chance.string(),
       imageUrl: object ? object.get('imageUrl') : chance.string(),
       tagIds: object ? object.get('tagIds') : _immutable.List.of(chance.string(), chance.string()),

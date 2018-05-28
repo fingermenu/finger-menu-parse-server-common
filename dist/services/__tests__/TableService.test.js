@@ -18,7 +18,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _Table = require('../../schema/__tests__/Table.test');
 
@@ -57,7 +57,6 @@ var createCriteria = function createCriteria(object) {
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
       customers: object ? object.get('customers') : _TestHelper2.default.createRandomList(),
-      name: language ? object.get('name').get(language) : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableStateId: object ? object.get('tableStateId') : chance.string(),

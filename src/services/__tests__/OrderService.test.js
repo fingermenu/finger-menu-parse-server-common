@@ -4,7 +4,7 @@ import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { OrderService } from '../';
+import { OrderService } from '..';
 import { createOrderInfo, expectOrder } from '../../schema/__tests__/Order.test';
 
 const chance = new Chance();

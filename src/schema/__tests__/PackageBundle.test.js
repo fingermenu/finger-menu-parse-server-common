@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
-import { PackageBundle } from '../';
+import { PackageBundle } from '..';
 import createRestaurants from '../../services/__tests__/RestaurantService.test';
 
 const chance = new Chance();

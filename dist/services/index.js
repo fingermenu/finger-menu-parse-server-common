@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.RequestLogService = exports.PackageBundleService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DishTypeService = exports.DietaryOptionService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
+exports.UserFeedbackService = exports.TagService = exports.TableStateChangeService = exports.TableStateService = exports.TableService = exports.SizeService = exports.ServingTimeService = exports.RestaurantService = exports.RequestLogService = exports.PackageBundleService = exports.OrderService = exports.MenuItemPriceService = exports.MenuItemService = exports.MenuService = exports.LanguageService = exports.DishTypeService = exports.DietaryOptionService = exports.DepartmentCategoryService = exports.ChoiceItemPriceService = exports.ChoiceItemService = undefined;
 
 var _ChoiceItemService2 = require('./ChoiceItemService');
 
@@ -12,6 +12,10 @@ var _ChoiceItemService3 = _interopRequireDefault(_ChoiceItemService2);
 var _ChoiceItemPriceService2 = require('./ChoiceItemPriceService');
 
 var _ChoiceItemPriceService3 = _interopRequireDefault(_ChoiceItemPriceService2);
+
+var _DepartmentCategoryService2 = require('./DepartmentCategoryService');
+
+var _DepartmentCategoryService3 = _interopRequireDefault(_DepartmentCategoryService2);
 
 var _DietaryOptionService2 = require('./DietaryOptionService');
 
@@ -85,6 +89,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.ChoiceItemService = _ChoiceItemService3.default;
 exports.ChoiceItemPriceService = _ChoiceItemPriceService3.default;
+exports.DepartmentCategoryService = _DepartmentCategoryService3.default;
 exports.DietaryOptionService = _DietaryOptionService3.default;
 exports.DishTypeService = _DishTypeService3.default;
 exports.LanguageService = _LanguageService3.default;

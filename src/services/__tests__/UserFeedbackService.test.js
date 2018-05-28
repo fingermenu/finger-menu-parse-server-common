@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { UserFeedbackService } from '../';
+import { UserFeedbackService } from '..';
 import { createUserFeedbackInfo, expectUserFeedback } from '../../schema/__tests__/UserFeedback.test';
 import TestHelper from '../../../TestHelper';
 

@@ -5,7 +5,7 @@ import { List, Map } from 'immutable';
 import { ParseWrapperService } from '@microbusiness/parse-server-common';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { Restaurant } from '../';
+import { Restaurant } from '..';
 import createMenus from '../../services/__tests__/MenuService.test';
 
 const chance = new Chance();

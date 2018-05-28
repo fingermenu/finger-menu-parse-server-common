@@ -4,7 +4,7 @@ import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { TableState } from '../';
+import { TableState } from '..';
 
 const chance = new Chance();
 

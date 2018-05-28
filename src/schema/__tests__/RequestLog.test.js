@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { RequestLog } from '../';
+import { RequestLog } from '..';
 
 const chance = new Chance();
 

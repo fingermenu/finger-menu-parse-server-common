@@ -2,36 +2,36 @@
 
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { Size } from '..';
+import { DepartmentCategory } from '..';
 import createTags from '../../services/__tests__/TagService.test';
 
-export const createSizeInfo = async () => {
+export const createDepartmentCategoryInfo = async () => {
   const tag = (await createTags(1)).first();
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
-  const size = Map({
+  const departmentCategory = Map({
     tagId: tag.get('id'),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
   });
 
   return {
-    size,
+    departmentCategory,
     tag,
     ownedByUser,
     maintainedByUsers,
   };
 };
 
-export const createSize = async object => Size.spawn(object || (await createSizeInfo()).size);
+export const createDepartmentCategory = async object => DepartmentCategory.spawn(object || (await createDepartmentCategoryInfo()).departmentCategory);
 
-export const expectSize = (object, expectedObject, { sizeId, expectedTag } = {}) => {
+export const expectDepartmentCategory = (object, expectedObject, { departmentCategoryId, expectedTag } = {}) => {
   expect(object.get('tagId')).toBe(expectedObject.get('tagId'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
 
-  if (sizeId) {
-    expect(object.get('id')).toBe(sizeId);
+  if (departmentCategoryId) {
+    expect(object.get('id')).toBe(departmentCategoryId);
   }
 
   if (expectedTag) {
@@ -41,50 +41,50 @@ export const expectSize = (object, expectedObject, { sizeId, expectedTag } = {})
 
 describe('constructor', () => {
   test('should set class name', async () => {
-    expect((await createSize()).className).toBe('Size');
+    expect((await createDepartmentCategory()).className).toBe('DepartmentCategory');
   });
 });
 
 describe('static public methods', () => {
   test('spawn should set provided info', async () => {
-    const { size } = await createSizeInfo();
-    const object = await createSize(size);
+    const { departmentCategory } = await createDepartmentCategoryInfo();
+    const object = await createDepartmentCategory(departmentCategory);
     const info = object.getInfo();
 
-    expectSize(info, size);
+    expectDepartmentCategory(info, departmentCategory);
   });
 });
 
 describe('public methods', () => {
   test('getObject should return provided object', async () => {
-    const object = await createSize();
+    const object = await createDepartmentCategory();
 
-    expect(new Size(object).getObject()).toBe(object);
+    expect(new DepartmentCategory(object).getObject()).toBe(object);
   });
 
   test('getId should return provided object Id', async () => {
-    const object = await createSize();
+    const object = await createDepartmentCategory();
 
-    expect(new Size(object).getId()).toBe(object.id);
+    expect(new DepartmentCategory(object).getId()).toBe(object.id);
   });
 
   test('updateInfo should update object info', async () => {
-    const object = await createSize();
-    const { size: updatedSize } = await createSizeInfo();
+    const object = await createDepartmentCategory();
+    const { departmentCategory: updatedDepartmentCategory } = await createDepartmentCategoryInfo();
 
-    object.updateInfo(updatedSize);
+    object.updateInfo(updatedDepartmentCategory);
 
     const info = object.getInfo();
 
-    expectSize(info, updatedSize);
+    expectDepartmentCategory(info, updatedDepartmentCategory);
   });
 
   test('getInfo should return provided info', async () => {
-    const { size } = await createSizeInfo();
-    const object = await createSize(size);
+    const { departmentCategory } = await createDepartmentCategoryInfo();
+    const object = await createDepartmentCategory(departmentCategory);
     const info = object.getInfo();
 
     expect(info.get('id')).toBe(object.getId());
-    expectSize(info, size);
+    expectDepartmentCategory(info, departmentCategory);
   });
 });

@@ -17,7 +17,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _ = require('../');
+var _ = require('..');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,6 +46,7 @@ var createTagInfo = exports.createTagInfo = function () {
           case 5:
             maintainedByUsers = _context.sent;
             tag = (0, _immutable.Map)({
+              key: chance.string(),
               name: _TestHelper2.default.createRandomMultiLanguagesString(),
               description: _TestHelper2.default.createRandomMultiLanguagesString(),
               level: chance.integer(),
@@ -113,6 +114,7 @@ var createTag = exports.createTag = function () {
 }();
 
 var expectTag = exports.expectTag = function expectTag(object, expectedObject) {
+  expect(object.get('key')).toEqual(expectedObject.get('key'));
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('level')).toBe(expectedObject.get('level'));

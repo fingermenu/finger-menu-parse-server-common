@@ -3,13 +3,13 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { TagService } from '../';
+import { TagService } from '..';
 import { createTagInfo, expectTag } from '../../schema/__tests__/Tag.test';
 
 const chance = new Chance();
 const tagService = new TagService();
 
-const getLanguages = (object) => {
+const getLanguages = object => {
   const languages = object ? object.get('name').keySeq() : List();
   const language = languages.isEmpty() ? null : languages.first();
 
@@ -18,7 +18,7 @@ const getLanguages = (object) => {
 
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('languages_name', 'languages_description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers')
+    fields: List.of('languages_name', 'languages_description', 'key', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers')
       .concat(languages ? languages.map(_ => `${_}_name`) : List())
       .concat(languages ? languages.map(_ => `${_}_description`) : List()),
     language,
@@ -27,13 +27,12 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (object) => {
+const createCriteria = object => {
   const { language, languages } = getLanguages(object);
 
   return Map({
     conditions: Map({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
+      key: object ? object.get('key') : chance.string(),
       level: object ? object.get('level') : chance.integer(),
       forDisplay: object ? object.get('forDisplay') : chance.bool(),
       parentTagId: object && object.get('parentTagId') ? object.get('parentTagId') : undefined,
@@ -53,24 +52,28 @@ const createTags = async (count, useSameInfo = false, createParentTag = true) =>
     tag = tempTag;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalTag;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalTag;
 
-      if (useSameInfo) {
-        finalTag = tag;
-      } else {
-        const { tag: tempTag } = await createTagInfo();
+          if (useSameInfo) {
+            finalTag = tag;
+          } else {
+            const { tag: tempTag } = await createTagInfo();
 
-        finalTag = tempTag;
-      }
+            finalTag = tempTag;
+          }
 
-      return tagService.read(
-        await tagService.create(createParentTag ? finalTag.set('parentTagId', parentTag.get('id')) : finalTag),
-        createCriteriaWthoutConditions(),
-      );
-    })
-    .toArray()));
+          return tagService.read(
+            await tagService.create(createParentTag ? finalTag.set('parentTagId', parentTag.get('id')) : finalTag),
+            createCriteriaWthoutConditions(),
+          );
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createTags;
@@ -185,13 +188,17 @@ describe('search', () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
     const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => tagService.create(expectedTag))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => tagService.create(expectedTag))
+          .toArray(),
+      ),
+    );
     const tags = await tagService.search(createCriteria(expectedTag));
 
     expect(tags.count).toBe(results.count);
-    tags.forEach((tag) => {
+    tags.forEach(tag => {
       expect(results.find(_ => _.localeCompare(tag.get('id')) === 0)).toBeDefined();
       expectTag(tag, expectedTag, { expectedOwnedByUser, expectedMaintainedByUsers });
     });
@@ -204,7 +211,7 @@ describe('searchAll', () => {
     const result = tagService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tags = tags.push(info);
       });
 
@@ -220,15 +227,19 @@ describe('searchAll', () => {
     const { tag: parentTag } = await createTagInfo();
     const parentTagId = await tagService.create(parentTag);
     const { tag: expectedTag, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createTagInfo({ parentTagId });
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => tagService.create(expectedTag))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => tagService.create(expectedTag))
+          .toArray(),
+      ),
+    );
 
     let tags = List();
     const result = tagService.searchAll(createCriteria(expectedTag));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tags = tags.push(info);
       });
 
@@ -238,7 +249,7 @@ describe('searchAll', () => {
     }
 
     expect(tags.count).toBe(results.count);
-    tags.forEach((tag) => {
+    tags.forEach(tag => {
       expect(results.find(_ => _.localeCompare(tag.get('id')) === 0)).toBeDefined();
       expectTag(tag, expectedTag, { expectedOwnedByUser, expectedMaintainedByUsers });
     });

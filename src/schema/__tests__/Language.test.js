@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
-import { Language } from '../';
+import { Language } from '..';
 
 const chance = new Chance();
 

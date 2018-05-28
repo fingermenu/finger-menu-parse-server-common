@@ -3,13 +3,13 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { MenuItemService } from '../';
+import { MenuItemService } from '..';
 import { createMenuItemInfo, expectMenuItem } from '../../schema/__tests__/MenuItem.test';
 
 const chance = new Chance();
 const menuItemService = new MenuItemService();
 
-const getLanguages = (object) => {
+const getLanguages = object => {
   const languages = object ? object.get('name').keySeq() : List();
   const language = languages.isEmpty() ? null : languages.first();
 
@@ -27,13 +27,11 @@ const createCriteriaWthoutConditions = (languages, language) =>
     include_maintainedByUsers: true,
   });
 
-const createCriteria = (object) => {
+const createCriteria = object => {
   const { language, languages } = getLanguages(object);
 
   return Map({
     conditions: Map({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
       menuItemPageUrl: object ? object.get('menuItemPageUrl') : chance.string(),
       imageUrl: object ? object.get('imageUrl') : chance.string(),
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
@@ -52,21 +50,25 @@ const createMenuItems = async (count, useSameInfo = false) => {
     menuItem = tempMenuItem;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalMenuItem;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalMenuItem;
 
-      if (useSameInfo) {
-        finalMenuItem = menuItem;
-      } else {
-        const { menuItem: tempMenuItem } = await createMenuItemInfo();
+          if (useSameInfo) {
+            finalMenuItem = menuItem;
+          } else {
+            const { menuItem: tempMenuItem } = await createMenuItemInfo();
 
-        finalMenuItem = tempMenuItem;
-      }
+            finalMenuItem = tempMenuItem;
+          }
 
-      return menuItemService.read(await menuItemService.create(finalMenuItem), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return menuItemService.read(await menuItemService.create(finalMenuItem), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createMenuItems;
@@ -200,13 +202,17 @@ describe('search', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createMenuItemInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => menuItemService.create(expectedMenuItem))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => menuItemService.create(expectedMenuItem))
+          .toArray(),
+      ),
+    );
     const menuItems = await menuItemService.search(createCriteria(expectedMenuItem));
 
     expect(menuItems.count).toBe(results.count);
-    menuItems.forEach((menuItem) => {
+    menuItems.forEach(menuItem => {
       expect(results.find(_ => _.localeCompare(menuItem.get('id')) === 0)).toBeDefined();
       expectMenuItem(menuItem, expectedMenuItem, {
         menuItemId: menuItem.get('id'),
@@ -224,7 +230,7 @@ describe('searchAll', () => {
     const result = menuItemService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         menuItems = menuItems.push(info);
       });
 
@@ -243,15 +249,19 @@ describe('searchAll', () => {
       ownedByUser: expectedOwnedByUser,
       maintainedByUsers: expectedMaintainedByUsers,
     } = await createMenuItemInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => menuItemService.create(expectedMenuItem))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => menuItemService.create(expectedMenuItem))
+          .toArray(),
+      ),
+    );
 
     let menuItems = List();
     const result = menuItemService.searchAll(createCriteria(expectedMenuItem));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         menuItems = menuItems.push(info);
       });
 
@@ -261,7 +271,7 @@ describe('searchAll', () => {
     }
 
     expect(menuItems.count).toBe(results.count);
-    menuItems.forEach((menuItem) => {
+    menuItems.forEach(menuItem => {
       expect(results.find(_ => _.localeCompare(menuItem.get('id')) === 0)).toBeDefined();
       expectMenuItem(menuItem, expectedMenuItem, {
         menuItemId: menuItem.get('id'),

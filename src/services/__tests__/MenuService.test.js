@@ -4,7 +4,7 @@ import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { MenuService } from '../';
+import { MenuService } from '..';
 import { createMenuInfo, expectMenu } from '../../schema/__tests__/Menu.test';
 
 const chance = new Chance();
@@ -44,8 +44,6 @@ const createCriteria = object => {
 
   return Map({
     conditions: Map({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
       menuPageUrl: object ? object.get('menuPageUrl') : chance.string(),
       imageUrl: object ? object.get('imageUrl') : chance.string(),
       menuItemPriceIds: object ? object.get('menuItemPriceIds') : List.of(chance.string(), chance.string()),

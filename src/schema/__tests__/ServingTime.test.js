@@ -2,7 +2,7 @@
 
 import { Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { ServingTime } from '../';
+import { ServingTime } from '..';
 import createTags from '../../services/__tests__/TagService.test';
 
 export const createServingTimeInfo = async () => {

@@ -4,7 +4,7 @@ import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { Table } from '../';
+import { Table } from '..';
 import createRestaurants from '../../services/__tests__/RestaurantService.test';
 import createTableStates from '../../services/__tests__/TableStateService.test';
 

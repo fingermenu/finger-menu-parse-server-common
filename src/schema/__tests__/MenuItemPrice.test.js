@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import { List, Map } from 'immutable';
 import TestHelper from '../../../TestHelper';
-import { MenuItemPrice } from '../';
+import { MenuItemPrice } from '..';
 import createMenuItems from '../../services/__tests__/MenuItemService.test';
 import createChoiceItemPrices from '../../services/__tests__/ChoiceItemPriceService.test';
 import createTags from '../../services/__tests__/TagService.test';

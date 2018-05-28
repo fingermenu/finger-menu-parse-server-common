@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { PackageBundleService } from '../';
+import { PackageBundleService } from '..';
 import { createPackageBundleInfo, expectPackageBundle } from '../../schema/__tests__/PackageBundle.test';
 
 const chance = new Chance();

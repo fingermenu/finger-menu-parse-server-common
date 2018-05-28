@@ -5,7 +5,7 @@ import Immutable, { List, Map, Range } from 'immutable';
 import { ParseWrapperService } from '@microbusiness/parse-server-common';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { RestaurantService } from '../';
+import { RestaurantService } from '..';
 import { createRestaurantInfo, expectRestaurant } from '../../schema/__tests__/Restaurant.test';
 
 const chance = new Chance();
@@ -49,7 +49,6 @@ const createCriteria = object => {
 
   return Map({
     conditions: Map({
-      name: language ? object.get('name').get(language) : chance.string(),
       websiteUrl: object ? object.get('websiteUrl') : chance.string(),
       address: object ? object.get('address') : chance.string(),
       phones: object ? object.get('phones') : Map({ business: chance.string() }),

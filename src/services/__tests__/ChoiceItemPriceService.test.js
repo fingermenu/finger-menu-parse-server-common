@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { ChoiceItemPriceService } from '../';
+import { ChoiceItemPriceService } from '..';
 import { createChoiceItemPriceInfo, expectChoiceItemPrice } from '../../schema/__tests__/ChoiceItemPrice.test';
 
 const chance = new Chance();

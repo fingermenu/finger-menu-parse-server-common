@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { LanguageService } from '../';
+import { LanguageService } from '..';
 import { createLanguageInfo, expectLanguage } from '../../schema/__tests__/Language.test';
 
 const chance = new Chance();
@@ -32,21 +32,25 @@ const createLanguages = async (count, useSameInfo = false) => {
     language = tempLanguage;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalLanguage;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalLanguage;
 
-      if (useSameInfo) {
-        finalLanguage = language;
-      } else {
-        const { language: tempLanguage } = await createLanguageInfo();
+          if (useSameInfo) {
+            finalLanguage = language;
+          } else {
+            const { language: tempLanguage } = await createLanguageInfo();
 
-        finalLanguage = tempLanguage;
-      }
+            finalLanguage = tempLanguage;
+          }
 
-      return languageService.read(await languageService.create(finalLanguage), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return languageService.read(await languageService.create(finalLanguage), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createLanguages;
@@ -163,13 +167,17 @@ describe('search', () => {
 
   test('should return the language matches the criteria', async () => {
     const { language: expectedLanguage, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createLanguageInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => languageService.create(expectedLanguage))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => languageService.create(expectedLanguage))
+          .toArray(),
+      ),
+    );
     const languages = await languageService.search(createCriteria(expectedLanguage));
 
     expect(languages.count).toBe(results.count);
-    languages.forEach((language) => {
+    languages.forEach(language => {
       expect(results.find(_ => _.localeCompare(language.get('id')) === 0)).toBeDefined();
       expectLanguage(language, expectedLanguage, {
         languageId: language.get('id'),
@@ -186,7 +194,7 @@ describe('searchAll', () => {
     const result = languageService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         languages = languages.push(info);
       });
 
@@ -200,15 +208,19 @@ describe('searchAll', () => {
 
   test('should return the language matches the criteria', async () => {
     const { language: expectedLanguage, ownedByUser: expectedOwnedByUser, maintainedByUsers: expectedMaintainedByUsers } = await createLanguageInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => languageService.create(expectedLanguage))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => languageService.create(expectedLanguage))
+          .toArray(),
+      ),
+    );
 
     let languages = List();
     const result = languageService.searchAll(createCriteria(expectedLanguage));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         languages = languages.push(info);
       });
 
@@ -218,7 +230,7 @@ describe('searchAll', () => {
     }
 
     expect(languages.count).toBe(results.count);
-    languages.forEach((language) => {
+    languages.forEach(language => {
       expect(results.find(_ => _.localeCompare(language.get('id')) === 0)).toBeDefined();
       expectLanguage(language, expectedLanguage, {
         languageId: language.get('id'),

@@ -17,7 +17,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _ = require('../');
+var _ = require('..');
 
 var _TableService = require('../../services/__tests__/TableService.test');
 

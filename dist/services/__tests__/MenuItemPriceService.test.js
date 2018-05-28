@@ -18,7 +18,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _MenuItemPrice = require('../../schema/__tests__/MenuItemPrice.test');
 

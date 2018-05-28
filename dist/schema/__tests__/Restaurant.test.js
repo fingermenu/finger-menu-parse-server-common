@@ -19,7 +19,7 @@ var _TestHelper = require('../../../TestHelper');
 
 var _TestHelper2 = _interopRequireDefault(_TestHelper);
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _MenuService = require('../../services/__tests__/MenuService.test');
 

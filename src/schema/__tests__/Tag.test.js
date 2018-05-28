@@ -4,7 +4,7 @@ import Chance from 'chance';
 import { Map } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { Tag } from '../';
+import { Tag } from '..';
 
 const chance = new Chance();
 
@@ -12,6 +12,7 @@ export const createTagInfo = async ({ parentTagId } = {}) => {
   const ownedByUser = await TestHelper.createUser();
   const maintainedByUsers = await TestHelper.createUsers();
   const tag = Map({
+    key: chance.string(),
     name: TestHelper.createRandomMultiLanguagesString(),
     description: TestHelper.createRandomMultiLanguagesString(),
     level: chance.integer(),
@@ -31,6 +32,7 @@ export const createTagInfo = async ({ parentTagId } = {}) => {
 export const createTag = async object => Tag.spawn(object || (await createTagInfo()).tag);
 
 export const expectTag = (object, expectedObject) => {
+  expect(object.get('key')).toEqual(expectedObject.get('key'));
   expect(object.get('name')).toEqual(expectedObject.get('name'));
   expect(object.get('description')).toEqual(expectedObject.get('description'));
   expect(object.get('level')).toBe(expectedObject.get('level'));

@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { TableStateChangeService } from '../';
+import { TableStateChangeService } from '..';
 import { createTableStateChangeInfo, expectTableStateChange } from '../../schema/__tests__/TableStateChange.test';
 
 const chance = new Chance();
@@ -39,21 +39,25 @@ const createTableStateChanges = async (count, useSameInfo = false) => {
     tableStateChange = tempTableStateChange;
   }
 
-  return Immutable.fromJS(await Promise.all(Range(0, count)
-    .map(async () => {
-      let finalTableStateChange;
+  return Immutable.fromJS(
+    await Promise.all(
+      Range(0, count)
+        .map(async () => {
+          let finalTableStateChange;
 
-      if (useSameInfo) {
-        finalTableStateChange = tableStateChange;
-      } else {
-        const { tableStateChange: tempTableStateChange } = await createTableStateChangeInfo();
+          if (useSameInfo) {
+            finalTableStateChange = tableStateChange;
+          } else {
+            const { tableStateChange: tempTableStateChange } = await createTableStateChangeInfo();
 
-        finalTableStateChange = tempTableStateChange;
-      }
+            finalTableStateChange = tempTableStateChange;
+          }
 
-      return tableStateChangeService.read(await tableStateChangeService.create(finalTableStateChange), createCriteriaWthoutConditions());
-    })
-    .toArray()));
+          return tableStateChangeService.read(await tableStateChangeService.create(finalTableStateChange), createCriteriaWthoutConditions());
+        })
+        .toArray(),
+    ),
+  );
 };
 
 export default createTableStateChanges;
@@ -187,13 +191,17 @@ describe('search', () => {
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 1, max: 10 }))
-      .map(async () => tableStateChangeService.create(expectedTableStateChange))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 1, max: 10 }))
+          .map(async () => tableStateChangeService.create(expectedTableStateChange))
+          .toArray(),
+      ),
+    );
     const tableStateChanges = await tableStateChangeService.search(createCriteria(expectedTableStateChange));
 
     expect(tableStateChanges.count).toBe(results.count);
-    tableStateChanges.forEach((tableStateChange) => {
+    tableStateChanges.forEach(tableStateChange => {
       expect(results.find(_ => _.localeCompare(tableStateChange.get('id')) === 0)).toBeDefined();
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),
@@ -211,7 +219,7 @@ describe('searchAll', () => {
     const result = tableStateChangeService.searchAll(createCriteria());
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tableStateChanges = tableStateChanges.push(info);
       });
 
@@ -230,15 +238,19 @@ describe('searchAll', () => {
       table: expectedTable,
       changedByUser: expectedChangedByUser,
     } = await createTableStateChangeInfo();
-    const results = Immutable.fromJS(await Promise.all(Range(0, chance.integer({ min: 2, max: 5 }))
-      .map(async () => tableStateChangeService.create(expectedTableStateChange))
-      .toArray()));
+    const results = Immutable.fromJS(
+      await Promise.all(
+        Range(0, chance.integer({ min: 2, max: 5 }))
+          .map(async () => tableStateChangeService.create(expectedTableStateChange))
+          .toArray(),
+      ),
+    );
 
     let tableStateChanges = List();
     const result = tableStateChangeService.searchAll(createCriteria(expectedTableStateChange));
 
     try {
-      result.event.subscribe((info) => {
+      result.event.subscribe(info => {
         tableStateChanges = tableStateChanges.push(info);
       });
 
@@ -248,7 +260,7 @@ describe('searchAll', () => {
     }
 
     expect(tableStateChanges.count).toBe(results.count);
-    tableStateChanges.forEach((tableStateChange) => {
+    tableStateChanges.forEach(tableStateChange => {
       expect(results.find(_ => _.localeCompare(tableStateChange.get('id')) === 0)).toBeDefined();
       expectTableStateChange(tableStateChange, expectedTableStateChange, {
         tableStateChangeId: tableStateChange.get('id'),

@@ -14,7 +14,7 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _Tag = require('../../schema/__tests__/Tag.test');
 
@@ -34,7 +34,7 @@ var getLanguages = function getLanguages(object) {
 
 var createCriteriaWthoutConditions = function createCriteriaWthoutConditions(languages, language) {
   return (0, _immutable.Map)({
-    fields: _immutable.List.of('languages_name', 'languages_description', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
+    fields: _immutable.List.of('languages_name', 'languages_description', 'key', 'level', 'forDisplay', 'parentTag', 'ownedByUser', 'maintainedByUsers').concat(languages ? languages.map(function (_) {
       return _ + '_name';
     }) : (0, _immutable.List)()).concat(languages ? languages.map(function (_) {
       return _ + '_description';
@@ -53,8 +53,7 @@ var createCriteria = function createCriteria(object) {
 
   return (0, _immutable.Map)({
     conditions: (0, _immutable.Map)({
-      name: language ? object.get('name').get(language) : chance.string(),
-      description: language ? object.get('description').get(language) : chance.string(),
+      key: object ? object.get('key') : chance.string(),
       level: object ? object.get('level') : chance.integer(),
       forDisplay: object ? object.get('forDisplay') : chance.bool(),
       parentTagId: object && object.get('parentTagId') ? object.get('parentTagId') : undefined,

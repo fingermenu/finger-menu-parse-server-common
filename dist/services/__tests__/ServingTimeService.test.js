@@ -14,7 +14,7 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 require('../../../bootstrap');
 
-var _2 = require('../');
+var _2 = require('..');
 
 var _ServingTime = require('../../schema/__tests__/ServingTime.test');
 

@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { DishTypeService } from '../';
+import { DishTypeService } from '..';
 import { createDishTypeInfo, expectDishType } from '../../schema/__tests__/DishType.test';
 
 const chance = new Chance();

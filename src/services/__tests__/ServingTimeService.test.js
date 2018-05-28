@@ -3,7 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
-import { ServingTimeService } from '../';
+import { ServingTimeService } from '..';
 import { createServingTimeInfo, expectServingTime } from '../../schema/__tests__/ServingTime.test';
 
 const chance = new Chance();

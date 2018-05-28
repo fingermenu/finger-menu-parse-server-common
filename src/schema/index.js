@@ -2,6 +2,7 @@
 
 export ChoiceItem from './ChoiceItem';
 export ChoiceItemPrice from './ChoiceItemPrice';
+export DepartmentCategory from './DepartmentCategory';
 export DietaryOption from './DietaryOption';
 export DishType from './DishType';
 export Language from './Language';

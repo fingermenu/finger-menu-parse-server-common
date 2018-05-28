@@ -4,7 +4,7 @@ import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
 import TestHelper from '../../../TestHelper';
-import { TableService } from '../';
+import { TableService } from '..';
 import { createTableInfo, expectTable } from '../../schema/__tests__/Table.test';
 
 const chance = new Chance();
@@ -44,7 +44,6 @@ const createCriteria = object => {
   return Map({
     conditions: Map({
       customers: object ? object.get('customers') : TestHelper.createRandomList(),
-      name: language ? object.get('name').get(language) : chance.string(),
       status: object ? object.get('status') : chance.string(),
       restaurantId: object ? object.get('restaurantId') : chance.string(),
       tableStateId: object ? object.get('tableStateId') : chance.string(),
