@@ -60,7 +60,8 @@ var createMenuItemInfo = exports.createMenuItemInfo = function () {
               ownedByUserId: ownedByUser.id,
               maintainedByUserIds: maintainedByUsers.map(function (maintainedByUser) {
                 return maintainedByUser.id;
-              })
+              }),
+              linkedPrinters: _TestHelper2.default.createRandomList()
             });
             return _context.abrupt('return', {
               menuItem: menuItem,
@@ -131,6 +132,7 @@ var expectMenuItem = exports.expectMenuItem = function expectMenuItem(object, ex
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('linkedPrinters')).toEqual(expectedObject.get('linkedPrinters'));
 
   if (menuItemId) {
     expect(object.get('id')).toBe(menuItemId);

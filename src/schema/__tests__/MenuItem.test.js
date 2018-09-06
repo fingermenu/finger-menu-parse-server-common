@@ -20,6 +20,7 @@ export const createMenuItemInfo = async () => {
     tagIds: tags.map(tag => tag.get('id')),
     ownedByUserId: ownedByUser.id,
     maintainedByUserIds: maintainedByUsers.map(maintainedByUser => maintainedByUser.id),
+    linkedPrinters: TestHelper.createRandomList(),
   });
 
   return {
@@ -40,6 +41,7 @@ export const expectMenuItem = (object, expectedObject, { menuItemId, expectedTag
   expect(object.get('tagIds')).toEqual(expectedObject.get('tagIds'));
   expect(object.get('ownedByUserId')).toBe(expectedObject.get('ownedByUserId'));
   expect(object.get('maintainedByUserIds')).toEqual(expectedObject.get('maintainedByUserIds'));
+  expect(object.get('linkedPrinters')).toEqual(expectedObject.get('linkedPrinters'));
 
   if (menuItemId) {
     expect(object.get('id')).toBe(menuItemId);

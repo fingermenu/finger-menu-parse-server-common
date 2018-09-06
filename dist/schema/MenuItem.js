@@ -56,6 +56,14 @@ MenuItem.updateInfoInternal = function (object, info) {
   _parseServerCommon.BaseObject.createArrayPointer(object, info, 'tag', _Tag2.default);
   _parseServerCommon.BaseObject.createUserPointer(object, info, 'ownedByUser');
   _parseServerCommon.BaseObject.createUserArrayPointer(object, info, 'maintainedByUser');
+
+  var linkedPrinters = info.get('linkedPrinters');
+
+  if (_commonJavascript.Common.isNull(linkedPrinters)) {
+    object.set('linkedPrinters', []);
+  } else if (linkedPrinters) {
+    object.set('linkedPrinters', linkedPrinters.toJS());
+  }
 };
 
 var _initialiseProps = function _initialiseProps() {
@@ -93,7 +101,8 @@ var _initialiseProps = function _initialiseProps() {
       maintainedByUsers: maintainedByUsers,
       maintainedByUserIds: maintainedByUsers ? maintainedByUsers.map(function (maintainedByUser) {
         return maintainedByUser.id;
-      }) : (0, _immutable.List)()
+      }) : (0, _immutable.List)(),
+      linkedPrinters: _immutable2.default.fromJS(object.get('linkedPrinters'))
     }));
   };
 };

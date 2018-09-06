@@ -3,6 +3,7 @@
 import Chance from 'chance';
 import Immutable, { List, Map, Range } from 'immutable';
 import '../../../bootstrap';
+import TestHelper from '../../../TestHelper';
 import { MenuItemService } from '..';
 import { createMenuItemInfo, expectMenuItem } from '../../schema/__tests__/MenuItem.test';
 
@@ -18,7 +19,16 @@ const getLanguages = object => {
 
 const createCriteriaWthoutConditions = (languages, language) =>
   Map({
-    fields: List.of('languages_name', 'languages_description', 'menuItemPageUrl', 'imageUrl', 'tags', 'ownedByUser', 'maintainedByUsers')
+    fields: List.of(
+      'languages_name',
+      'languages_description',
+      'menuItemPageUrl',
+      'imageUrl',
+      'tags',
+      'ownedByUser',
+      'maintainedByUsers',
+      'linkedPrinters',
+    )
       .concat(languages ? languages.map(_ => `${_}_name`) : List())
       .concat(languages ? languages.map(_ => `${_}_description`) : List()),
     language,
@@ -37,6 +47,7 @@ const createCriteria = object => {
       tagIds: object ? object.get('tagIds') : List.of(chance.string(), chance.string()),
       ownedByUserId: object ? object.get('ownedByUserId') : chance.string(),
       maintainedByUserIds: object ? object.get('maintainedByUserIds') : List.of(chance.string(), chance.string()),
+      linkedPrinters: object ? object.get('linkedPrinters') : TestHelper.createRandomList(),
     }),
   }).merge(createCriteriaWthoutConditions(languages, language));
 };
